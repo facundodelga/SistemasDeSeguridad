@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import contrataciones.Contratacion;
 import contrataciones.iContratable;
+import excepciones.ContratacionYaRegistradaException;
+import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
 
 
@@ -79,13 +81,14 @@ public class Factura{
 	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
 	 * Método que inserta una contratacion nueva en la colección de contrataciones de la factura. Lanza excepción cuando la contratacion ya esta registrado. 
 	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la factura instanciada
+	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException 
 	 */
-	public void agregarContratacion(Contratacion con) throws Exception {
+	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException, ContratacionYaRegistradaException, DomicilioYaRegistradoException {
 		if(!this.existeContratacion(con)){
 			this.contrataciones.add(con);
 			this.persona.agregarDomicilio(con.getDomicilio());
 		}else 
-			throw new Exception("la contratacion ya existe");
+			throw new ContratacionYaRegistradaException(con,this.persona);
 	}
 	
 	/**

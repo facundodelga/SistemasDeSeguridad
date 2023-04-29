@@ -3,6 +3,8 @@ package persona;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import excepciones.DomicilioNoEncontradoException;
+import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
 
 public abstract class Persona {
@@ -31,7 +33,7 @@ public abstract class Persona {
 	}
 	
 	//domicilio
-	public Iterator<Domicilio> getItarator(){
+	public Iterator<Domicilio> getIterator(){
 		return this.domicilios.iterator();
 	}
 	

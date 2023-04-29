@@ -1,4 +1,6 @@
-package contrataciones;
+package modelo;
+
+import contrataciones.iContratable;
 
 public class Camara implements iContratable {
 

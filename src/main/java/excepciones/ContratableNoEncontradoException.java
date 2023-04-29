@@ -1,4 +1,6 @@
-package contrataciones;
+package excepciones;
+
+import contrataciones.iContratable;
 
 public class ContratableNoEncontradoException extends Exception {
 	/**

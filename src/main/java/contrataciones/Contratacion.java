@@ -3,6 +3,7 @@ package contrataciones;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import excepciones.ContratableNoEncontradoException;
 import persona.Domicilio;
 import promociones.iPromocion;
 
@@ -98,5 +99,4 @@ public class Contratacion {
 		else
 			throw new ContratableNoEncontradoException(this.id,cont);
 	}	
-
 }

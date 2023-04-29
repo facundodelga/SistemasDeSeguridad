@@ -28,15 +28,17 @@ public class Prueba {
 		iPromocion pP = new PromoPlatino();
 		iPromocion pB = new SinPromo();
 
-		Domicilio dom =new Domicilio("Luro", 1500);
+		Domicilio dom1 =new Domicilio("Luro", 1500);
+		Domicilio dom2 =new Domicilio("Luro", 1552);
+		Domicilio dom3 =new Domicilio("Rivadavia", 1320);
 
-		Contratacion contC= new Contratacion("42157",dom,servC,pB);
-		Contratacion contCD= new Contratacion("42157",dom,servC,pD);
-		Contratacion contCP= new Contratacion("42157",dom,servC,pP);
+		Contratacion contC= new Contratacion("42157",dom1,servC,pB);
+		Contratacion contCD= new Contratacion("42157",dom1,servC,pD);
+		Contratacion contCP= new Contratacion("42157",dom1,servC,pP);
 		
-		Contratacion contV= new Contratacion("42157",dom,servV,pB);
-		Contratacion contVD= new Contratacion("42157",dom,servV,pD);
-		Contratacion contVP= new Contratacion("42157",dom,servV,pP);
+		Contratacion contV= new Contratacion("42157",dom2,servV,pB);
+		Contratacion contVD= new Contratacion("42157",dom3,servV,pD);
+		Contratacion contVP= new Contratacion("42157",dom2,servV,pP);
 
 		ArrayList<Contratacion> c = new ArrayList<Contratacion>();
 
@@ -55,14 +57,25 @@ public class Prueba {
 		System.out.println(contV.getTarifa());
 
 		Persona p = new PersonaJuridica("Pedro", "483984209");
-		Persona p2 = new PersonaJuridica("ududud", "484209");
-
-		System.out.println(s.creaFactura(p));
+		p.agregarDomicilio(dom1);
+		p.agregarDomicilio(dom2);
 		
-		s.creaFactura(p2,c);
+		Persona p2 = new PersonaJuridica("ududud", "484209");
+		p2.agregarDomicilio(dom3);
+		
+		System.out.println(s.crearFactura(p));
+		
+		s.crearFactura(p2,c);
 		
 		System.out.println(s.pagarFactura(1, "EFECTIVO"));
-		
+	/* //pruebas de funciones nuevas
+		ArregloPersonas personas = new ArregloPersonas();
+		personas.add(p2);
+		personas.add(p);
+		System.out.println(personas.buscaPorDomicilio(dom3));
+		System.out.println(p2);
+		System.out.println(p);
+		*/
 	}
 
 }

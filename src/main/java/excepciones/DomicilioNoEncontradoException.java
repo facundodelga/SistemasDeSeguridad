@@ -1,4 +1,6 @@
-package persona;
+package excepciones;
+
+import persona.Domicilio;
 
 public class DomicilioNoEncontradoException extends Exception{
 	/**
@@ -13,6 +15,13 @@ public class DomicilioNoEncontradoException extends Exception{
 		this.dni = dni;
 		this.domicilio = domicilio;
 	}
+	
+	public DomicilioNoEncontradoException(Domicilio domicilio) {
+		super("El domicilio "+domicilio+" no ha sido encontrado");
+		this.domicilio = domicilio;
+		this.dni=null;
+	}
+	
 	public String getDni() {
 		return dni;
 	}
