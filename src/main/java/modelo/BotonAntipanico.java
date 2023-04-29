@@ -18,6 +18,15 @@ public class BotonAntipanico implements iContratable{
 		return "Botón antipánico";
 	}
 	
-
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			BotonAntipanico nObj=(BotonAntipanico)super.clone();
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar BotonAntipanico, FALLO="+e.toString());
+		}
+	}
 
 }

@@ -2,20 +2,19 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import contrataciones.Contratacion;
 import contrataciones.iContratable;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
+import clonable.Clonable;
 
-
-public class Factura{
+public class Factura implements Clonable{
 	private static int ultFactura = 0;
 	private int numFactura;
 	private Persona persona;
 	private ArrayList<Contratacion> contrataciones;
-	private MedioPago pago;
+	private Pago pago;
 
 	/**
 	 * <b>PRE:</b> el parámetro persona debe ser distinto de null. El parámetro mpago debe ser distinto de null
@@ -168,4 +167,17 @@ public class Factura{
 		return p.getValor();
 	}
 
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			Factura nObj=(Factura)super.clone();
+			nObj.contrataciones=(ArrayList<Contratacion>)this.contrataciones.clone();
+			nObj.pago=(Pago)this.pago.clone();
+			nObj.persona=(Persona)persona.clone();
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Factura, FALLO="+e.toString());
+		}
+	}
 }

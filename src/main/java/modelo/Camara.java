@@ -18,4 +18,14 @@ public class Camara implements iContratable {
 		return "Cámara de seguridad";
 	}
 
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			Camara nObj=(Camara)super.clone();
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Camara, FALLO="+e.toString());
+		}
+	}
 }

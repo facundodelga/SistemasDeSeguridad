@@ -13,5 +13,8 @@ public class PersonaJuridica extends Persona{
 		
 		return factura.calcularBonificacionJuridica();
 	}
-
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		throw new CloneNotSupportedException("PersonaJuridica no puede clonarse");
+	}
 }

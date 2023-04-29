@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import contrataciones.Contratacion;
 import contrataciones.iContratable;
@@ -168,4 +169,6 @@ public class Sistema {
 
 	// 	return false;
 	// }
+
+	
 }

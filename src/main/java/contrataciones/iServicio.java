@@ -1,8 +1,9 @@
 package contrataciones;
 
 import promociones.iPromocion;
+import clonable.Clonable;
 
-public interface iServicio {
+public interface iServicio extends Clonable{
 	public void setTarifa(double tarifa);
 	public double getTarifa();
 	public double getTarifa(iPromocion promocion);

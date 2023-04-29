@@ -1,6 +1,7 @@
 package persona;
+import clonable.Clonable;
 
-public class Domicilio {
+public class Domicilio implements Clonable{
 	private String calle;
 	private int numero;
 	
@@ -31,6 +32,16 @@ public class Domicilio {
 		this.numero = numero;
 	}
 	
-	
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			Domicilio nObj=(Domicilio)super.clone();
+			nObj.calle=this.calle;
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Domicilio, FALLO="+e.toString());
+		}
+	}
 	
 }

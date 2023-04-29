@@ -74,4 +74,5 @@ public class ArregloPersonas extends ArrayList<Persona>{
     	}
     	return p;
     }
+
 }

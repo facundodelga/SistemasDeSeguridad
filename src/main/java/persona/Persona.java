@@ -6,8 +6,9 @@ import java.util.Iterator;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
+import clonable.Clonable;
 
-public abstract class Persona {
+public abstract class Persona implements Clonable{
 	private String nombre;
 	private String dni;
 	private ArrayList<Domicilio> domicilios;
@@ -78,4 +79,18 @@ public abstract class Persona {
 	 * @return total a pagar por una factura, dependiendo de el tipo de la instancia persona.
 	 */
 	public abstract double calcularBonificacion(Factura factura); //Preguntar por bonificacion de juridica
+
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			Persona nObj=(Persona)super.clone();
+			nObj.dni=this.dni;
+			nObj.nombre=this.nombre;
+			nObj.domicilios=(ArrayList<Domicilio>)this.domicilios.clone();
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Persona, FALLO="+e.toString());
+		}
+	}
 }

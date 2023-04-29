@@ -1,10 +1,10 @@
 package modelo;
-
+import clonable.Clonable;
 /**
  * La clase Pago representa un medio de pago que contiene un valor monetario.
  * Implementa la interfaz MedioPago.
  */
-public class Pago implements MedioPago {
+public class Pago implements MedioPago,Clonable{
     private double valor;
     
     /**
@@ -31,4 +31,15 @@ public class Pago implements MedioPago {
     public double getValor() {
         return this.valor;
     }
+    
+    @Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			Pago nObj=(Pago)super.clone();
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Pago, FALLO="+e.toString());
+		}
+	}
 }

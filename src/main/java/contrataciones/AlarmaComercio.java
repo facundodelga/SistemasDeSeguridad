@@ -37,4 +37,15 @@ public class AlarmaComercio implements iServicio {
 	public double getDescPlatino(iPromocion promocion) {
 		return promocion.getPromoComercio(this.tarifa);
 	}	
+	
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			AlarmaComercio nObj=(AlarmaComercio)super.clone();
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar AlarmaComercio, FALLO="+e.toString());
+		}
+	}
 }

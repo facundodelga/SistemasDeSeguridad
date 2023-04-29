@@ -38,5 +38,14 @@ public class AlarmaVivienda implements iServicio {
 		return promocion.getPromoVivienda(this.tarifa);
 	}
 
-
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		try {
+			AlarmaVivienda nObj=(AlarmaVivienda)super.clone();
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar AlarmaVivienda, FALLO="+e.toString());
+		}
+	}
 }
