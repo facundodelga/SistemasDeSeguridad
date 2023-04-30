@@ -51,7 +51,6 @@ public class Sistema {
 		}
 		return instancia;
 	}
-
 	
 	//FACTURA
 	
@@ -65,7 +64,6 @@ public class Sistema {
 	public int crearFactura(Persona p) {
 	    Factura f = new Factura(p);
 	    facturas.add(f);
-
 	    return f.getNumFactura();
 	}
 

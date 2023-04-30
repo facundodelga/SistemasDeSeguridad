@@ -192,8 +192,28 @@ public class Factura implements Cloneable{
 		return detalleFactura("");
 	}
 	
-	public String detalleFactura(String metodoPago) {
-		String res = "N° Factura: " + numFactura + " | Abonado: " + persona.toString() + " | Contrataciones :"+ contrataciones;
+	public String detalle(String metodoPago) {
+		String res = "N° Factura: " + numFactura + " | " + "Abonado: " + persona + " | Contrataciones:";
+
+		for (Contratacion contratacion : contrataciones) {
+			res += "\n\n" + contratacion.detalle();
+		}
+		
+		double totOrig = totalOriginal();
+		double totFinal;
+		
+		if (!metodoPago.isEmpty()) {
+			totFinal = totalModificadorMP(metodoPago);
+		}
+		else {
+			totFinal = totOrig;
+		}
+		
+		res += "\n\nTotal Factura: $" + DoubleUtils.format(totOrig);
+		
+		if (totOrig != totFinal) {
+			res += "\nTotal Factura Final (c/ metodo de pago " + metodoPago + " ): $" + DoubleUtils.format(totFinal);
+		}
 		return res;
 	}
 	
