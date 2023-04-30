@@ -7,10 +7,6 @@ import excepciones.PersonaNoEncontradaPorNombreException;
 import persona.Persona;
 
 public class ArregloFacturas extends ArrayList<Factura>{
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
     
     public ArregloFacturas() {
@@ -78,6 +74,14 @@ public class ArregloFacturas extends ArrayList<Factura>{
 		return f;
     }
 
+    /**
+     * Crea una copia clonada de una factura basada en su identificador.
+     *
+     * @param id el identificador de la factura que se desea clonar.
+     * @return una referencia a la factura clonada.
+     * @throws FacturaNoEncontradaException si no se encuentra ninguna factura con el identificador proporcionado.
+     * @throws CloneNotSupportedException si la factura no es clonable.
+     */
     
     public Object clonaFactura(int id)throws FacturaNoEncontradaException, CloneNotSupportedException {
     	Object facturaClonada;

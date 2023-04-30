@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import contrataciones.AlarmaComercio;
 import contrataciones.AlarmaVivienda;
@@ -17,7 +18,6 @@ import excepciones.DomicilioNoPerteneceAPersona;
 import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
-import excepciones.PersonaNoEncontradaPorNombreException;
 import excepciones.TipoDeContratableIncorrectoException;
 import excepciones.TipoDePersonaIncorrectoException;
 import excepciones.TipoDePromocionIncorrectoException;
@@ -49,48 +49,84 @@ public class Sistema {
 		return instancia;
 	}
 
-	// FACTURA
+
+	
+	//FACTURA
+	
+	/**
+	 * Crea una nueva factura asociada a la persona especificada.
+	 * Agrega la factura a la lista de facturas.
+	 * 
+	 * @param p la persona asociada a la factura.
+	 * @return el número de la factura creada.
+	 */
 	public int crearFactura(Persona p) {
-		Factura f = new Factura(p);
-		facturas.add(f);
+	    Factura f = new Factura(p);
+	    facturas.add(f);
 
-		return f.getNumFactura();
+
+	    return f.getNumFactura();
 	}
 
-	public void crearFactura(Persona p, ArrayList<Contratacion> c) {
-		Factura f = new Factura(p, c);
-		facturas.add(f);
-	}
-
-	public void crearFactura(Persona p, Contratacion contr)
-			throws ContratacionYaRegistradaException, DomicilioYaRegistradoException {
-		ArrayList<Contratacion> c = new ArrayList<Contratacion>();
-		c.add(contr);
-		this.crearFactura(p, c);
-	}
 
 	/**
+	 * Crea una nueva factura asociada a una persona y una lista de contrataciones.
+	 * Crea una nueva factura asociada a la persona y la lista de contrataciones especificadas.
+	 * Agrega la factura a la lista de facturas.
 	 * 
-	 * @param id
-	 * @throws FacturaNoEncontradaException
+	 * @param p la persona asociada a la factura.
+	 * @param c la lista de contrataciones asociadas a la factura.
+	 */
+	public void crearFactura(Persona p, ArrayList<Contratacion> c) {
+	    Factura f = new Factura(p, c);
+	    facturas.add(f);
+	}
+	
+	/**
+	 * Crea una nueva factura asociada a una persona y una contratación.
+	 * Crea una nueva factura asociada a la persona y la contratación especificadas.
+	 * Agrega la factura a la lista de facturas.
+	 * 
+	 * @param p la persona asociada a la factura.
+	 * @param contr la contratación asociada a la factura.
+	 * @throws ContratacionYaRegistradaException si la contratación ya está registrada en otra factura.
+	 * @throws DomicilioYaRegistradoException si el domicilio de la contratación ya está registrado en otra factura.
+	 */
+	public void crearFactura(Persona p, Contratacion contr) throws ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+	    ArrayList<Contratacion> c = new ArrayList<Contratacion>();
+	    c.add(contr);
+	    this.crearFactura(p, c);
+
+	}
+
+
+	/**
+	 * Elimina una factura por su identificador.
+	 * Elimina la factura con el identificador especificado de la lista de facturas.
+	 * 
+	 * @param id el identificador de la factura a eliminar.
+	 * @throws FacturaNoEncontradaException si no se encuentra la factura con el identificador especificado.
 	 */
 	public void eliminarFactura(int id) throws FacturaNoEncontradaException {
-		try {
-			this.facturas.borraPorId(id);
-		} catch (FacturaNoEncontradaException e) {
-			throw e;
-		}
+	    try {
+	        this.facturas.borraPorId(id);
+	    } catch (FacturaNoEncontradaException e) {
+	        throw e;
+	    }
 	}
 
 	/**
+	 * Realiza el pago de una factura por su identificador y método de pago.
+	 * Realiza el pago de la factura encontrada utilizando el identificador y método de pago especificados.
 	 * 
-	 * @param id
-	 * @param mp
-	 * @return
+	 * @param id el identificador de la factura a pagar.
+	 * @param mp el método de pago utilizado para pagar la factura.
+	 * @return el total pagado de la factura.
 	 * @throws FacturaNoEncontradaException
 	 */
-	public double pagarFactura(int id, String mp) throws FacturaNoEncontradaException {
-		Factura f;
+	public double pagarFactura(int id,String mp) throws FacturaNoEncontradaException {
+	    Factura f;
+
 		double total;
 		try {
 			f = this.facturas.buscaPorId(id);
@@ -152,9 +188,14 @@ public class Sistema {
 		return contr;
 	}
 
-	// ADICIONALES
 
-	public void contratarAdicional(Contratacion c, iContratable a) {
+	//ADICIONALES
+	/**
+	 * 
+	 * @param c: refiere a la contratacion a la cual se le quiere agregar un Adicional
+	 * @param a: refiere a la variable adicional la cua lse quiere adicionar a la Contratacion
+	 */
+	public void contratarAdicional(Contratacion c,iContratable a) {
 		c.agregarContratable(a);
 	}
 
@@ -270,21 +311,54 @@ public class Sistema {
 	// return false;
 	// }
 
-	public Factura clonaFacturaPorId(int id) throws FacturaNoEncontradaException, CloneNotSupportedException {
+	
+	//CLONACIONES
+	
+	/**
+	 * Realiza la clonación de una factura por su identificador.
+	 * Realiza la clonación de la factura encontrada utilizando el identificador especificado.
+	 * Muestra la representación de la factura clonada en forma de cadena.
+	 * 
+	 * @param id el identificador de la factura a buscar y clonar.
+	 * @throws FacturaNoEncontradaException si no se encuentra la factura con el identificador especificado.
+	 * @throws CloneNotSupportedException si la clonación de la factura no es compatible.
+	 */
+	public void clonaFacturaPorId(int id) {
 		Object facturaClone;
-
-		facturaClone = this.facturas.clonaFactura(id);
-
-		return (Factura) facturaClone;
-
+		try {
+			facturaClone=this.facturas.clonaFactura(id);
+			System.out.println(facturaClone.toString()); 
+		}
+		catch(FacturaNoEncontradaException e) {
+			System.out.println(e.toString());
+		}
+		catch(CloneNotSupportedException e) {
+			System.out.println(e.toString());
+		}
 	}
-
-	public Persona clonaPersonaPorNombre(String nombre) throws PersonaNoEncontradaPorNombreException, CloneNotSupportedException {
+	
+	
+	/**
+	 * Realiza la clonación de una persona por su DNI.
+	 * Busca una persona en la lista de personas utilizando el DNI especificado.
+	 * Realiza la clonación de la persona encontrada y muestra su representación en forma de cadena.
+	 * 
+	 * @param dni el DNI de la persona a buscar y clonar.
+	 * @throws PersonaNoEncontradaException si no se encuentra la persona con el DNI especificado.
+	 * @throws CloneNotSupportedException si la clonación de la persona no es compatible.
+	 */
+	public void clonaPersonaPorDni(String dni) {
 		Object personaClone;
-
-		personaClone = this.personas.clonaPersona(nombre);
-
-		return (Persona) personaClone;
+		try {
+			personaClone=this.personas.clonaPersona(dni);
+			System.out.println(personaClone.toString());
+		}
+		catch(PersonaNoEncontradaException e) {
+			System.out.println(e.toString());
+		}
+		catch(CloneNotSupportedException e) {
+			System.out.println(e.toString());
+		}
 	}
 
 }

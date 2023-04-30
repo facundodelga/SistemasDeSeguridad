@@ -31,6 +31,12 @@ public class Pago implements MedioPago,Cloneable{
         return this.valor;
     }
     
+    /**
+     * Crea y devuelve una copia superficial de esta instancia de Pago.
+     *
+     * @return una referencia a la copia clonada de esta instancia.
+     * @throws CloneNotSupportedException si la instancia de Pago no es clonable.
+     */
     @Override
 	public Object clone()throws CloneNotSupportedException{
 		try {

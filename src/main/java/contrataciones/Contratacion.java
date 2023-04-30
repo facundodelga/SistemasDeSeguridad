@@ -116,13 +116,18 @@ public class Contratacion implements Cloneable {
 		else
 			throw new ContratableNoEncontradoException(this.id, cont);
 	}
-
+	
+	/**
+	 * Crea y devuelve una copia profunda de esta instancia de Contratacion.
+	 *
+	 * @return una referencia a la copia clonada de esta instancia.
+	 * @throws CloneNotSupportedException si la instancia de Contratacion no es clonable.
+	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		try {
 			int i;
 			Contratacion nObj = (Contratacion) super.clone();
-			// nObj.contratados=(ArrayList<iContratable>)this.contratados.clone();
 			for (i = 0; i < this.contratados.size(); i++) {
 				nObj.contratados.add((iContratable) this.contratados.get(i).clone());
 			}

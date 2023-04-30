@@ -12,10 +12,6 @@ import persona.Domicilio;
 import persona.Persona;
 
 public class ArregloPersonas extends ArrayList<Persona>{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
     public ArregloPersonas() {
@@ -60,6 +56,13 @@ public class ArregloPersonas extends ArrayList<Persona>{
 		}	
     }
     
+    /**
+     * Busca una persona por su domicilio en una colección de personas.
+     *
+     * @param dom el domicilio que se desea buscar.
+     * @return una referencia a la persona encontrada.
+     * @throws DomicilioNoEncontradoException si no se encuentra ninguna persona con el domicilio proporcionado.
+     */ 
     public Persona buscaPorDomicilio(Domicilio dom) throws DomicilioNoEncontradoException {
     	Persona p = null;
     	int i;
@@ -78,6 +81,13 @@ public class ArregloPersonas extends ArrayList<Persona>{
     	return p;
     }
     
+    /**
+     * Busca una persona por su nombre en una colección de personas.
+     *
+     * @param nombre el nombre de la persona que se desea buscar.
+     * @return una referencia a la persona encontrada.
+     * @throws PersonaNoEncontradaPorNombreException si no se encuentra ninguna persona con el nombre proporcionado.
+     */
     public Persona buscaPorNombre(String nombre)throws PersonaNoEncontradaPorNombreException{
     	Persona p=null;
     	int i=0,N=this.size();
@@ -92,14 +102,23 @@ public class ArregloPersonas extends ArrayList<Persona>{
     	return p;
     }
     
-    public Object clonaPersona(String nombre)throws PersonaNoEncontradaPorNombreException, CloneNotSupportedException {
+    
+    /**
+     * Crea una copia clonada de una persona basada en su nombre.
+     *
+     * @param nombre el nombre de la persona que se desea clonar.
+     * @return una referencia a la persona clonada.
+     * @throws PersonaNoEncontradaPorNombreException si no se encuentra ninguna persona con el nombre proporcionado.
+     * @throws CloneNotSupportedException si la persona no es clonable.
+     */
+    public Object clonaPersona(String dni)throws PersonaNoEncontradaException, CloneNotSupportedException {
     	Object personaClonada;
     	try {
-    		personaClonada=this.buscaPorNombre(nombre).clone();
+    		personaClonada=this.buscaPorDni(dni).clone();
     		return personaClonada;
     	}
-    	catch(PersonaNoEncontradaPorNombreException e) {
-    		throw new PersonaNoEncontradaPorNombreException(e.toString());
+    	catch(PersonaNoEncontradaException e) {
+    		throw new PersonaNoEncontradaException(e.toString());
     	}
     	catch(CloneNotSupportedException e){
     		throw new CloneNotSupportedException("No se pudo clonar la persona solicitada debido a: "+e.toString());
