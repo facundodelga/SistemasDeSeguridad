@@ -7,9 +7,8 @@ import contrataciones.iContratable;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
-import clonable.Clonable;
 
-public class Factura implements Clonable{
+public class Factura implements Cloneable{
 	private static int ultFactura = 0;
 	private int numFactura;
 	private Persona persona;
@@ -25,7 +24,6 @@ public class Factura implements Clonable{
 		super();
 		this.numFactura = ultFactura++;
 		this.persona = persona;
-		
 		this.contrataciones = new ArrayList<Contratacion>();
 
 		this.pago = new Pago(totalOriginal());
@@ -47,21 +45,8 @@ public class Factura implements Clonable{
 		return persona;
 	}
 
-	//devuelve un arrayList o es mejor que devuelva un iterator?
 	public ArrayList<Contratacion> getContrataciones() {
 		return contrataciones;
-	}
-
-	public void setNumFactura(int numFactura) {
-		this.numFactura = numFactura;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
-	}
-	
-	public void setContrataciones(ArrayList<Contratacion> contrataciones) {
-		this.contrataciones = contrataciones;
 	}
 
 	public boolean existeContratacion(Contratacion con) {
@@ -108,10 +93,10 @@ public class Factura implements Clonable{
 	public double calcularBonificacionFisica() {
 		double total = 0;
 		for (Contratacion contratacion : contrataciones) {
-			
 			total += contratacion.getTarifa();
+
 			Iterator<iContratable> it = contratacion.getIterator();
-			while (it.hasNext())
+			while (it.hasNext()) 
 				total += it.next().getTarifa();
 		}
 		return total;
@@ -152,6 +137,8 @@ public class Factura implements Clonable{
 	 * @return total a pagar por la factura
 	 */	
 	public double totalModificadorMP(String metodo) {
+		//MedioPago p = this.pago;
+		this.pago=new Pago(totalOriginal());
 		MedioPago p = this.pago;
 		
 		if(metodo.compareToIgnoreCase("CHEQUE") == 0)
@@ -169,9 +156,13 @@ public class Factura implements Clonable{
 
 	@Override
 	public Object clone()throws CloneNotSupportedException{
+		int i;
 		try {
 			Factura nObj=(Factura)super.clone();
-			nObj.contrataciones=(ArrayList<Contratacion>)this.contrataciones.clone();
+			//nObj.contrataciones=(ArrayList<Contratacion>)this.contrataciones.clone();
+			for(i=0;i<this.contrataciones.size();i++) {
+				nObj.contrataciones.add( (Contratacion) this.contrataciones.get(i).clone());
+			}
 			nObj.pago=(Pago)this.pago.clone();
 			nObj.persona=(Persona)persona.clone();
 			return nObj;
@@ -180,4 +171,13 @@ public class Factura implements Clonable{
 			throw new CloneNotSupportedException("No se pudo clonar Factura, FALLO="+e.toString());
 		}
 	}
+
+	public Pago getPago() {
+		return pago;
+	}
+
+	
+	
+	
+	
 }

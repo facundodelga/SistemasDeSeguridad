@@ -29,15 +29,15 @@ public class ArregloPersonas extends ArrayList<Persona>{
 	 * @throws Exception si el Id buscado no existe.
 	 */
     public Persona buscaPorDni(String dni)  throws PersonaNoEncontradaException{
-		Persona f = null;
+		Persona p = null;
 		for(int i = 0; i<this.size();i++) {
 			if(dni == this.get(i).getDni());
-			f = this.get(i);
+			p = this.get(i);
 		}
-		if(f == null)
+		if(p == null)
 			throw new PersonaNoEncontradaException(dni);
 		
-		return f;
+		return p;
     }
     
 

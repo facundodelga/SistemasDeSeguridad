@@ -2,7 +2,7 @@ package contrataciones;
 
 import promociones.iPromocion;
 
-public class AlarmaComercio implements iServicio {
+public class AlarmaComercio implements iServicio, Cloneable {
 	private double tarifa=10000;
 	
 	public void setTarifa(double tarifa) {
@@ -36,13 +36,14 @@ public class AlarmaComercio implements iServicio {
 	 */
 	public double getDescPlatino(iPromocion promocion) {
 		return promocion.getPromoComercio(this.tarifa);
-	}	
+	}
+
 	
 	@Override
 	public Object clone()throws CloneNotSupportedException{
 		try {
 			AlarmaComercio nObj=(AlarmaComercio)super.clone();
-			return nObj;
+			return (Object)nObj;
 		}
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar AlarmaComercio, FALLO="+e.toString());

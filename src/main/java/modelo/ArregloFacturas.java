@@ -69,15 +69,15 @@ public class ArregloFacturas extends ArrayList<Factura>{
 		Factura f = null;
 		
 		for(int i = 0; i<this.size();i++) {
-			if(f.getPersona().getDni().equals(this.get(i).getPersona().getDni())) ;
+			if(p.getDni().equals(this.get(i).getPersona().getDni()))
 				f = this.get(i);
 		}
 		
 		if(f == null)
 			throw new FacturaNoEncontradaException();
-		
 		return f;
     }
+
     
     public Object clonaFactura(int id)throws FacturaNoEncontradaException, CloneNotSupportedException {
     	Object facturaClonada;

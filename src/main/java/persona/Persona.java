@@ -3,12 +3,12 @@ package persona;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import contrataciones.Contratacion;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
-import clonable.Clonable;
 
-public abstract class Persona implements Clonable{
+public abstract class Persona implements Cloneable{
 	private String nombre;
 	private String dni;
 	private ArrayList<Domicilio> domicilios;
@@ -82,11 +82,14 @@ public abstract class Persona implements Clonable{
 
 	@Override
 	public Object clone()throws CloneNotSupportedException{
+		int i;
 		try {
 			Persona nObj=(Persona)super.clone();
 			nObj.dni=this.dni;
 			nObj.nombre=this.nombre;
-			nObj.domicilios=(ArrayList<Domicilio>)this.domicilios.clone();
+			for(i=0;i<this.domicilios.size();i++) {
+				nObj.domicilios.add( (Domicilio) this.domicilios.get(i).clone());
+			}
 			return nObj;
 		}
 		catch(CloneNotSupportedException e) {

@@ -1,8 +1,6 @@
-package modelo;
+package contrataciones;
 
-import contrataciones.iContratable;
-
-public class BotonAntipanico implements iContratable{
+public class BotonAntipanico implements iContratable,Cloneable{
 
 	private double tarifa=2000;
 	

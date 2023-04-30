@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import contrataciones.AlarmaComercio;
 import contrataciones.AlarmaVivienda;
 import contrataciones.Contratacion;
+import contrataciones.iContratable;
 import contrataciones.iServicio;
 import modelo.*;
 import persona.Domicilio;
@@ -20,7 +21,7 @@ public class Prueba {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		Sistema s = Sistema.getInstancia();
-
+/*
 		iServicio servV = new AlarmaVivienda();
 		iServicio servC = new AlarmaComercio();
 
@@ -68,14 +69,36 @@ public class Prueba {
 		s.crearFactura(p2,c);
 		
 		System.out.println(s.pagarFactura(1, "EFECTIVO"));
-	/* //pruebas de funciones nuevas
-		ArregloPersonas personas = new ArregloPersonas();
-		personas.add(p2);
-		personas.add(p);
-		System.out.println(personas.buscaPorDomicilio(dom3));
-		System.out.println(p2);
-		System.out.println(p);
+*/
+
+		
+		Persona p= s.crearPersona("Maria", "40256578", "FISICA");
+		Domicilio d =new Domicilio("Luro", 1500);
+		s.asignarNuevoDomicilio("40256578", d);
+		
+		iServicio serv=s.obtenerServicio("VIVIENDA");
+		iPromocion promo=s.obtenerPromocion("DORADA");
+		s.crearContratacion("40256578", d, serv, promo);
+
+		iContratable adi=s.obtenerContratable("BOTON");
+		s.contratarAdicional("40256578", d, adi);
+
+		Factura f=s.buscarFacturaPorPersona("40256578");
+		
+		System.out.println("Persona Fisica - Vivienda: $8500 - PromoDorada: $1500 - Botón: $2000 - TOTAL: $9000");
+		System.out.println("$"+s.buscarFacturaPorPersona("40256578").totalOriginal());
+		
+		System.out.println("TOTAL: $9000 - Efectivo: 20%off - TOTAL $7200");
+		System.out.println("$"+s.pagarFactura(f, "EFECTIVO"));
+
+		/*
+		//FALTA
+			Probar mas combinaciones en el main a través del sistema (el tp pide todas las combinaciones posibles)
+			Contratos de clase y documentar (PRE-POST-FUNCION) las funciones inportantes
+			Asserts
+			ToString() de todo
+			Probar la clonación una vez que estén implementados los ToString()		
 		*/
-	}
+}
 
 }

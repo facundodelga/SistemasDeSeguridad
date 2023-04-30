@@ -6,9 +6,8 @@ import java.util.Iterator;
 import excepciones.ContratableNoEncontradoException;
 import persona.Domicilio;
 import promociones.iPromocion;
-import clonable.Clonable;
 
-public class Contratacion implements Clonable{
+public class Contratacion implements Cloneable{
 	private static int generadorId=0;
 	private int id; 
 	private String dni; 
@@ -103,8 +102,12 @@ public class Contratacion implements Clonable{
 	@Override
 	public Object clone()throws CloneNotSupportedException{
 		try {
+			int i;
 			Contratacion nObj=(Contratacion)super.clone();
-			nObj.contratados=(ArrayList<iContratable>)this.contratados.clone();
+			//nObj.contratados=(ArrayList<iContratable>)this.contratados.clone();
+			for(i=0;i<this.contratados.size();i++) {
+				nObj.contratados.add((iContratable) this.contratados.get(i).clone());
+			}
 			nObj.dni=this.dni;
 			nObj.domicilio=(Domicilio)this.domicilio.clone();
 			nObj.promo=this.promo;
