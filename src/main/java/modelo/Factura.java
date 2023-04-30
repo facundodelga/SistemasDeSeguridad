@@ -7,6 +7,7 @@ import contrataciones.iContratable;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
+import utils.DoubleUtils;
 
 public class Factura implements Cloneable{
 	private static int ultFactura = 0;
@@ -189,7 +190,7 @@ public class Factura implements Cloneable{
 
 	
 	public String detalleFactura() {
-		return detalleFactura("");
+		return detalle("");
 	}
 	
 	public String detalle(String metodoPago) {

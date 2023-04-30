@@ -256,7 +256,7 @@ public class PruebaAislada {
 			// TODO: handle exception
 		}
 		
-		System.out.println(factura.detalleFactura("CHEQUE"));
+		System.out.println(factura.detalle("CHEQUE"));
 		
 //		contratacion.agregarContratable(contratableAntiPanico);
 //		contratacion.agregarContratable(contratableCamara);

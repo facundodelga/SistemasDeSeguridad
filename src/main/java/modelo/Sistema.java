@@ -1,7 +1,6 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import contrataciones.AlarmaComercio;
 import contrataciones.AlarmaVivienda;
@@ -55,10 +54,11 @@ public class Sistema {
 	//FACTURA
 	
 	/**
+	 * <b>PRE:</b> Parámetro p distinto de null 
 	 * Crea una nueva factura asociada a la persona especificada.
 	 * Agrega la factura a la lista de facturas.
 	 * 
-	 * @param p la persona asociada a la factura.
+	 * @param, parámetro de tipo Persona, p la persona asociada a la factura.
 	 * @return el número de la factura creada.
 	 */
 	public int crearFactura(Persona p) {
@@ -68,12 +68,13 @@ public class Sistema {
 	}
 
 	/**
+	 * <b>PRE:</b> Parámetro p distinto de null, parámetro c distinto de null 
 	 * Crea una nueva factura asociada a una persona y una lista de contrataciones.
 	 * Crea una nueva factura asociada a la persona y la lista de contrataciones especificadas.
 	 * Agrega la factura a la lista de facturas.
 	 * 
-	 * @param p la persona asociada a la factura.
-	 * @param c la lista de contrataciones asociadas a la factura.
+	 * @param p, parámetro de tipo Persona, la persona asociada a la factura.
+	 * @param c, parámetro de tipo ArrayList<Contratacion>, la lista de contrataciones asociadas a la factura.
 	 */
 	public void crearFactura(Persona p, ArrayList<Contratacion> c) {
 	    Factura f = new Factura(p, c);
@@ -81,12 +82,13 @@ public class Sistema {
 	}
 	
 	/**
+	 * <b>PRE:</b> Parámetro p distinto de null, parámetro contr distinto de null 
 	 * Crea una nueva factura asociada a una persona y una contratación.
 	 * Crea una nueva factura asociada a la persona y la contratación especificadas.
 	 * Agrega la factura a la lista de facturas.
 	 * 
-	 * @param p la persona asociada a la factura.
-	 * @param contr la contratación asociada a la factura.
+	 * @param p, parámetro de tipo Persona, la persona asociada a la factura.
+	 * @param contr, parámetro de tipo Contratacion, la contratación asociada a la factura.
 	 * @throws ContratacionYaRegistradaException si la contratación ya está registrada en otra factura.
 	 * @throws DomicilioYaRegistradoException si el domicilio de la contratación ya está registrado en otra factura.
 	 */
@@ -98,7 +100,7 @@ public class Sistema {
 
 
 	/**
-	 * Elimina una factura por su identificador.
+	 * <b>PRE:</b> Parámetro id distinto de null y positivo
 	 * Elimina la factura con el identificador especificado de la lista de facturas.
 	 * 
 	 * @param id el identificador de la factura a eliminar.
@@ -113,7 +115,7 @@ public class Sistema {
 	}
 
 	/**
-	 * Realiza el pago de una factura por su identificador y método de pago.
+	 * <b>PRE:</b> Parámetro id distinto de null y positivo, parámetro mp distinto de null y distinto de “”
 	 * Realiza el pago de la factura encontrada utilizando el identificador y método de pago especificados.
 	 * 
 	 * @param id el identificador de la factura a pagar.
@@ -133,6 +135,14 @@ public class Sistema {
 		return total;
 	}
 	
+	/**
+	* <b>PRE:</b> Parámetro f distinto de null, parámetro mp distinto de null y distinto de “”
+	* Método que genera el valor de una factura luego de haber indicado el método de pago de la misma
+	* @param f, parámetro de tipo Factura, es la factura que se desea pagar
+	* @param mp, parámetro de tipo String, indica el tipo de medio de pago a utilizar (“EFECTIVO”,” TARJETA”,” CHEQUE”)
+	* @return
+	* @throws FacturaNoEncontradaException
+	*/
 	public double pagarFactura(Factura f,String mp) throws FacturaNoEncontradaException {
 		return f.totalModificadorMP(mp);
 	}
