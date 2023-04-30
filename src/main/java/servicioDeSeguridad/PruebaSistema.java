@@ -9,6 +9,7 @@ import contrataciones.MovilAcompañamiento;
 import contrataciones.iContratable;
 import contrataciones.iServicio;
 import modelo.Factura;
+import modelo.Sistema;
 import persona.Domicilio;
 import persona.Persona;
 import persona.PersonaFisica;
@@ -19,7 +20,7 @@ import promociones.SinPromo;
 import promociones.iPromocion;
 import utils.DoubleUtils;
 
-public class PruebaAislada {
+public class PruebaSistema {
 
 	public static Domicilio dom1 = new Domicilio("Calle1", 1111);
 	public static Domicilio dom2 = new Domicilio("Calle2", 2222);
@@ -38,15 +39,18 @@ public class PruebaAislada {
 	public static iPromocion sinPromocion = new SinPromo();
 	public static iPromocion promoDorada = new PromoDorada();
 	public static iPromocion promoPlatino = new PromoPlatino();
-
+	
+	public static Sistema sistema = Sistema.getInstancia();
 
 	public static void main(String[] args) throws Exception {
-		testDomicilio();
-		testPersona();
-		testServicios();
-		testContratables();
-		testContratacion();
-		testFactura();
+//		testDomicilio();
+//		testPersona();
+//		testServicios();
+//		testContratables();
+//		testContratacion();
+//		testFactura();
+		
+		
 	}
 
 	private static void testDomicilio() {

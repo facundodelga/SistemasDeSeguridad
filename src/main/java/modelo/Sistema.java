@@ -32,7 +32,7 @@ import promociones.SinPromo;
 import promociones.iPromocion;
 
 public class Sistema {
-	private static Sistema instancia = null;
+	private static Sistema instancia = null; 
 	private ArregloFacturas facturas;
 	private ArregloPersonas personas;
 
