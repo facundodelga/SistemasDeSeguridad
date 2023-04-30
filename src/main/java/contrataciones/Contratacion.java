@@ -6,6 +6,7 @@ import java.util.Iterator;
 import excepciones.ContratableNoEncontradoException;
 import persona.Domicilio;
 import promociones.iPromocion;
+import utils.DoubleUtils;
 
 public class Contratacion implements Cloneable {
 	private static int generadorId = 0;
@@ -133,5 +134,26 @@ public class Contratacion implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar , FALLO=" + e.toString());
 		}
+	}
+
+	public String detalle() {
+		String res = "* Domicilio: " + domicilio + " | " + "Servicio: " + servicio.descripcion();
+
+		if (!promo.descripcion().isEmpty()) {
+			res += " | Promo: " + promo.descripcion();
+		}
+
+		res += " | Precio Servicio: $" + DoubleUtils.format(servicio.getTarifa(promo));
+
+		double precioTotal = servicio.getTarifa(promo);
+
+		for (iContratable contratable : contratados) {
+			precioTotal += contratable.getTarifa();
+			res += "\n*** " + contratable.descripcion() + " | Precio base: $" + DoubleUtils.format(contratable.getTarifa());
+		}
+
+		res += "\n* Precio total: $" + DoubleUtils.format(precioTotal);
+
+		return res;
 	}
 }

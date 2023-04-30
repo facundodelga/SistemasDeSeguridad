@@ -9,5 +9,11 @@ public class SinPromo implements iPromocion {
 	public double getPromoComercio(double valor) {
 		return 0;
 	}
+	
+	@Override
+	public String descripcion() {
+		return "";
+		
+	}
 
 }

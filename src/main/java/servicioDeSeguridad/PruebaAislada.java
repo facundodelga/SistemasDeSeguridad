@@ -21,9 +21,9 @@ import utils.DoubleUtils;
 
 public class PruebaAislada {
 
-	public static Domicilio dom1 = new Domicilio("Calle 1", 123);
-	public static Domicilio dom2 = new Domicilio("Calle 2", 123);
-	public static Domicilio dom3 = new Domicilio("Calle 3", 123);
+	public static Domicilio dom1 = new Domicilio("Calle1", 1111);
+	public static Domicilio dom2 = new Domicilio("Calle2", 2222);
+	public static Domicilio dom3 = new Domicilio("Calle3", 3333);
 
 	public static Persona personaFisica = new PersonaFisica("P Fisica", "123");
 	public static Persona personaJuridica = new PersonaJuridica("P Juridica", "234");
@@ -226,18 +226,37 @@ public class PruebaAislada {
 		
 		Factura factura = new Factura(personaFisica);
 		
-		System.out.println("PRUEBA FACTURA: 2 CONTRATACIONES, P FISICA"
-				+ "\n* ALARMA VIVIENDA, 1 AP, 1 CAM, 1 MOVIL, PROMO PLATINO"
-				+ "\n* ALARMA COMERCIO, 1 MOVIL, PROMO DORADA\n");
+		System.out.println("PRUEBA FACTURA: 3 CONTRATACIONES, P FISICA"
+				+ "\n* ALARMA VIVIENDA, 2 AP, 2 CAM, 1 MOVIL, PROMO PLATINO"
+				+ "\n* ALARMA COMERCIO, 1 MOVIL, PROMO DORADA"
+				+ "\n* ALARMA COMERCIO, SIN PROMO"
+				+ "\n"
+		);
 		
 		Contratacion contratacion1 = new Contratacion(personaFisica.getDni(), personaFisica.getDomicilio(0),
 				servicioVivienda, promoPlatino);
 		Contratacion contratacion2 = new Contratacion(personaFisica.getDni(), personaFisica.getDomicilio(1),
 				servicioComercio, promoDorada);
+		Contratacion contratacion3 = new Contratacion(personaFisica.getDni(), personaFisica.getDomicilio(2),
+				servicioComercio, sinPromocion);
 		
-		System.out.println(factura.detalleFactura());
+		contratacion1.agregarContratable(contratableAntiPanico);
+		contratacion1.agregarContratable(contratableAntiPanico);
+		contratacion1.agregarContratable(contratableCamara);
+		contratacion1.agregarContratable(contratableCamara);
+		contratacion1.agregarContratable(contratableMovil);
 		
-
+		contratacion2.agregarContratable(contratableMovil);
+		
+		try {
+			factura.agregarContratacion(contratacion1);
+			factura.agregarContratacion(contratacion2);
+			factura.agregarContratacion(contratacion3);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		System.out.println(factura.detalle("CHEQUE"));
 		
 //		contratacion.agregarContratable(contratableAntiPanico);
 //		contratacion.agregarContratable(contratableCamara);
@@ -262,6 +281,6 @@ public class PruebaAislada {
 //			throw new Error("ERROR DE PRUEBA: No se eliminaron contratables correctamente");
 //		}
 //		
-		System.out.println("PRUEBA COMPLETADA: Contratables\n");
+		System.out.println("PRUEBA COMPLETADA: Contratables\n"); 
 	}
 }

@@ -50,7 +50,7 @@ public class AlarmaComercio implements iServicio, Cloneable {
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar AlarmaComercio, FALLO="+e.toString());
 		}
-	}
+	} 
 
 	@Override
 	public int hashCode() {

@@ -61,5 +61,10 @@ public class Domicilio implements Cloneable{
 			throw new CloneNotSupportedException("No se pudo clonar Domicilio, FALLO="+e.toString());
 		}
 	}
+
+	@Override
+	public String toString() {
+		return calle + " " + numero;
+	}
 	
 }

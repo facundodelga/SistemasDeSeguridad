@@ -16,6 +16,11 @@ public class PromoDorada implements iPromocion{
         return -2500;
     }
 
+	@Override
+	public String descripcion() {
+		return "Dorada";
+	}
+
     /**
      * @return
      */
