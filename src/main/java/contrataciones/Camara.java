@@ -1,6 +1,4 @@
-package modelo;
-
-import contrataciones.iContratable;
+package contrataciones;
 
 public class Camara implements iContratable,Cloneable {
 

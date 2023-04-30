@@ -1,9 +1,13 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
+import contrataciones.AlarmaComercio;
+import contrataciones.AlarmaVivienda;
+import contrataciones.BotonAntipanico;
+import contrataciones.Camara;
 import contrataciones.Contratacion;
+import contrataciones.MovilAcompañamiento;
 import contrataciones.iContratable;
 import contrataciones.iServicio;
 import excepciones.ContratacionNoEncontradaException;
@@ -13,14 +17,22 @@ import excepciones.DomicilioNoPerteneceAPersona;
 import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
+import excepciones.TipoDeContratableIncorrectoException;
+import excepciones.TipoDePersonaIncorrectoException;
+import excepciones.TipoDePromocionIncorrectoException;
+import excepciones.TipoDeServicioIncorrectoException;
 import persona.Domicilio;
 import persona.Persona;
+import persona.PersonaFisica;
+import persona.PersonaJuridica;
+import promociones.PromoDorada;
+import promociones.PromoPlatino;
+import promociones.SinPromo;
 import promociones.iPromocion;
 
 public class Sistema {
 	private static Sistema instancia  = null;
 	private ArregloFacturas facturas;
-	//private ArrayList<Persona> personas;
 	private ArregloPersonas personas;
 
 	
@@ -51,8 +63,8 @@ public class Sistema {
 		facturas.add(f);
 	}
 
-	public void crearFactura(Persona p, Contratacion contr){
-		ArrayList<Contratacion>c=new ArrayList<Contratacion>();
+	public void crearFactura(Persona p, Contratacion contr) throws ContratacionYaRegistradaException, DomicilioYaRegistradoException{
+		ArrayList<Contratacion>c=new ArrayList<Contratacion>();		
 		c.add(contr);
 		this.crearFactura(p,c);
 	}
@@ -88,14 +100,21 @@ public class Sistema {
 		return total;
 	}
 	
-	//CONTRATACIONES
-	/* 
-	public void agregarContratacion(int id,Contratacion contratacion) throws FacturaNoEncontradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
-	    Factura f;
-		f = this.facturas.buscaPorId(id);
-		f.agregarContratacion(contratacion);
+	public double pagarFactura(Factura f,String mp) throws FacturaNoEncontradaException {
+		return f.totalModificadorMP(mp);
 	}
-*/
+	
+	public Factura buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
+		Persona p=personas.buscaPorDni(dni);
+		return facturas.buscaPorPersona(p);
+	}
+
+	public Factura buscarFacturaPorId(int id) throws FacturaNoEncontradaException {
+		return facturas.buscaPorId(id);
+	}
+	
+	
+	//CONTRATACIONES
 	/**
 	 * 
 	 * @param dni
@@ -114,12 +133,14 @@ public class Sistema {
 		Factura f;
 		try {
 			p1=personas.buscaPorDni(dni);//la persona existe
-			
+
+			contr=new Contratacion(dni,dom,serv,promo);			
 			try {
 				f=facturas.buscaPorPersona(p1);//la factura existe
 				f.agregarContratacion(contr);
 
 			} catch (FacturaNoEncontradaException e) {//si no se encuentra la factura, la creo
+
 				this.crearFactura(p1,contr);
 			}
 		} catch (PersonaNoEncontradaException e) {
@@ -144,18 +165,99 @@ public class Sistema {
 		if(p1.equals(p2)) {//el domicilio pertenece a la persona esperada
 			try {
 				f=facturas.buscaPorPersona(p1);
-				while(i<this.facturas.size() && !f.getContrataciones().get(i).getDomicilio().equals(d))
-				f.getContrataciones().get(i).agregarContratable(a);
+				while(i<f.getContrataciones().size() && !d.equals(f.getContrataciones().get(i).getDomicilio())) {
+					i++;
+				}
+					f.getContrataciones().get(i).agregarContratable(a);
+			
 			} catch (FacturaNoEncontradaException e) {
 				throw new ContratacionNoEncontradaException();
 			}
 		}else {
 			throw new DomicilioNoPerteneceAPersona(p1,d);
-		}
+		}		
+	}
+
+	//PERSONA
+	
+	//creación de persona tipo Factory
+	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException {
+		Persona nuevaP=null;
+		if(tipo.equalsIgnoreCase("JURIDICA")) 
+			nuevaP=new PersonaJuridica(nombre,dni);
+		else
+			if(tipo.equalsIgnoreCase("FISICA")) 
+				nuevaP=new PersonaFisica(nombre,dni);
+			else
+				throw new TipoDePersonaIncorrectoException(tipo);
 		
-		
+		this.personas.add(nuevaP);
+
+		return nuevaP;
 	}
 	
+	//DOMICILIO
+
+	//creacion de domicilios
+	
+	public Domicilio crearDomicilio(String calle, int num){
+		Domicilio dom = new Domicilio(calle,num);
+		return dom;
+	}
+	
+	public void asignarNuevoDomicilio(String dni, String calle, int num) throws DomicilioYaRegistradoException, PersonaNoEncontradaException {
+		Domicilio dom = this.crearDomicilio(calle,num);
+		this.personas.buscaPorDni(dni).agregarDomicilio(dom);
+	}
+
+	public void asignarNuevoDomicilio(String dni, Domicilio dom) throws DomicilioYaRegistradoException, PersonaNoEncontradaException {
+		this.personas.buscaPorDni(dni).agregarDomicilio(dom);
+	}
+	
+	
+	//PROMOCIONES
+	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
+		iPromocion pr=null;
+		if(promo.equalsIgnoreCase("DORADA"))
+			pr = new PromoDorada();
+		else
+			if(promo.equalsIgnoreCase("PLATINO"))
+				pr = new PromoPlatino();
+			else
+				if(promo.equalsIgnoreCase("SINPROMO"))
+					pr = new SinPromo();
+				else
+					throw new TipoDePromocionIncorrectoException(promo);
+		return pr;
+	}
+
+	//SERVICIOS
+	public iServicio obtenerServicio(String serv) throws TipoDeServicioIncorrectoException {
+		iServicio sr=null;
+		if(serv.equalsIgnoreCase("VIVIENDA"))
+			sr = new AlarmaVivienda();
+		else
+			if(serv.equalsIgnoreCase("COMERCIO"))
+				sr = new AlarmaComercio();
+			else	
+				throw new TipoDeServicioIncorrectoException(serv);
+		return sr;
+	}
+
+	public iContratable obtenerContratable(String cont) throws TipoDeContratableIncorrectoException {
+		iContratable cr=null;
+		if(cont.equalsIgnoreCase("BOTON"))
+			cr = new BotonAntipanico();
+		else
+			if(cont.equalsIgnoreCase("CAMARA"))
+				cr = new Camara();
+			else
+				if(cont.equalsIgnoreCase("MOVIL"))
+					cr = new MovilAcompañamiento();
+				else
+					throw new TipoDeContratableIncorrectoException(cont);
+		return cr;
+		}
 	
 	// public void AgregaFactura(Factura f) {
 	// 	if(existePersona(f))
