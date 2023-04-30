@@ -80,7 +80,13 @@ public abstract class Persona implements Cloneable{
 	 * @return total a pagar por una factura, dependiendo de el tipo de la instancia persona.
 	 */
 	public abstract double calcularBonificacion(Factura factura); //Preguntar por bonificacion de juridica
-
+	
+	/**
+	 * Crea y devuelve una copia superficial de este objeto Persona.
+	 * 
+	 * @return una copia superficial de este objeto Persona.
+	 * @throws CloneNotSupportedException si la clonación no es compatible o el objeto no es clonable.
+	 */
 	@Override
 	public Object clone()throws CloneNotSupportedException{
 		int i;
@@ -102,7 +108,12 @@ public abstract class Persona implements Cloneable{
 	public int hashCode() {
 		return Objects.hash(dni);
 	}
-
+	/**
+	 * Compara si el objeto actual es igual a otro objeto.
+	 * 
+	 * @param obj El objeto con el cual se desea realizar la comparación.
+	 * @return true si el objeto actual es igual a obj, false de lo contrario.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

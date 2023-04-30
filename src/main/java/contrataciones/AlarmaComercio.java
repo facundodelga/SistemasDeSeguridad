@@ -40,7 +40,12 @@ public class AlarmaComercio implements iServicio, Cloneable {
 		return promocion.getPromoComercio(this.tarifa);
 	}
 
-	
+	/**
+	 * Crea y devuelve una copia superficial de esta instancia de AlarmaComercio.
+	 *
+	 * @return una referencia a la copia clonada de esta instancia.
+	 * @throws CloneNotSupportedException si la instancia de AlarmaComercio no es clonable.
+	 */
 	@Override
 	public Object clone()throws CloneNotSupportedException{
 		try {
@@ -56,7 +61,13 @@ public class AlarmaComercio implements iServicio, Cloneable {
 	public int hashCode() {
 		return Objects.hash(tarifa);
 	}
-
+	
+	/**
+	 * Compara esta instancia de AlarmaComercio con otro objeto para determinar si son iguales.
+	 *
+	 * @param obj el objeto con el que se desea comparar.
+	 * @return true si el objeto es igual a esta instancia de AlarmaComercio, false en caso contrario.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

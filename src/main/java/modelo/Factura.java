@@ -48,7 +48,13 @@ public class Factura implements Cloneable{
 	public ArrayList<Contratacion> getContrataciones() {
 		return contrataciones;
 	}
-
+	
+	/**
+	 * Verifica si existe una contratación específica en la lista de contrataciones.
+	 *
+	 * @param con la contratación que se desea buscar.
+	 * @return true si la contratación existe en la lista, false en caso contrario.
+	 */
 	public boolean existeContratacion(Contratacion con) {
 		boolean existe = true;
 		int i = 0;
@@ -153,13 +159,18 @@ public class Factura implements Cloneable{
 		
 		return p.getValor();
 	}
-
+	
+	/**
+	 * Crea y devuelve una copia profunda de esta instancia de Factura.
+	 *
+	 * @return una referencia a la copia clonada de esta instancia.
+	 * @throws CloneNotSupportedException si la instancia de Factura no es clonable.
+	 */
 	@Override
 	public Object clone()throws CloneNotSupportedException{
 		int i;
 		try {
 			Factura nObj=(Factura)super.clone();
-			//nObj.contrataciones=(ArrayList<Contratacion>)this.contrataciones.clone();
 			for(i=0;i<this.contrataciones.size();i++) {
 				nObj.contrataciones.add( (Contratacion) this.contrataciones.get(i).clone());
 			}
@@ -182,9 +193,7 @@ public class Factura implements Cloneable{
 	}
 	
 	public String detalleFactura(String metodoPago) {
-		String res = "N° Factura: " + numFactura + " | "
-				+ "Abonado: " + persona + " | Contrataciones :";
-		
+		String res = "N° Factura: " + numFactura + " | Abonado: " + persona.toString() + " | Contrataciones :"+ contrataciones;
 		return res;
 	}
 	
