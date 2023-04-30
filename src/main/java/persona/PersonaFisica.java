@@ -13,6 +13,12 @@ public class PersonaFisica extends Persona{
 		return factura.calcularBonificacionFisica();
 	}
 	
+	/**
+	 * Crea y devuelve un clon de la instancia actual de PersonaFisica.
+	 *
+	 * @return El clon de la instancia actual de PersonaFisica.
+	 * @throws CloneNotSupportedException Si se produce un error durante el proceso de clonación.
+	 */
 	@Override
 	public Object clone()throws CloneNotSupportedException{
 		try {

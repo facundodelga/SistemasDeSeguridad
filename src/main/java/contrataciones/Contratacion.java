@@ -6,7 +6,6 @@ import java.util.Iterator;
 import excepciones.ContratableNoEncontradoException;
 import persona.Domicilio;
 import promociones.iPromocion;
-import utils.DoubleUtils;
 
 public class Contratacion implements Cloneable {
 	private static int generadorId = 0;
@@ -116,13 +115,18 @@ public class Contratacion implements Cloneable {
 		else
 			throw new ContratableNoEncontradoException(this.id, cont);
 	}
-
+	
+	/**
+	 * Crea y devuelve una copia profunda de esta instancia de Contratacion.
+	 *
+	 * @return una referencia a la copia clonada de esta instancia.
+	 * @throws CloneNotSupportedException si la instancia de Contratacion no es clonable.
+	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		try {
 			int i;
 			Contratacion nObj = (Contratacion) super.clone();
-			// nObj.contratados=(ArrayList<iContratable>)this.contratados.clone();
 			for (i = 0; i < this.contratados.size(); i++) {
 				nObj.contratados.add((iContratable) this.contratados.get(i).clone());
 			}
@@ -134,26 +138,5 @@ public class Contratacion implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar , FALLO=" + e.toString());
 		}
-	}
-
-	public String detalle() {
-		String res = "* Domicilio: " + domicilio + " | " + "Servicio: " + servicio.descripcion();
-
-		if (!promo.descripcion().isEmpty()) {
-			res += " | Promo: " + promo.descripcion();
-		}
-
-		res += " | Precio Servicio: $" + DoubleUtils.format(servicio.getTarifa(promo));
-
-		double precioTotal = servicio.getTarifa(promo);
-
-		for (iContratable contratable : contratados) {
-			precioTotal += contratable.getTarifa();
-			res += "\n*** " + contratable.descripcion() + " | Precio base: $" + DoubleUtils.format(contratable.getTarifa());
-		}
-
-		res += "\n* Precio total: $" + DoubleUtils.format(precioTotal);
-
-		return res;
 	}
 }

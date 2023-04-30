@@ -37,7 +37,13 @@ public class Domicilio implements Cloneable{
 	public int hashCode() {
 		return Objects.hash(calle, numero);
 	}
-
+	
+	/**
+	 * Compara este objeto Domicilio con otro objeto para verificar si son iguales.
+	 * 
+	 * @param obj el objeto a comparar con este Domicilio.
+	 * @return true si los objetos son iguales, false en caso contrario.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -49,7 +55,13 @@ public class Domicilio implements Cloneable{
 		Domicilio other = (Domicilio) obj;
 		return Objects.equals(calle, other.calle) && numero == other.numero;
 	}
-
+	
+	/**
+	 * Crea y devuelve una copia superficial de este objeto Domicilio.
+	 * 
+	 * @return una copia superficial de este objeto Domicilio.
+	 * @throws CloneNotSupportedException si la clonación no es compatible o el objeto no es clonable.
+	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException{
 		try {
@@ -60,11 +72,6 @@ public class Domicilio implements Cloneable{
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar Domicilio, FALLO="+e.toString());
 		}
-	}
-
-	@Override
-	public String toString() {
-		return calle + " " + numero;
 	}
 	
 }
