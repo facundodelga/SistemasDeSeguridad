@@ -2,7 +2,7 @@ package modelo;
 
 import contrataciones.iContratable;
 
-public class Camara implements iContratable {
+public class Camara implements iContratable,Cloneable {
 
 	private double tarifa=3000;
 

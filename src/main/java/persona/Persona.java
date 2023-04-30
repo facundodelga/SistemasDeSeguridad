@@ -6,9 +6,8 @@ import java.util.Iterator;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
-import clonable.Clonable;
 
-public abstract class Persona implements Clonable{
+public abstract class Persona implements Cloneable{
 	private String nombre;
 	private String dni;
 	private ArrayList<Domicilio> domicilios;
@@ -86,7 +85,7 @@ public abstract class Persona implements Clonable{
 			Persona nObj=(Persona)super.clone();
 			nObj.dni=this.dni;
 			nObj.nombre=this.nombre;
-			nObj.domicilios=(ArrayList<Domicilio>)this.domicilios.clone();
+			nObj.domicilios=(ArrayList<Domicilio>)this.domicilios.clone(); //ver clonacion de arraylist
 			return nObj;
 		}
 		catch(CloneNotSupportedException e) {

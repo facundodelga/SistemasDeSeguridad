@@ -2,7 +2,7 @@ package modelo;
 
 import contrataciones.iContratable;
 
-public class MovilAcompañamiento implements iContratable{
+public class MovilAcompañamiento implements iContratable,Cloneable{
 
 	private double tarifa=7500;
 	

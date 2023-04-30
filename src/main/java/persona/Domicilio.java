@@ -1,7 +1,6 @@
 package persona;
-import clonable.Clonable;
 
-public class Domicilio implements Clonable{
+public class Domicilio implements Cloneable{
 	private String calle;
 	private int numero;
 	

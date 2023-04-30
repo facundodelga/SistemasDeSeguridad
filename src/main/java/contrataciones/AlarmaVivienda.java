@@ -2,7 +2,7 @@ package contrataciones;
 
 import promociones.iPromocion;
 
-public class AlarmaVivienda implements iServicio {
+public class AlarmaVivienda implements iServicio, Cloneable {
 	private double tarifa=8500;
 	
 	public void setTarifa(double tarifa) {

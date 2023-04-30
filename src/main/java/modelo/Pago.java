@@ -1,10 +1,9 @@
 package modelo;
-import clonable.Clonable;
 /**
  * La clase Pago representa un medio de pago que contiene un valor monetario.
  * Implementa la interfaz MedioPago.
  */
-public class Pago implements MedioPago,Clonable{
+public class Pago implements MedioPago,Cloneable{
     private double valor;
     
     /**

@@ -7,9 +7,8 @@ import contrataciones.iContratable;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
-import clonable.Clonable;
 
-public class Factura implements Clonable{
+public class Factura implements Cloneable{
 	private static int ultFactura = 0;
 	private int numFactura;
 	private Persona persona;
@@ -169,9 +168,13 @@ public class Factura implements Clonable{
 
 	@Override
 	public Object clone()throws CloneNotSupportedException{
+		int i;
 		try {
 			Factura nObj=(Factura)super.clone();
-			nObj.contrataciones=(ArrayList<Contratacion>)this.contrataciones.clone();
+			//nObj.contrataciones=(ArrayList<Contratacion>)this.contrataciones.clone();
+			for(i=0;i<this.contrataciones.size();i++) {
+				nObj.contrataciones.add( (Contratacion) this.contrataciones.get(i).clone());
+			}
 			nObj.pago=(Pago)this.pago.clone();
 			nObj.persona=(Persona)persona.clone();
 			return nObj;
