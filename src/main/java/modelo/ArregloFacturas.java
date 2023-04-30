@@ -26,7 +26,7 @@ public class ArregloFacturas extends ArrayList<Factura>{
     public Factura buscaPorId(int id)  throws FacturaNoEncontradaException{
 		Factura f = null;
 		for(int i = 0; i<this.size();i++) {
-			if(id == this.get(i).getNumFactura());
+			if(id == this.get(i).getNumFactura())
 			f = this.get(i);
 		}
 		if(f == null)

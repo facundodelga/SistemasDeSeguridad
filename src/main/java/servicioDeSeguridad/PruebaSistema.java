@@ -1,5 +1,8 @@
 package servicioDeSeguridad;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import contrataciones.AlarmaComercio;
 import contrataciones.AlarmaVivienda;
 import contrataciones.BotonAntipanico;
@@ -8,26 +11,29 @@ import contrataciones.Contratacion;
 import contrataciones.MovilAcompañamiento;
 import contrataciones.iContratable;
 import contrataciones.iServicio;
+import excepciones.ContratacionYaRegistradaException;
+import excepciones.DomicilioNoEncontradoException;
+import excepciones.DomicilioYaRegistradoException;
+import excepciones.FacturaNoEncontradaException;
+import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
 import modelo.Sistema;
 import persona.Domicilio;
 import persona.Persona;
-import persona.PersonaFisica;
-import persona.PersonaJuridica;
 import promociones.PromoDorada;
 import promociones.PromoPlatino;
 import promociones.SinPromo;
 import promociones.iPromocion;
-import utils.DoubleUtils;
 
 public class PruebaSistema {
+	public static Sistema sistema = Sistema.getInstancia();
 
 	public static Domicilio dom1 = new Domicilio("Calle1", 1111);
 	public static Domicilio dom2 = new Domicilio("Calle2", 2222);
 	public static Domicilio dom3 = new Domicilio("Calle3", 3333);
 
-	public static Persona personaFisica = new PersonaFisica("P Fisica", "123");
-	public static Persona personaJuridica = new PersonaJuridica("P Juridica", "234");
+	public static Persona personaFisica;
+	public static Persona personaJuridica;
 
 	public static iServicio servicioComercio = new AlarmaComercio();
 	public static iServicio servicioVivienda = new AlarmaVivienda();
@@ -39,59 +45,28 @@ public class PruebaSistema {
 	public static iPromocion sinPromocion = new SinPromo();
 	public static iPromocion promoDorada = new PromoDorada();
 	public static iPromocion promoPlatino = new PromoPlatino();
-	
-	public static Sistema sistema = Sistema.getInstancia();
 
 	public static void main(String[] args) throws Exception {
-//		testDomicilio();
-//		testPersona();
-//		testServicios();
-//		testContratables();
-//		testContratacion();
-//		testFactura();
-		
-		
+		testPersona();
+
+		testFacturas();
+
 	}
 
-	private static void testDomicilio() {
-		System.out.println("PRUEBA INICIANDO: Domicilio");
-		System.out.println("CLONANDO DOMICILIO");
+	public static void initVariables() {
 
-		Domicilio copiaDom1;
-
-		try {
-			copiaDom1 = (Domicilio) dom1.clone();
-		} catch (Exception e) {
-			throw new Error("ERROR DE PRUEBA: No se pudo clonar domicilio");
-		}
-
-		if (!dom1.equals(copiaDom1)) {
-			throw new Error("ERROR DE PRUEBA: Domicilio no se clono correctamente");
-		}
-
-		System.out.println("PRUEBA COMPLETADA: Domicilio\n");
 	}
 
 	private static void testPersona() {
 		System.out.println("PRUEBA INICIANDO: Persona");
 
-		System.out.println("CLONANDO PERSONA FISICA");
-		Persona copiaPersona;
-		try {
-			copiaPersona = (Persona) personaFisica.clone();
-		} catch (Exception e) {
-			throw new Error("ERROR DE PRUEBA: No se pudo clonar persona fisica");
-		}
+		System.out.println("AGREGANDO PERSONA AL SISTEMA");
 
-		if (!personaFisica.equals(copiaPersona)) {
-			throw new Error("ERROR DE PRUEBA: Persona fisica no se clono correctamente");
-		}
-
-		System.out.println("CLONANDO PERSONA JURIDICA");
 		try {
-			copiaPersona = (Persona) personaJuridica.clone();
-			throw new Error("ERROR DE PRUEBA: No hubo fallo al clonar persona juridica");
+			personaFisica = sistema.crearPersona("P Fisica", "123", "FISICA");
+			personaJuridica = sistema.crearPersona("P Juridica", "234", "JURIDICA");
 		} catch (Exception e) {
+			throw new Error("ERROR DE PRUEBA: No se pudo agregar personas al sistema");
 		}
 
 		System.out.println("AGREGANDO DOMICILIOS");
@@ -106,137 +81,20 @@ public class PruebaSistema {
 			throw new Error("ERROR DE PRUEBA: No se pudo agregar domicilios");
 		}
 
-		System.out.println("AGREGANDO DOMICILIOS DUPLICADOS");
-		try {
-			personaFisica.agregarDomicilio(dom1);
-			personaFisica.agregarDomicilio(dom2);
-			personaFisica.agregarDomicilio(dom3);
-			personaJuridica.agregarDomicilio(dom1);
-			personaJuridica.agregarDomicilio(dom2);
-			personaJuridica.agregarDomicilio(dom3);
-
-			throw new Error("ERROR DE PRUEBA: No hubo fallo al agregar domicilios duplicados");
-		} catch (Exception e) {
-		}
-
 		System.out.println("PRUEBA COMPLETADA: Persona\n");
 	}
 
-	private static void testServicios() {
-		System.out.println("PRUEBA INICIANDO: Servicios");
+	private static void testFacturas() throws FacturaNoEncontradaException, CloneNotSupportedException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+		System.out.println("PRUEBA INICIANDO: Facturas");
 
-		System.out.println("CLONANDO SERVICIO COMERCIO");
-		iServicio copiaServicio;
-		try {
-			copiaServicio = (iServicio) servicioComercio.clone();
-		} catch (Exception e) {
-			throw new Error("ERROR DE PRUEBA: No se pudo clonar servicio de alarma comercio");
-		}
+		Factura factura1 = new Factura(personaFisica);
 
-		if (!servicioComercio.equals(copiaServicio)) {
-			throw new Error("ERROR DE PRUEBA: Servicio de alarma comercio no se clono correctamente");
-		}
-
-		System.out.println("CLONANDO SERVICIO VIVIENDA");
-		try {
-			copiaServicio = (iServicio) servicioVivienda.clone();
-		} catch (Exception e) {
-			throw new Error("ERROR DE PRUEBA: No se pudo clonar servicio de alarma vivienda");
-		}
-
-		if (!servicioVivienda.equals(copiaServicio)) {
-			throw new Error("ERROR DE PRUEBA: Servicio de alarma vivienda no se clono correctamente");
-		}
-
-		System.out.println("PRUEBA COMPLETADA: Servicios\n");
-	}
-
-	private static void testContratables() {
-		System.out.println("PRUEBA INICIANDO: Contratables");
-
-		System.out.println("CLONANDO BOTON ANTIPANICO");
-		iContratable copiaContratable;
-		try {
-			copiaContratable = (iContratable) contratableAntiPanico.clone();
-		} catch (Exception e) {
-			throw new Error("ERROR DE PRUEBA: No se pudo clonar boton antipanico");
-		}
-
-		if (!contratableAntiPanico.equals(copiaContratable)) {
-			throw new Error("ERROR DE PRUEBA: Boton antipanico no se clono correctamente");
-		}
-
-		System.out.println("CLONANDO CAMARA");
-		try {
-			copiaContratable = (iContratable) contratableCamara.clone();
-		} catch (Exception e) {
-			throw new Error("ERROR DE PRUEBA: No se pudo clonar camara");
-		}
-
-		if (!contratableCamara.equals(copiaContratable)) {
-			throw new Error("ERROR DE PRUEBA: Camara no se clono correctamente");
-		}
-
-		System.out.println("CLONANDO MOVIL");
-		try {
-			copiaContratable = (iContratable) contratableMovil.clone();
-		} catch (Exception e) {
-			throw new Error("ERROR DE PRUEBA: No se pudo clonar movil acompañamiento");
-		}
-
-		if (!contratableMovil.equals(copiaContratable)) {
-			throw new Error("ERROR DE PRUEBA: Movil acompañamiento no se clono correctamente");
-		}
-
-		System.out.println("PRUEBA COMPLETADA: Contratables\n");
-	}
-
-	private static void testContratacion() {
-		System.out.println("PRUEBA INICIANDO: Contratacion");
-
-		Contratacion contratacion = new Contratacion(personaFisica.getDni(), personaFisica.getDomicilio(0),
-				servicioComercio, sinPromocion);
-
-		System.out.println("AGREGANDO CONTRATABLES");
-
-		contratacion.agregarContratable(contratableAntiPanico);
-		contratacion.agregarContratable(contratableCamara);
-		contratacion.agregarContratable(contratableCamara);
-		contratacion.agregarContratable(contratableMovil);
-		contratacion.agregarContratable(contratableMovil);
-		
-		if (contratacion.cantContratables() != 5) {
-			throw new Error("ERROR DE PRUEBA: No se agregaron contratables correctamente");
-		}
-		
-		System.out.println("ELIMINANDO CONTRATABLES");
-
-		try {
-			contratacion.eliminarContratable(contratableAntiPanico);
-			contratacion.eliminarContratable(contratableCamara);
-			contratacion.eliminarContratable(contratableMovil);
-		} catch (Exception e) {
-		}
-		
-		if (contratacion.cantContratables() != 2) {
-			throw new Error("ERROR DE PRUEBA: No se eliminaron contratables correctamente");
-		}
-
-		System.out.println("PRUEBA COMPLETADA: Contratables\n");
-	}
-
-	private static void testFactura() {
-		System.out.println("PRUEBA INICIANDO: Factura");
-		
-		Factura factura = new Factura(personaFisica);
-		
-		System.out.println("PRUEBA FACTURA: 3 CONTRATACIONES, P FISICA"
+		System.out.println("PRUEBA FACTURA1: 2 CONTRATACIONES, P FISICA"
 				+ "\n* ALARMA VIVIENDA, 2 AP, 2 CAM, 1 MOVIL, PROMO PLATINO"
-				+ "\n* ALARMA COMERCIO, 1 MOVIL, PROMO DORADA"
-				+ "\n* ALARMA COMERCIO, SIN PROMO"
-				+ "\n"
-		);
-		
+				+ "\n* ALARMA COMERCIO, 1 MOVIL, PROMO DORADA" + "\n* ALARMA COMERCIO, SIN PROMO" + "\n");
+
+		System.out.println("PRUEBA FACTURA2: 1 CONTRATACION, P JURIDICA" + "\n* ALARMA VIVIENDA, PROMO PLATINO");
+
 		Contratacion contratacion1 = new Contratacion(personaFisica.getDni(), personaFisica.getDomicilio(0),
 				servicioVivienda, promoPlatino);
 		Contratacion contratacion2 = new Contratacion(personaFisica.getDni(), personaFisica.getDomicilio(1),
@@ -244,28 +102,26 @@ public class PruebaSistema {
 		Contratacion contratacion3 = new Contratacion(personaFisica.getDni(), personaFisica.getDomicilio(2),
 				servicioComercio, sinPromocion);
 		
+		ArrayList<Contratacion> contrataciones = new ArrayList<>(Arrays.asList(contratacion1, contratacion2,contratacion3));
+
 		contratacion1.agregarContratable(contratableAntiPanico);
 		contratacion1.agregarContratable(contratableAntiPanico);
 		contratacion1.agregarContratable(contratableCamara);
 		contratacion1.agregarContratable(contratableCamara);
 		contratacion1.agregarContratable(contratableMovil);
-		
+
 		contratacion2.agregarContratable(contratableMovil);
+
 		
-		try {
-			factura.agregarContratacion(contratacion1);
-			factura.agregarContratacion(contratacion2);
-			factura.agregarContratacion(contratacion3);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
 		
-		System.out.println(factura.detalle("CHEQUE"));
-		
-		if (!DoubleUtils.equals(factura.totalOriginal(), 48450)) {
-			throw new Error("ERROR DE PRUEBA: El precio de factura esta mal calculado");
-		}
-	
-		System.out.println("PRUEBA COMPLETADA: Factura\n"); 
+		sistema.crearFactura(personaFisica, contrataciones);
+		sistema.crearContratacion(personaFisica.getDni(), personaFisica.getDomicilio(1), servicioComercio, promoPlatino);
+
+		System.out.println(sistema.detalleFacturas());
+		System.out.println(sistema.detalleFacturas("TARJETA"));
+		System.out.println(sistema.detalleFacturas("CHEQUE"));
+		System.out.println(sistema.detalleFacturas("EFECTIVO"));
+
+		System.out.println("PRUEBA COMPLETADA: Facturas\n");
 	}
 }

@@ -286,5 +286,26 @@ public class Sistema {
 
 		return (Persona) personaClone;
 	}
+	
+	public String detalleFactura(int id, String opcion) throws FacturaNoEncontradaException {
+		return facturas.buscaPorId(id).detalle(opcion);
+	}
+	
+	public String detalleFacturas() {
+		return detalleFacturas("");
+	}
+	
+	public String detalleFacturas(String opcion) {
+		String res = "";
+		
+		for (Factura factura : facturas) {
+			try {
+				res += "\n" + detalleFactura(factura.getNumFactura(), opcion) + "\n";
+			} catch (FacturaNoEncontradaException e) {
+			}
+		}
+		
+		return res;
+	}
 
 }
