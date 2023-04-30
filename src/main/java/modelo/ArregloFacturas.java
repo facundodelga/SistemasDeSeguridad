@@ -3,6 +3,7 @@ package modelo;
 import java.util.ArrayList;
 
 import excepciones.FacturaNoEncontradaException;
+import excepciones.PersonaNoEncontradaPorNombreException;
 import persona.Persona;
 
 public class ArregloFacturas extends ArrayList<Factura>{
@@ -78,5 +79,17 @@ public class ArregloFacturas extends ArrayList<Factura>{
 		return f;
     }
     
-    
+    public Object clonaFactura(int id)throws FacturaNoEncontradaException, CloneNotSupportedException {
+    	Object facturaClonada;
+    	try {
+    		facturaClonada=this.buscaPorId(id).clone();
+    		return facturaClonada;
+    	}
+    	catch(FacturaNoEncontradaException e) {
+    		throw new FacturaNoEncontradaException();
+    	}
+    	catch(CloneNotSupportedException e) {
+    		throw new CloneNotSupportedException(e.toString());
+    	}
+    }
 }

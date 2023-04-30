@@ -1,9 +1,12 @@
 package modelo;
 
 import java.util.ArrayList;
+
 import java.util.Iterator;
 
+import excepciones.PersonaNoEncontradaPorNombreException;
 import excepciones.DomicilioNoEncontradoException;
+import excepciones.NoSePudoClonarPersona;
 import excepciones.PersonaNoEncontradaException;
 import persona.Domicilio;
 import persona.Persona;
@@ -74,5 +77,33 @@ public class ArregloPersonas extends ArrayList<Persona>{
     	}
     	return p;
     }
-
+    
+    public Persona buscaPorNombre(String nombre)throws PersonaNoEncontradaPorNombreException{
+    	Persona p=null;
+    	int i=0,N=this.size();
+    	
+    	while(i<N && nombre==this.get(i).getNombre()) {
+    		i++;
+    	}
+    	if(i>=N) {
+    		throw new PersonaNoEncontradaPorNombreException(nombre);
+    	}else
+    		p=this.get(i);
+    	return p;
+    }
+    
+    public Object clonaPersona(String nombre)throws PersonaNoEncontradaPorNombreException, CloneNotSupportedException {
+    	Object personaClonada;
+    	try {
+    		personaClonada=this.buscaPorNombre(nombre).clone();
+    		return personaClonada;
+    	}
+    	catch(PersonaNoEncontradaPorNombreException e) {
+    		throw new PersonaNoEncontradaPorNombreException(e.toString());
+    	}
+    	catch(CloneNotSupportedException e){
+    		throw new CloneNotSupportedException("No se pudo clonar la persona solicitada debido a: "+e.toString());
+    	}
+    }
+    
 }

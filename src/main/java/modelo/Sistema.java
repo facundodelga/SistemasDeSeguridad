@@ -3,6 +3,8 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.print.attribute.standard.MediaSize.ISO;
+
 import contrataciones.Contratacion;
 import contrataciones.iContratable;
 import contrataciones.iServicio;
@@ -13,6 +15,7 @@ import excepciones.DomicilioNoPerteneceAPersona;
 import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
+import excepciones.PersonaNoEncontradaPorNombreException;
 import persona.Domicilio;
 import persona.Persona;
 import promociones.iPromocion;
@@ -169,6 +172,47 @@ public class Sistema {
 
 	// 	return false;
 	// }
-
+	
+	public void clonaFacturaPorId() {
+		Object facturaClone;
+		Scanner scanner=new Scanner(System.in);
+		int id;
+		try {
+			System.out.println("Ingrese numero de id para buscar la factura");
+			id=scanner.nextInt();
+			facturaClone=this.facturas.clonaFactura(id);
+			System.out.println(facturaClone.toString()); 
+		}
+		catch(FacturaNoEncontradaException e) {
+			System.out.println(e.toString());
+		}
+		catch(CloneNotSupportedException e) {
+			System.out.println(e.toString());
+		}
+		finally{
+		scanner.close();
+		}
+	}
+	
+	public void clonaPersonaPorNombre() {
+		Object personaClone;
+		Scanner scanner=new Scanner(System.in);
+		String nombre;
+		try {
+			System.out.println("Ingrese nombre de la persona a clonar");
+			nombre=scanner.next();
+			personaClone=this.personas.clonaPersona(nombre);
+			System.out.println(personaClone.toString()); 
+		}
+		catch(PersonaNoEncontradaPorNombreException e) {
+			System.out.println(e.toString());
+		}
+		catch(CloneNotSupportedException e) {
+			System.out.println(e.toString());
+		}
+		finally{
+		scanner.close();
+		}
+	}
 	
 }
