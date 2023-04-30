@@ -7,8 +7,9 @@ import contrataciones.iContratable;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
+import utils.DoubleUtils;
 
-public class Factura implements Cloneable{
+public class Factura implements Cloneable {
 	private static int ultFactura = 0;
 	private int numFactura;
 	private Persona persona;
@@ -16,9 +17,13 @@ public class Factura implements Cloneable{
 	private Pago pago;
 
 	/**
-	 * <b>PRE:</b> el parámetro persona debe ser distinto de null. El parámetro mpago debe ser distinto de null
-	 * @param persona parámetro de tipo Persona, es el individuo que debe pagar la factura instanciada
-	 * @param mpago parámetro de tipo MedioPago, es el medio de pago que se utilizará para pagar la factura instanciada
+	 * <b>PRE:</b> el parámetro persona debe ser distinto de null. El parámetro
+	 * mpago debe ser distinto de null
+	 * 
+	 * @param persona parámetro de tipo Persona, es el individuo que debe pagar la
+	 *                factura instanciada
+	 * @param mpago   parámetro de tipo MedioPago, es el medio de pago que se
+	 *                utilizará para pagar la factura instanciada
 	 */
 	public Factura(Persona persona) {
 		super();
@@ -29,7 +34,7 @@ public class Factura implements Cloneable{
 		this.pago = new Pago(totalOriginal());
 	}
 
-	public Factura(Persona persona,ArrayList<Contratacion> c) {
+	public Factura(Persona persona, ArrayList<Contratacion> c) {
 		super();
 		this.numFactura = ultFactura++;
 		this.persona = persona;
@@ -58,42 +63,66 @@ public class Factura implements Cloneable{
 	public boolean existeContratacion(Contratacion con) {
 		boolean existe = true;
 		int i = 0;
-		while(i < contrataciones.size() && !con.getDomicilio().equals(contrataciones.get(i).getDomicilio()) && !con.getDni().equals(contrataciones.get(i).getDni())) {
+		while (i < contrataciones.size() && !con.getDomicilio().equals(contrataciones.get(i).getDomicilio())) {
 			i++;
 		}
-		if(i == contrataciones.size()){
+		if (i == contrataciones.size()) {
 			existe = false;
 		}
 		return existe;
-	}
-	
+	} 
+
 	/**
-	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
-	 * Método que inserta una contratacion nueva en la colección de contrataciones de la factura. Lanza excepción cuando la contratacion ya esta registrado. 
-	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la factura instanciada
-	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException 
+	 * <b>PRE:</b>El parámetro con debe ser distinto de null. Método que inserta una
+	 * contratacion nueva en la colección de contrataciones de la factura. Lanza
+	 * excepción cuando la contratacion ya esta registrado.
+	 * 
+	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la
+	 *            factura instanciada
+	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException
 	 */
-	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException, ContratacionYaRegistradaException, DomicilioYaRegistradoException {
-		if(!this.existeContratacion(con)){
+	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,
+			ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+		if (!this.existeContratacion(con)) {
+
+			boolean domicilioYaRegistrado = false;
+
+			Iterator<Contratacion> it = this.contrataciones.iterator();
+
+			while (it.hasNext() && !domicilioYaRegistrado) {
+				Contratacion contratacion = it.next();
+
+				if (contratacion.getDomicilio().equals(con.getDomicilio())) {
+					domicilioYaRegistrado = true;
+				}
+			}
+
+			if (domicilioYaRegistrado) {
+				throw new DomicilioYaRegistradoException(con.getDni(), con.getDomicilio());
+			}
+
 			this.contrataciones.add(con);
-			this.persona.agregarDomicilio(con.getDomicilio());
-		}else 
-			throw new ContratacionYaRegistradaException(con,this.persona);
+		} else
+			throw new ContratacionYaRegistradaException(con, this.persona);
 	}
-	
+
 	/**
-	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
-	 * Método que elimina una contratacion existente de la colección de contrataciones de la persona. OPCIONAL! Lanza excepción cuando la contratacion no se encuentra en la lista. 
-	 * @param dom Parámetro de tipo Domicilio, es una contratacion que pertenecia a la factura, pero que se desea retirar
+	 * <b>PRE:</b>El parámetro con debe ser distinto de null. Método que elimina una
+	 * contratacion existente de la colección de contrataciones de la persona.
+	 * OPCIONAL! Lanza excepción cuando la contratacion no se encuentra en la lista.
+	 * 
+	 * @param dom Parámetro de tipo Domicilio, es una contratacion que pertenecia a
+	 *            la factura, pero que se desea retirar
 	 */
 	public void eliminarContratacion(Contratacion con) {
-		if(!this.existeContratacion(con))
+		if (!this.existeContratacion(con))
 			this.contrataciones.remove(con);
-		//else exception ContratacionNoEncontradaException
+		// else exception ContratacionNoEncontradaException
 	}
 
 	/**
 	 * Método que calcula el total a pagar por una persona física por la factura.
+	 * 
 	 * @return total a pagar por la factura, siendo una persona de tipo física
 	 */
 	public double calcularBonificacionFisica() {
@@ -102,14 +131,15 @@ public class Factura implements Cloneable{
 			total += contratacion.getTarifa();
 
 			Iterator<iContratable> it = contratacion.getIterator();
-			while (it.hasNext()) 
+			while (it.hasNext())
 				total += it.next().getTarifa();
 		}
 		return total;
 	}
-	
+
 	/**
 	 * Método que calcula el total a pagar por una persona jurídica por la factura.
+	 * 
 	 * @return total a pagar por la factura, siendo una persona de tipo juridica
 	 */
 	public double calcularBonificacionJuridica() {
@@ -131,32 +161,35 @@ public class Factura implements Cloneable{
 	}
 
 	/**
-	 * Método que calcula el total a pagar por la factura sin descuentos por métodos de pago.
+	 * Método que calcula el total a pagar por la factura sin descuentos por métodos
+	 * de pago.
+	 * 
 	 * @return total a pagar por la factura
-	 */	
+	 */
 	public double totalOriginal() {
 		return persona.calcularBonificacion(this);
 	}
 
 	/**
-	 * Método que calcula el total a pagar por la factura con descuentos por métodos de pago.
+	 * Método que calcula el total a pagar por la factura con descuentos por métodos
+	 * de pago.
+	 * 
 	 * @return total a pagar por la factura
-	 */	
+	 */
 	public double totalModificadorMP(String metodo) {
-		//MedioPago p = this.pago;
-		this.pago=new Pago(totalOriginal());
+		// MedioPago p = this.pago;
+		this.pago = new Pago(totalOriginal());
 		MedioPago p = this.pago;
-		
-		if(metodo.compareToIgnoreCase("CHEQUE") == 0)
+
+		if (metodo.compareToIgnoreCase("CHEQUE") == 0)
 			p = new Cheque(p);
 
-		if(metodo.compareToIgnoreCase("EFECTIVO") == 0)
+		if (metodo.compareToIgnoreCase("EFECTIVO") == 0)
 			p = new Efectivo(p);
 
-		if(metodo.compareToIgnoreCase("TARJETA") == 0)
+		if (metodo.compareToIgnoreCase("TARJETA") == 0)
 			p = new Tarjeta(p);
-		
-		
+
 		return p.getValor();
 	}
 	
@@ -167,19 +200,23 @@ public class Factura implements Cloneable{
 	 * @throws CloneNotSupportedException si la instancia de Factura no es clonable.
 	 */
 	@Override
-	public Object clone()throws CloneNotSupportedException{
+	public Object clone() throws CloneNotSupportedException {
 		int i;
 		try {
+
 			Factura nObj=(Factura)super.clone();
 			for(i=0;i<this.contrataciones.size();i++) {
 				nObj.contrataciones.add( (Contratacion) this.contrataciones.get(i).clone());
+			Factura nObj = (Factura) super.clone();
+			// nObj.contrataciones=(ArrayList<Contratacion>)this.contrataciones.clone();
+			for (i = 0; i < this.contrataciones.size(); i++) {
+				nObj.contrataciones.add((Contratacion) this.contrataciones.get(i).clone());
 			}
-			nObj.pago=(Pago)this.pago.clone();
-			nObj.persona=(Persona)persona.clone();
+			nObj.pago = (Pago) this.pago.clone();
+			nObj.persona = (Persona) persona.clone();
 			return nObj;
-		}
-		catch(CloneNotSupportedException e) {
-			throw new CloneNotSupportedException("No se pudo clonar Factura, FALLO="+e.toString());
+		} catch (CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Factura, FALLO=" + e.toString());
 		}
 	}
 
@@ -187,15 +224,39 @@ public class Factura implements Cloneable{
 		return pago;
 	}
 
-	
-	public String detalleFactura() {
-		return detalleFactura("");
+	public String detalle() {
+		return detalle("");
 	}
+
 	
 	public String detalleFactura(String metodoPago) {
 		String res = "N° Factura: " + numFactura + " | Abonado: " + persona.toString() + " | Contrataciones :"+ contrataciones;
+
+
+	public String detalle(String metodoPago) {
+		String res = "N° Factura: " + numFactura + " | " + "Abonado: " + persona + " | Contrataciones:";
+
+		for (Contratacion contratacion : contrataciones) {
+			res += "\n\n" + contratacion.detalle();
+		}
+		
+		double totOrig = totalOriginal();
+		double totFinal;
+		
+		if (!metodoPago.isEmpty()) {
+			totFinal = totalModificadorMP(metodoPago);
+		}
+		else {
+			totFinal = totOrig;
+		}
+		
+		res += "\n\nTotal Factura: $" + DoubleUtils.format(totOrig);
+		
+		if (totOrig != totFinal) {
+			res += "\nTotal Factura Final (c/ metodo de pago " + metodoPago + " ): $" + DoubleUtils.format(totFinal);
+		}
+
 		return res;
 	}
-	
-	
+
 }

@@ -10,4 +10,8 @@ public class DoubleUtils {
 		
 		return equals(d1, d2, epsilon);
 	}
+	
+	public static String format(double d) {
+		return String.format("%.2f", d);
+	}
 }
