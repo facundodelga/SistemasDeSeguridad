@@ -177,7 +177,16 @@ public class Factura implements Cloneable{
 	}
 
 	
+	public String detalleFactura() {
+		return detalleFactura("");
+	}
 	
+	public String detalleFactura(String metodoPago) {
+		String res = "N° Factura: " + numFactura + " | "
+				+ "Abonado: " + persona + " | Contrataciones :";
+		
+		return res;
+	}
 	
 	
 }

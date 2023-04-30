@@ -1,5 +1,7 @@
 package persona;
 
+import java.util.Objects;
+
 public class Domicilio implements Cloneable{
 	private String calle;
 	private int numero;
@@ -32,7 +34,24 @@ public class Domicilio implements Cloneable{
 	}
 	
 	@Override
-	public Object clone()throws CloneNotSupportedException{
+	public int hashCode() {
+		return Objects.hash(calle, numero);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Domicilio other = (Domicilio) obj;
+		return Objects.equals(calle, other.calle) && numero == other.numero;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException{
 		try {
 			Domicilio nObj=(Domicilio)super.clone();
 			nObj.calle=this.calle;
