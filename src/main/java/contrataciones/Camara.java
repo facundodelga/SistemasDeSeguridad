@@ -1,5 +1,7 @@
 package contrataciones;
 
+import java.util.Objects;
+
 public class Camara implements iContratable,Cloneable {
 
 	private double tarifa=3000;
@@ -25,5 +27,22 @@ public class Camara implements iContratable,Cloneable {
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar Camara, FALLO="+e.toString());
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tarifa);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Camara other = (Camara) obj;
+		return Double.doubleToLongBits(tarifa) == Double.doubleToLongBits(other.tarifa);
 	}
 }

@@ -1,5 +1,7 @@
 package contrataciones;
 
+import java.util.Objects;
+
 import promociones.iPromocion;
 
 public class AlarmaVivienda implements iServicio, Cloneable {
@@ -47,5 +49,22 @@ public class AlarmaVivienda implements iServicio, Cloneable {
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar AlarmaVivienda, FALLO="+e.toString());
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(tarifa);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AlarmaVivienda other = (AlarmaVivienda) obj;
+		return Double.doubleToLongBits(tarifa) == Double.doubleToLongBits(other.tarifa);
 	}
 }

@@ -2,6 +2,7 @@ package persona;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 import contrataciones.Contratacion;
 import excepciones.DomicilioNoEncontradoException;
@@ -96,4 +97,28 @@ public abstract class Persona implements Cloneable{
 			throw new CloneNotSupportedException("No se pudo clonar Persona, FALLO="+e.toString());
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dni);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Persona other = (Persona) obj;
+		return Objects.equals(dni, other.dni);
+	}
+
+	@Override
+	public String toString() {
+		return nombre + ", DNI: " + dni;
+	}
+	
+	
 }
