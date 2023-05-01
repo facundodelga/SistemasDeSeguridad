@@ -45,7 +45,7 @@ public class Sistema {
 	
 	
 	public static Sistema getInstancia(){
-		if(instancia==null){
+		if(instancia == null){
 			instancia = new Sistema();
 		}
 		return instancia;
@@ -62,6 +62,7 @@ public class Sistema {
 	 * @return el número de la factura creada.
 	 */
 	public int crearFactura(Persona p) {
+		assert p != null : "El parámetro p no puede ser nulo";
 	    Factura f = new Factura(p);
 	    facturas.add(f);
 	    return f.getNumFactura();
@@ -77,7 +78,8 @@ public class Sistema {
 	 * @param c, parámetro de tipo ArrayList<Contratacion>, la lista de contrataciones asociadas a la factura.
 	 */
 	public void crearFactura(Persona p, ArrayList<Contratacion> c) {
-	    Factura f = new Factura(p, c);
+		assert p != null : "El parámetro p no puede ser nulo";
+		Factura f = new Factura(p, c);
 	    facturas.add(f);
 	}
 	
@@ -93,21 +95,24 @@ public class Sistema {
 	 * @throws DomicilioYaRegistradoException si el domicilio de la contratación ya está registrado en otra factura.
 	 */
 	public void crearFactura(Persona p, Contratacion contr) throws ContratacionYaRegistradaException, DomicilioYaRegistradoException {
-	    ArrayList<Contratacion> c = new ArrayList<Contratacion>();
+		assert p != null : "El parámetro p no puede ser nulo";
+		assert contr != null : "El parámetro contr no puede ser nulo";
+		ArrayList<Contratacion> c = new ArrayList<Contratacion>();
 	    c.add(contr);
 	    this.crearFactura(p, c);
 	}
 
 
 	/**
-	 * <b>PRE:</b> Parámetro id distinto de null y positivo
+	 * <b>PRE:</b> Parámetro id positivo
 	 * Elimina la factura con el identificador especificado de la lista de facturas.
 	 * 
 	 * @param id el identificador de la factura a eliminar.
 	 * @throws FacturaNoEncontradaException si no se encuentra la factura con el identificador especificado.
 	 */
 	public void eliminarFactura(int id) throws FacturaNoEncontradaException {
-	    try {
+		assert id > 0: "El parámetro id debe ser distinto de null y positivo";
+		try {
 	        this.facturas.borraPorId(id);
 	    } catch (FacturaNoEncontradaException e) {
 	        throw e;
@@ -115,7 +120,7 @@ public class Sistema {
 	}
 
 	/**
-	 * <b>PRE:</b> Parámetro id distinto de null y positivo, parámetro mp distinto de null y distinto de “”
+	 * <b>PRE:</b> Parámetro id positivo, parámetro mp distinto de null y distinto de “”
 	 * Realiza el pago de la factura encontrada utilizando el identificador y método de pago especificados.
 	 * 
 	 * @param id el identificador de la factura a pagar.
@@ -124,6 +129,8 @@ public class Sistema {
 	 * @throws FacturaNoEncontradaException
 	 */
 	public double pagarFactura(int id,String mp) throws FacturaNoEncontradaException {
+		assert id > 0 : "El parámetro id debe ser positivo";
+		assert mp != null && !mp.isEmpty() : "El parámetro mp no puede ser nulo ni vacío";
 	    Factura f;
 		double total;
 	    try{
@@ -144,6 +151,8 @@ public class Sistema {
 	* @throws FacturaNoEncontradaException
 	*/
 	public double pagarFactura(Factura f,String mp) throws FacturaNoEncontradaException {
+		assert f != null : "El parámetro f no puede ser nulo";
+		assert mp != null && !mp.isEmpty() : "El parámetro mp no puede ser nulo ni vacío";
 		return f.totalModificadorMP(mp);
 	}
 	
@@ -192,6 +201,7 @@ public class Sistema {
 		return contr;
 	}
 
+	
 	//ADICIONALES
 	/**
 	 * 

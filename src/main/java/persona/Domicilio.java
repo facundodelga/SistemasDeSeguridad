@@ -74,4 +74,8 @@ public class Domicilio implements Cloneable{
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return calle + " " + numero;
+	}	
 }

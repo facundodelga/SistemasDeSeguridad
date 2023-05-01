@@ -74,12 +74,32 @@ public class Factura implements Cloneable{
 	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la factura instanciada
 	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException 
 	 */
-	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException, ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+	/*public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException, ContratacionYaRegistradaException, DomicilioYaRegistradoException {
 		if(!this.existeContratacion(con)){
 			this.contrataciones.add(con);
 			this.persona.agregarDomicilio(con.getDomicilio());
 		}else 
 			throw new ContratacionYaRegistradaException(con,this.persona);
+	}
+	*/
+	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+		if (!this.existeContratacion(con)) {
+
+			boolean domicilioYaRegistrado = false;
+			Iterator<Contratacion> it = this.contrataciones.iterator();
+
+			while (it.hasNext() && !domicilioYaRegistrado) {
+				Contratacion contratacion = it.next();
+				if (contratacion.getDomicilio().equals(con.getDomicilio())) {
+					domicilioYaRegistrado = true;
+				}
+			}	
+			if (domicilioYaRegistrado) {
+				throw new DomicilioYaRegistradoException(con.getDni(), con.getDomicilio());
+			}
+			this.contrataciones.add(con);
+		} else
+			throw new ContratacionYaRegistradaException(con, this.persona);
 	}
 	
 	/**
@@ -160,7 +180,7 @@ public class Factura implements Cloneable{
 		
 		return p.getValor();
 	}
-	
+		
 	/**
 	 * Crea y devuelve una copia profunda de esta instancia de Factura.
 	 *
@@ -189,7 +209,7 @@ public class Factura implements Cloneable{
 	}
 
 	
-	public String detalleFactura() {
+	public String detalle() {
 		return detalle("");
 	}
 	
@@ -216,7 +236,5 @@ public class Factura implements Cloneable{
 			res += "\nTotal Factura Final (c/ metodo de pago " + metodoPago + " ): $" + DoubleUtils.format(totFinal);
 		}
 		return res;
-	}
-	
-	
+	}	
 }

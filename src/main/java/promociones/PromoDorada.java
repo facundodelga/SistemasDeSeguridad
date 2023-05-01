@@ -21,6 +21,8 @@ public class PromoDorada implements iPromocion{
 		return "Dorada";
 	}
 
+
+
     /**
      * @return
      */
