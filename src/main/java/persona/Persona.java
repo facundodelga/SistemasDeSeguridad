@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-import contrataciones.Contratacion;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
@@ -21,6 +20,8 @@ public abstract class Persona implements Cloneable{
 	 */
 	public Persona(String nombre, String dni) {
 		super();
+		assert nombre != null && !nombre.isBlank() : "El campo Nombre no puede estar vacio";
+		assert dni != null && !dni.isBlank() : "El campo DNI no puede estar vacio";
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = new ArrayList<Domicilio>();
@@ -54,6 +55,7 @@ public abstract class Persona implements Cloneable{
 	 * @throws DomicilioYaRegistradoException 
 	 */
 	public void agregarDomicilio(Domicilio dom) throws DomicilioYaRegistradoException {
+		assert dom != null : "El campo Domicilio debe estar instanciado";
 		if(!this.existeDomicilio(dom))
 			this.domicilios.add(dom);
 		else 
@@ -67,6 +69,7 @@ public abstract class Persona implements Cloneable{
 	 * @throws DomicilioNoEncontradoException 
 	 */
 	public void eliminarDomicilio(Domicilio dom) throws DomicilioNoEncontradoException{
+		assert dom != null : "El campo Domicilio debe estar instanciado";
 		if(!this.existeDomicilio(dom))
 			this.domicilios.remove(dom);
 		else throw new DomicilioNoEncontradoException(dni,dom);

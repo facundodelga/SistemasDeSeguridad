@@ -3,7 +3,6 @@ package modelo;
 import java.util.ArrayList;
 
 import excepciones.FacturaNoEncontradaException;
-import excepciones.PersonaNoEncontradaPorNombreException;
 import persona.Persona;
 
 public class ArregloFacturas extends ArrayList<Factura>{
@@ -20,10 +19,10 @@ public class ArregloFacturas extends ArrayList<Factura>{
 	 * @throws Exception si el Id buscado no existe.
 	 */
     public Factura buscaPorId(int id)  throws FacturaNoEncontradaException{
-		Factura f = null;
+    	Factura f = null;
 		for(int i = 0; i<this.size();i++) {
-			if(id == this.get(i).getNumFactura());
-			f = this.get(i);
+			if(id == this.get(i).getNumFactura())
+				f = this.get(i);
 		}
 		if(f == null)
 			throw new FacturaNoEncontradaException(id);
@@ -55,13 +54,12 @@ public class ArregloFacturas extends ArrayList<Factura>{
     
     /**
 	 * Devuelve Facturas filtrando por Persona.
-	 * @param f2 la Persona a filtrar.
+	 * @param p la Persona a filtrar.
 	 * @return el ArrayList de Facturas correspondiente a la Persona buscada.
      * @throws FacturaNoEncontradaException 
 	 * @throws Exception si el DNI buscado no existe.
 	 */
     public Factura buscaPorPersona(Persona p) throws FacturaNoEncontradaException{
-	
 		Factura f = null;
 		
 		for(int i = 0; i<this.size();i++) {

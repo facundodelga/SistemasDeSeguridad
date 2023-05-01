@@ -13,6 +13,8 @@ public class Domicilio implements Cloneable{
 	 */
 	public Domicilio(String calle, int numero) {
 		super();
+		assert calle != null && !calle.isBlank() : "El campo Calle no debe estar vacio";
+		assert numero > 0 : "El campo numero debe ser mayor que 0";
 		this.calle = calle;
 		this.numero = numero;
 	}
@@ -26,10 +28,12 @@ public class Domicilio implements Cloneable{
 	}
 
 	public void setCalle(String calle) {
+		assert numero > 0 : "El campo numero debe ser mayor que 0";
 		this.calle = calle;
 	}
 
 	public void setNumero(int numero) {
+		assert numero > 0 : "El campo numero debe ser mayor que 0";
 		this.numero = numero;
 	}
 	

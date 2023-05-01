@@ -31,6 +31,11 @@ public class Contratacion implements Cloneable {
 	 */
 	public Contratacion(String dni, Domicilio domicilio, iServicio servicio, iPromocion promo) {
 		super();
+		assert dni != null && !dni.isBlank(): "El campo DNI no puede estar vacio";
+		assert domicilio != null : "El campo Domicilio debe estar instanciado";
+		assert servicio != null : "El campo Servicio debe estar instanciado";
+		assert promo != null : "El campo IPromocion debe estar instanciado";
+
 		this.id = generadorId++;
 		this.dni = dni;
 		this.domicilio = domicilio;
@@ -56,12 +61,6 @@ public class Contratacion implements Cloneable {
 		return dni;
 	}
 
-	/*
-	 * como hacemos la validacion de un domicilio aca adentro si no tenemos al
-	 * objeto persona? tenemos que buscarlo por dni en el arreglo desde el sistema o
-	 * desde la factura?
-	 * 
-	 */
 	public Domicilio getDomicilio() {
 		return domicilio;
 	}
@@ -94,10 +93,11 @@ public class Contratacion implements Cloneable {
 	 * @param con Parámetro de tipo Contratable, es una nueva contratacion
 	 */
 	public void agregarContratable(iContratable cont) {
-//		if(!this.existeContratable(cont)) //Deberia poder agregarse contratables aunque ya exista, seria agregar un contratable mas
+		assert cont != null : "El campo IContratable debe estar instanciado";
 		this.contratados.add(cont);
-	}// creo que no debería lanzar excepciones, siempre deberia poder agregarse un
-		// contratable
+	}
+
+	// CONTRATABLE
 
 	/**
 	 * <b>PRE:</b>El parámetro con debe ser distinto de null. Método que elimina una
@@ -108,9 +108,9 @@ public class Contratacion implements Cloneable {
 	 *            la contratación, pero que se desea retirar
 	 * @throws ContratableNoEncontradoException
 	 */
-	public void eliminarContratable(iContratable cont) throws ContratableNoEncontradoException // throws
-																								// ContratableNoEncontrado
-	{
+	public void eliminarContratable(iContratable cont) throws ContratableNoEncontradoException{
+		assert cont != null : "El campo IContratable debe estar instanciado";
+		
 		if (this.existeContratable(cont))
 			this.contratados.remove(cont);
 		else
@@ -141,6 +141,11 @@ public class Contratacion implements Cloneable {
 		}
 	}
 	
+
+	/**
+	 * Devuelve una cadena de texto con el detalle de la contratación.
+	 * @return una cadena de texto con el detalle de la contratación.
+	 */
 	public String detalle() {
 		String res = "* Domicilio: " + domicilio + " | " + "Servicio: " + servicio.descripcion();
 

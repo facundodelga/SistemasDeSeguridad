@@ -8,6 +8,7 @@ public class AlarmaVivienda implements iServicio, Cloneable {
 	private double tarifa=8500;
 	
 	public void setTarifa(double tarifa) {
+		assert tarifa > 0 : "Tarifa debe ser mayor que 0";
 		this.tarifa=tarifa;
 	}
 
@@ -16,7 +17,7 @@ public class AlarmaVivienda implements iServicio, Cloneable {
 	}
 	
 	public double getTarifa(iPromocion promocion) {
-		//return this.tarifa;
+		assert promocion != null : "La promocion debe estar inicializada en getTarifa(iPromocion)";
 		return this.tarifa + promocion.getPromoVivienda(tarifa);
 	}
 
@@ -29,6 +30,7 @@ public class AlarmaVivienda implements iServicio, Cloneable {
 	 * @return
 	 */
 	public double getDescDorada(iPromocion promocion) {
+		assert promocion != null : "La promocion debe estar inicializada";
 		return promocion.getPromoVivienda(this.tarifa);
 	}
 
@@ -37,6 +39,7 @@ public class AlarmaVivienda implements iServicio, Cloneable {
 	 * @return
 	 */
 	public double getDescPlatino(iPromocion promocion) {
+		assert promocion != null : "La promocion debe estar inicializada";
 		return promocion.getPromoVivienda(this.tarifa);
 	}
 	

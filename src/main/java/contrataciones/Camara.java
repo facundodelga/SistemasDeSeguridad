@@ -7,6 +7,7 @@ public class Camara implements iContratable,Cloneable {
 	private double tarifa=3000;
 
 	public void setTarifa(double tarifa) {
+		assert tarifa >0 : "Tarifa debe ser mayor a 0";
 		this.tarifa=tarifa;
 	}
 

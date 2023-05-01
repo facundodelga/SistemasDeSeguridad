@@ -7,6 +7,7 @@ public class BotonAntipanico implements iContratable,Cloneable{
 	private double tarifa=2000;
 	
 	public void setTarifa(double tarifa) {
+		assert tarifa > 0 : "Tarifa debe ser mayor a 0";
 		this.tarifa=tarifa;
 	}
 

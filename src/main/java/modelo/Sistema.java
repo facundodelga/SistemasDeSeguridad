@@ -111,7 +111,7 @@ public class Sistema {
 	 * @throws FacturaNoEncontradaException si no se encuentra la factura con el identificador especificado.
 	 */
 	public void eliminarFactura(int id) throws FacturaNoEncontradaException {
-		assert id > 0: "El parámetro id debe ser distinto de null y positivo";
+		assert id >= 0: "El parámetro id debe ser distinto de null y positivo";
 		try {
 	        this.facturas.borraPorId(id);
 	    } catch (FacturaNoEncontradaException e) {
@@ -129,7 +129,7 @@ public class Sistema {
 	 * @throws FacturaNoEncontradaException
 	 */
 	public double pagarFactura(int id,String mp) throws FacturaNoEncontradaException {
-		assert id > 0 : "El parámetro id debe ser positivo";
+		assert id >= 0 : "El parámetro id debe ser positivo";
 		assert mp != null && !mp.isEmpty() : "El parámetro mp no puede ser nulo ni vacío";
 	    Factura f;
 		double total;
@@ -152,16 +152,18 @@ public class Sistema {
 	*/
 	public double pagarFactura(Factura f,String mp) throws FacturaNoEncontradaException {
 		assert f != null : "El parámetro f no puede ser nulo";
-		assert mp != null && !mp.isEmpty() : "El parámetro mp no puede ser nulo ni vacío";
+		assert mp != null && !mp.isBlank() : "El parámetro mp no puede ser nulo ni vacío";
 		return f.totalModificadorMP(mp);
 	}
 	
 	public Factura buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
+		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Persona p=personas.buscaPorDni(dni);
 		return facturas.buscaPorPersona(p);
 	}
 
 	public Factura buscarFacturaPorId(int id) throws FacturaNoEncontradaException {
+		assert id >= 0 : "El parámetro id debe ser positivo";
 		return facturas.buscaPorId(id);
 	}
 	
@@ -180,6 +182,7 @@ public class Sistema {
 	 * @throws PersonaNoEncontradaException 
 	 */
 	public Contratacion crearContratacion(String dni, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Contratacion contr=null;
 		Persona p1;
 		Factura f;
@@ -209,11 +212,16 @@ public class Sistema {
 	 * @param a: refiere a la variable adicional la cua lse quiere adicionar a la Contratacion
 	 */
 	public void contratarAdicional(Contratacion c,iContratable a) {
+		assert c != null : "El campo Contratacion debe estar instanciado";
+		assert a != null : "El campo iContratable debe estar instanciado";
 		c.agregarContratable(a);
 	}
 
 	//puede que no sea del todo necesaria, o que sea preferible usar solo el metodo anterior
 	public void contratarAdicional(String dni,Domicilio d,iContratable a) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, ContratacionNoEncontradaException, DomicilioNoPerteneceAPersona {
+		assert dni != null && !dni.isBlank() : "El campo dni debe estar vacio";
+		assert d != null : "El campo Domicilio debe estar instanciado";
+		assert a != null : "El campo iContratable debe estar instanciado";
 		Persona p1,p2;
 		Factura f;
 		int i=0;
@@ -239,6 +247,7 @@ public class Sistema {
 	
 	//creación de persona tipo Factory
 	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException {
+		assert tipo != null && !tipo.isBlank() : "El campo tipo no debe estar vacio";
 		Persona nuevaP=null;
 		if(tipo.equalsIgnoreCase("JURIDICA")) 
 			nuevaP=new PersonaJuridica(nombre,dni);
@@ -274,6 +283,7 @@ public class Sistema {
 	
 	//PROMOCIONES
 	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
+		assert promo != null && !promo.isBlank() : "El campo promo no debe estar vacio";
 		iPromocion pr=null;
 		if(promo.equalsIgnoreCase("DORADA"))
 			pr = new PromoDorada();
@@ -290,6 +300,7 @@ public class Sistema {
 
 	//SERVICIOS
 	public iServicio obtenerServicio(String serv) throws TipoDeServicioIncorrectoException {
+		assert serv != null && !serv.isBlank() : "El campo promo no debe estar vacio";
 		iServicio sr=null;
 		if(serv.equalsIgnoreCase("VIVIENDA"))
 			sr = new AlarmaVivienda();
@@ -316,19 +327,6 @@ public class Sistema {
 		return cr;
 		}
 	
-	// public void AgregaFactura(Factura f) {
-	// 	if(existePersona(f))
-	// 		facturas.add(f);
-	// }
-
-
-
-	// private boolean existePersona(Factura f) {
-	// 	//this.facturas.buscaPorPersona(f);
-
-	// 	return false;
-	// }
-	
 	//CLONACIONES
 	
 	/**
@@ -340,6 +338,14 @@ public class Sistema {
 	 * @throws FacturaNoEncontradaException si no se encuentra la factura con el identificador especificado.
 	 * @throws CloneNotSupportedException si la clonación de la factura no es compatible.
 	 */
+
+	public Factura clonaFacturaPorId(int id) throws FacturaNoEncontradaException, CloneNotSupportedException {
+		Factura facturaClone=null;
+		facturaClone=(Factura) this.facturas.clonaFactura(id);
+		return facturaClone;
+	}
+
+/*	
 	public void clonaFacturaPorId(int id) {
 		Object facturaClone;
 		try {
@@ -353,7 +359,7 @@ public class Sistema {
 			System.out.println(e.toString());
 		}
 	}
-	
+	*/
 	
 	/**
 	 * Realiza la clonación de una persona por su DNI.
@@ -364,7 +370,35 @@ public class Sistema {
 	 * @throws PersonaNoEncontradaException si no se encuentra la persona con el DNI especificado.
 	 * @throws CloneNotSupportedException si la clonación de la persona no es compatible.
 	 */
-	public void clonaPersonaPorDni(String dni) {
+	  public Persona clonaPersonaPorDni(String dni) throws PersonaNoEncontradaException, CloneNotSupportedException {
+			Persona personaClone=null;
+			personaClone=(Persona) this.personas.clonaPersona(dni);
+			return personaClone;
+		}
+	  
+	  public String detalleFactura(int id, String opcion) throws FacturaNoEncontradaException {
+	        return facturas.buscaPorId(id).detalle(opcion);
+	    }
+
+	    public String detalleFacturas() {
+	        return detalleFacturas("");
+	    }
+
+	    public String detalleFacturas(String opcion) {
+	        String res = "";
+
+	        for (Factura factura : facturas) {
+	            try {
+	                res += "\n" + detalleFactura(factura.getNumFactura(), opcion) + "\n";
+	            } catch (FacturaNoEncontradaException e) {
+	            }
+	        }
+
+	        return res;
+	    }
+	  
+	/*
+	  public void clonaPersonaPorDni(String dni) {
 		Object personaClone;
 		try {
 			personaClone=this.personas.clonaPersona(dni);
@@ -377,5 +411,5 @@ public class Sistema {
 			System.out.println(e.toString());
 		}
 	}
-	
+	*/
 }

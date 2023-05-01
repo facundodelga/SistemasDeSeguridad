@@ -258,29 +258,10 @@ public class PruebaAislada {
 		
 		System.out.println(factura.detalle("CHEQUE"));
 		
-//		contratacion.agregarContratable(contratableAntiPanico);
-//		contratacion.agregarContratable(contratableCamara);
-//		contratacion.agregarContratable(contratableCamara);
-//		contratacion.agregarContratable(contratableMovil);
-//		contratacion.agregarContratable(contratableMovil);
-//		
-//		if (contratacion.cantContratables() != 5) {
-//			throw new Error("ERROR DE PRUEBA: No se agregaron contratables correctamente");
-//		}
-//		
-//		System.out.println("ELIMINANDO CONTRATABLES");
-//		
-//		try {
-//			contratacion.eliminarContratable(contratableAntiPanico);
-//			contratacion.eliminarContratable(contratableCamara);
-//			contratacion.eliminarContratable(contratableMovil);
-//		} catch (Exception e) {
-//		}
-//		
-//		if (contratacion.cantContratables() != 2) {
-//			throw new Error("ERROR DE PRUEBA: No se eliminaron contratables correctamente");
-//		}
-//		
-		System.out.println("PRUEBA COMPLETADA: Contratables\n"); 
+		if (!DoubleUtils.equals(factura.totalOriginal(), 48450)) {
+			throw new Error("ERROR DE PRUEBA: El precio de factura esta mal calculado");
+		}
+	
+		System.out.println("PRUEBA COMPLETADA: Factura\n"); 
 	}
 }

@@ -23,6 +23,7 @@ public class Factura implements Cloneable{
 	 */
 	public Factura(Persona persona) {
 		super();
+		assert persona != null : "El campo Persona debe estar instanciado";
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = new ArrayList<Contratacion>();
@@ -32,6 +33,8 @@ public class Factura implements Cloneable{
 
 	public Factura(Persona persona,ArrayList<Contratacion> c) {
 		super();
+		assert persona != null : "El campo Persona debe estar instanciado";
+        assert c != null : "El campo ArrayList<Contratacion> debe estar instanciado";
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = c;
@@ -57,6 +60,7 @@ public class Factura implements Cloneable{
 	 * @return true si la contratación existe en la lista, false en caso contrario.
 	 */
 	public boolean existeContratacion(Contratacion con) {
+		assert con != null : "El campo Contratacion debe estar instanciado";
 		boolean existe = true;
 		int i = 0;
 		while(i < contrataciones.size() && !con.getDomicilio().equals(contrataciones.get(i).getDomicilio()) && !con.getDni().equals(contrataciones.get(i).getDni())) {
@@ -74,15 +78,9 @@ public class Factura implements Cloneable{
 	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la factura instanciada
 	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException 
 	 */
-	/*public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException, ContratacionYaRegistradaException, DomicilioYaRegistradoException {
-		if(!this.existeContratacion(con)){
-			this.contrataciones.add(con);
-			this.persona.agregarDomicilio(con.getDomicilio());
-		}else 
-			throw new ContratacionYaRegistradaException(con,this.persona);
-	}
-	*/
+	
 	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+		assert con != null : "El campo Contratacion debe estar instanciado";
 		if (!this.existeContratacion(con)) {
 
 			boolean domicilioYaRegistrado = false;
@@ -108,6 +106,7 @@ public class Factura implements Cloneable{
 	 * @param dom Parámetro de tipo Domicilio, es una contratacion que pertenecia a la factura, pero que se desea retirar
 	 */
 	public void eliminarContratacion(Contratacion con) {
+		assert con != null : "El campo Contratacion debe estar instanciado";
 		if(!this.existeContratacion(con))
 			this.contrataciones.remove(con);
 		//else exception ContratacionNoEncontradaException
@@ -164,7 +163,7 @@ public class Factura implements Cloneable{
 	 * @return total a pagar por la factura
 	 */	
 	public double totalModificadorMP(String metodo) {
-		//MedioPago p = this.pago;
+		assert metodo != null && !metodo.isBlank(): "El campo metodo no debe estar vacio";
 		this.pago=new Pago(totalOriginal());
 		MedioPago p = this.pago;
 		

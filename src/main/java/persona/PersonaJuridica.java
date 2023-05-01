@@ -10,7 +10,7 @@ public class PersonaJuridica extends Persona{
 	
 	@Override
 	public double calcularBonificacion(Factura factura) {
-		
+		assert factura != null : "El campo Factura debe estar instanciado";
 		return factura.calcularBonificacionJuridica();
 	}
 	

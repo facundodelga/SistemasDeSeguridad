@@ -11,6 +11,7 @@ public class Pago implements MedioPago,Cloneable{
      * @param valor el valor del pago.
      */
     public Pago(double valor) {
+    	assert valor > 0 : "El campo valor debe ser mayor que 0";
         this.valor = valor;
     }
 
@@ -19,6 +20,7 @@ public class Pago implements MedioPago,Cloneable{
      * @param valor el nuevo valor del pago.
      */
     public void setValor(double valor) {
+    	assert valor > 0 : "El campo valor debe ser mayor que 0";
         this.valor = valor;
     }
 
