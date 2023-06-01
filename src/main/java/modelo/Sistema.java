@@ -63,9 +63,12 @@ public class Sistema {
 	 */
 	public int crearFactura(Persona p) {
 		assert p != null : "El parámetro p no puede ser nulo";
-	    Factura f = new Factura(p);
+		Factura f = p.crearFactura();
+		facturas.add(f);
+		/*Factura f = new Factura(p);
 	    facturas.add(f);
-	    return f.getNumFactura();
+	    */
+		return f.getNumFactura();
 	}
 
 	/**
@@ -79,8 +82,11 @@ public class Sistema {
 	 */
 	public void crearFactura(Persona p, ArrayList<Contratacion> c) {
 		assert p != null : "El parámetro p no puede ser nulo";
+		Factura f = p.crearFactura(c);
+		facturas.add(f);
+		/*
 		Factura f = new Factura(p, c);
-	    facturas.add(f);
+	    facturas.add(f);*/
 	}
 	
 	/**

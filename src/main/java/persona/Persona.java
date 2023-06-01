@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
+import contrataciones.Contratacion;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
@@ -76,13 +77,6 @@ public abstract class Persona implements Cloneable{
 	}	
 	
 	//bonificaciones
-	/**
-	 * <b>PRE:</b> el parámetro debe ser distinto de null
-	 * Método abstracto de permite calcular una bonificación sobre el importe de una factura dependiendo del tipo de persona
-	 * @param factura Parámetro de tipo Factura, es una factura asociada a la persona.
-	 * @return total a pagar por una factura, dependiendo de el tipo de la instancia persona.
-	 */
-	public abstract double calcularBonificacion(Factura factura); //Preguntar por bonificacion de juridica
 	
 	/**
 	 * Crea y devuelve una copia superficial de este objeto Persona.
@@ -97,6 +91,7 @@ public abstract class Persona implements Cloneable{
 			Persona nObj=(Persona)super.clone();
 			nObj.dni=this.dni;
 			nObj.nombre=this.nombre;
+			nObj.domicilios = new ArrayList<Domicilio>();// linea de correccion de clone, consultar
 			for(i=0;i<this.domicilios.size();i++) {
 				nObj.domicilios.add( (Domicilio) this.domicilios.get(i).clone());
 			}
@@ -133,6 +128,10 @@ public abstract class Persona implements Cloneable{
 	public String toString() {
 		return nombre + ", DNI: " + dni;
 	}
+
+	public abstract Factura crearFactura();
+
+	public abstract Factura crearFactura(ArrayList<Contratacion> c);
 	
 	
 }

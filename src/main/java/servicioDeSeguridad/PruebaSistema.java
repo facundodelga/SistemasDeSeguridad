@@ -87,7 +87,7 @@ public class PruebaSistema {
 	private static void testFacturas() throws FacturaNoEncontradaException, CloneNotSupportedException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
 		System.out.println("PRUEBA INICIANDO: Facturas");
 
-		Factura factura1 = new Factura(personaFisica);
+		Factura factura1 = personaFisica.crearFactura();
 
 		System.out.println("PRUEBA FACTURA1: 2 CONTRATACIONES, P FISICA"
 				+ "\n* ALARMA VIVIENDA, 2 AP, 2 CAM, 1 MOVIL, PROMO PLATINO"

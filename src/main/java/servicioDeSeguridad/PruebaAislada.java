@@ -75,6 +75,7 @@ public class PruebaAislada {
 		Persona copiaPersona;
 		try {
 			copiaPersona = (Persona) personaFisica.clone();
+			System.out.println(copiaPersona);
 		} catch (Exception e) {
 			throw new Error("ERROR DE PRUEBA: No se pudo clonar persona fisica");
 		}
@@ -224,7 +225,7 @@ public class PruebaAislada {
 	private static void testFactura() {
 		System.out.println("PRUEBA INICIANDO: Factura");
 		
-		Factura factura = new Factura(personaFisica);
+		Factura factura = personaFisica.crearFactura();
 		
 		System.out.println("PRUEBA FACTURA: 3 CONTRATACIONES, P FISICA"
 				+ "\n* ALARMA VIVIENDA, 2 AP, 2 CAM, 1 MOVIL, PROMO PLATINO"
@@ -254,6 +255,7 @@ public class PruebaAislada {
 			factura.agregarContratacion(contratacion3);
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println(e.getMessage());
 		}
 		
 		System.out.println(factura.detalle("CHEQUE"));

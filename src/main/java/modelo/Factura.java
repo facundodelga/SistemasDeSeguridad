@@ -9,11 +9,11 @@ import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
 import utils.DoubleUtils;
 
-public class Factura implements Cloneable{
+public abstract class Factura implements Cloneable{
 	private static int ultFactura = 0;
 	private int numFactura;
 	private Persona persona;
-	private ArrayList<Contratacion> contrataciones;
+	protected ArrayList<Contratacion> contrataciones;
 	private Pago pago;
 
 	/**
@@ -27,7 +27,6 @@ public class Factura implements Cloneable{
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = new ArrayList<Contratacion>();
-
 		this.pago = new Pago(totalOriginal());
 	}
 
@@ -61,15 +60,16 @@ public class Factura implements Cloneable{
 	 */
 	public boolean existeContratacion(Contratacion con) {
 		assert con != null : "El campo Contratacion debe estar instanciado";
-		boolean existe = true;
+		/*boolean existe = true;
 		int i = 0;
-		while(i < contrataciones.size() && !con.getDomicilio().equals(contrataciones.get(i).getDomicilio()) && !con.getDni().equals(contrataciones.get(i).getDni())) {
+		while(i < contrataciones.size() && (!con.getDomicilio().equals(contrataciones.get(i).getDomicilio()) || !con.getDni().equals(contrataciones.get(i).getDni()))) {
 			i++;
 		}
 		if(i == contrataciones.size()){
 			existe = false;
 		}
-		return existe;
+		return existe;*/
+		return contrataciones.contains(con);
 	}
 	
 	/**
@@ -113,49 +113,19 @@ public class Factura implements Cloneable{
 	}
 
 	/**
-	 * Método que calcula el total a pagar por una persona física por la factura.
-	 * @return total a pagar por la factura, siendo una persona de tipo física
+	 * <b>PRE:</b> el parámetro debe ser distinto de null
+	 * Método abstracto de permite calcular una bonificación sobre el importe de una factura dependiendo del tipo de persona
+	 * @param factura Parámetro de tipo Factura, es una factura asociada a la persona.
+	 * @return total a pagar por una factura, dependiendo de el tipo de la instancia persona.
 	 */
-	public double calcularBonificacionFisica() {
-		double total = 0;
-		for (Contratacion contratacion : contrataciones) {
-			total += contratacion.getTarifa();
-
-			Iterator<iContratable> it = contratacion.getIterator();
-			while (it.hasNext()) 
-				total += it.next().getTarifa();
-		}
-		return total;
-	}
-	
-	/**
-	 * Método que calcula el total a pagar por una persona jurídica por la factura.
-	 * @return total a pagar por la factura, siendo una persona de tipo juridica
-	 */
-	public double calcularBonificacionJuridica() {
-		double total = 0;
-		int cont = 1;
-
-		for (Contratacion contratacion : contrataciones) {
-			double mod = 1;
-			if (cont >= 3)
-				mod = 0.5;
-
-			total += contratacion.getTarifa();
-			Iterator<iContratable> it = contratacion.getIterator();
-			while (it.hasNext())
-				total += it.next().getTarifa() * mod;
-			cont++;
-		}
-		return total;
-	}
+	public abstract double calcularBonificacion();
 
 	/**
 	 * Método que calcula el total a pagar por la factura sin descuentos por métodos de pago.
 	 * @return total a pagar por la factura
 	 */	
 	public double totalOriginal() {
-		return persona.calcularBonificacion(this);
+		return this.calcularBonificacion();
 	}
 
 	/**

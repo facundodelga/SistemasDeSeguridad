@@ -4,8 +4,8 @@ public class Prueba {
 
 	public static void main(String[] args) throws Exception {
 
-//		PruebaAislada.main(args);
-		PruebaSistema.main(args);
+		PruebaAislada.main(args);
+//		PruebaSistema.main(args);
 
 //		Sistema s = Sistema.getInstancia(); 
 //

@@ -1,5 +1,8 @@
 package persona;
 
+import java.util.ArrayList;
+
+import contrataciones.Contratacion;
 import modelo.*;
 
 public class PersonaFisica extends Persona{
@@ -8,12 +11,6 @@ public class PersonaFisica extends Persona{
 		super(nombre, dni);
 	}
 
-	@Override
-	public double calcularBonificacion(Factura factura) {
-		assert factura != null : "El campo Factura debe estar instanciado";
-		return factura.calcularBonificacionFisica();
-	}
-	
 	/**
 	 * Crea y devuelve un clon de la instancia actual de PersonaFisica.
 	 *
@@ -29,5 +26,15 @@ public class PersonaFisica extends Persona{
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar PersonaFisica, FALLO="+e.toString());
 		}
+	}
+
+	@Override
+	public Factura crearFactura() {
+		return new FacturaFisica(this);
+	}
+
+	@Override
+	public Factura crearFactura(ArrayList<Contratacion> c) {
+		return new FacturaFisica(this,c);
 	}
 }
