@@ -1,12 +1,32 @@
 package modelo;
+
+import java.util.GregorianCalendar;
+
 /**
  * La clase Pago representa un medio de pago que contiene un valor monetario.
  * Implementa la interfaz MedioPago.
  */
 public class Pago implements MedioPago,Cloneable{
     private double valor;
+    private GregorianCalendar fechaDePago;
+    private boolean recargoMoroso = false;
+    private MedioPago mp;
     
-    /**
+    
+    public Pago(double valor, GregorianCalendar fechaDePago) {
+		super();
+		this.valor = valor;
+		this.fechaDePago = fechaDePago;
+	}
+
+	public Pago(double valor, GregorianCalendar fechaDePago, boolean recargoMoroso) {
+		super();
+		this.valor = valor;
+		this.fechaDePago = fechaDePago;
+		this.recargoMoroso = recargoMoroso;
+	}
+
+	/**
      * Crea un objeto Pago con el valor proporcionado.
      * @param valor el valor del pago.
      */

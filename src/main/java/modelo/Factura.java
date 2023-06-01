@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import contrataciones.Contratacion;
 import contrataciones.iContratable;
@@ -27,7 +28,7 @@ public abstract class Factura implements Cloneable{
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = new ArrayList<Contratacion>();
-		this.pago = new Pago(totalOriginal());
+//		this.pago = new Pago(totalOriginal());
 	}
 
 	public Factura(Persona persona,ArrayList<Contratacion> c) {
@@ -37,7 +38,7 @@ public abstract class Factura implements Cloneable{
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = c;
-		this.pago = new Pago(totalOriginal());
+//		this.pago = new Pago(totalOriginal());
 	}
 
 	public int getNumFactura() {
@@ -135,19 +136,23 @@ public abstract class Factura implements Cloneable{
 	public double totalModificadorMP(String metodo) {
 		assert metodo != null && !metodo.isBlank(): "El campo metodo no debe estar vacio";
 		this.pago=new Pago(totalOriginal());
-		MedioPago p = this.pago;
+		MedioPago mp = this.pago;
 		
-		if(metodo.compareToIgnoreCase("CHEQUE") == 0)
-			p = new Cheque(p);
+		if(metodo.equalsIgnoreCase("CHEQUE"))
+			mp = new Cheque(mp);
 
-		if(metodo.compareToIgnoreCase("EFECTIVO") == 0)
-			p = new Efectivo(p);
+		if(metodo.equalsIgnoreCase("EFECTIVO"))
+			mp = new Efectivo(mp);
 
-		if(metodo.compareToIgnoreCase("TARJETA") == 0)
-			p = new Tarjeta(p);
+		if(metodo.equalsIgnoreCase("TARJETA"))
+			mp = new Tarjeta(mp);
 		
 		
-		return p.getValor();
+		return mp.getValor();
+	}
+	
+	public void pagarFactura(String mp, GregorianCalendar fecha) {
+		persona.pagarFactura(this, mp, fecha);
 	}
 		
 	/**
@@ -178,6 +183,10 @@ public abstract class Factura implements Cloneable{
 	}
 
 	
+	public void setPago(Pago pago) {
+		this.pago = pago;
+	}
+
 	public String detalle() {
 		return detalle("");
 	}

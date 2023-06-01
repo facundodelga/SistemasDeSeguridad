@@ -6,6 +6,7 @@ import contrataciones.Contratacion;
 import modelo.*;
 
 public class PersonaFisica extends Persona{
+	IEstado estado;
 
 	public PersonaFisica(String nombre, String dni) {
 		super(nombre, dni);

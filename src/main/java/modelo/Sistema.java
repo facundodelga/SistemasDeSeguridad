@@ -1,12 +1,12 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import contrataciones.AlarmaComercio;
 import contrataciones.AlarmaVivienda;
 import contrataciones.BotonAntipanico;
 import contrataciones.Camara;
-
 import contrataciones.Contratacion;
 import contrataciones.MovilAcompañamiento;
 import contrataciones.iContratable;
@@ -156,10 +156,10 @@ public class Sistema {
 	* @return
 	* @throws FacturaNoEncontradaException
 	*/
-	public double pagarFactura(Factura f,String mp) throws FacturaNoEncontradaException {
+	public void pagarFactura(Factura f,String mp, GregorianCalendar fecha) throws FacturaNoEncontradaException {
 		assert f != null : "El parámetro f no puede ser nulo";
 		assert mp != null && !mp.isBlank() : "El parámetro mp no puede ser nulo ni vacío";
-		return f.totalModificadorMP(mp);
+		f.pagarFactura(mp, fecha);
 	}
 	
 	public Factura buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
