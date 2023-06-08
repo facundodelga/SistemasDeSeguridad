@@ -30,8 +30,12 @@ public abstract class Factura implements MedioPago,Cloneable{
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = new ArrayList<Contratacion>();
+<<<<<<< HEAD
 		this.setPagoRealizado(false);
 		this.fecha = (GregorianCalendar) GregorianCalendar.getInstance();
+=======
+//		this.pago = new Pago(totalOriginal());
+>>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 	}
 
 	public Factura(Persona persona,ArrayList<Contratacion> c) {
@@ -41,6 +45,10 @@ public abstract class Factura implements MedioPago,Cloneable{
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = c;
+<<<<<<< HEAD
+=======
+//		this.pago = new Pago(totalOriginal());
+>>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 	}
 
 	public int getNumFactura() {
@@ -130,8 +138,34 @@ public abstract class Factura implements MedioPago,Cloneable{
 	public void pagarFactura(MedioPago medio) {
 		persona.pagarFactura(this, medio);
 	}
+<<<<<<< HEAD
 	
 	/*
+=======
+
+	/**
+	 * Método que calcula el total a pagar por la factura con descuentos por métodos de pago.
+	 * @return total a pagar por la factura
+	 */	
+	public double totalModificadorMP(String metodo) {
+		assert metodo != null && !metodo.isBlank(): "El campo metodo no debe estar vacio";
+		this.pago=new Pago(totalOriginal());
+		MedioPago mp = this.pago;
+		
+		if(metodo.equalsIgnoreCase("CHEQUE"))
+			mp = new Cheque(mp);
+
+		if(metodo.equalsIgnoreCase("EFECTIVO"))
+			mp = new Efectivo(mp);
+
+		if(metodo.equalsIgnoreCase("TARJETA"))
+			mp = new Tarjeta(mp);
+		
+		
+		return mp.getValor();
+	}
+	
+>>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 	public void pagarFactura(String mp, GregorianCalendar fecha) {
 		persona.pagarFactura(this, mp, fecha);
 	}
@@ -159,6 +193,7 @@ public abstract class Factura implements MedioPago,Cloneable{
 		}
 	}	
 	
+<<<<<<< HEAD
 	public double getTotalOriginal() {
 		return totalOriginal;
 	}
@@ -173,6 +208,10 @@ public abstract class Factura implements MedioPago,Cloneable{
 
 	public void setTotalBonificado(double totalBonificado) {
 		this.totalBonificado = totalBonificado;
+=======
+	public void setPago(Pago pago) {
+		this.pago = pago;
+>>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 	}
 
 	public String detalle() {
