@@ -1,9 +1,9 @@
 package simulacion;
 
 public class Observable {
-    private Observer ojo = new ObserverSimulacion();
+    protected Observer ojo = new ObserverSimulacion();
 
-    protected void avisarObservador(){
-        this.ojo.update();
+    protected void avisarObservador(String mensaje){
+        this.ojo.update(mensaje);
     }
 }

@@ -1,9 +1,12 @@
 package simulacion;
 
-public class Tecnico extends Observable implements Runnable {
+public class Tecnico implements Runnable {
     private String nombre;
-    public Tecnico(String nombre){
+    private ServicioTecnico servicioTecnico;
+    public Tecnico(String nombre, ServicioTecnico st){
         this.nombre = nombre;
+        this.servicioTecnico = st;
+        st.sumarTecnicoDisponible();
     }
 
     /**
@@ -11,6 +14,17 @@ public class Tecnico extends Observable implements Runnable {
      */
     @Override
     public void run() {
+        while(true){ //basicamente chequear si se necesita un servicio tecnico
+            servicioTecnico.brindarServicioTecnico(this);
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
+    public String getNombre() {
+        return nombre;
     }
 }

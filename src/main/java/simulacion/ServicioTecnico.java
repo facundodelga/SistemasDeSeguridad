@@ -1,39 +1,51 @@
 package simulacion;
 
-public class ServicioTecnico{
+import java.util.ArrayList;
+
+public class ServicioTecnico extends Observable{
     //ServicioTecnico es el recurso compartido
     private int tecnicosDisponibles = 0;
-    private int pedidosTecnico = 0;
+    private ArrayList<String> pedidos = new ArrayList<>();
     public synchronized void pedirTecnico(ClienteThread c){
-        while(tecnicosDisponibles == 0){
+
+        while(this.tecnicosDisponibles == 0){
             try {
                 c.wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        c.avisarObservador();
-        this.pedidosTecnico++;
+
+        pedidos.add(c.getNombre());
+        this.avisarObservador(c.getNombre() + " ha pedido un Tecnico");
+
         this.tecnicosDisponibles--;
+
         notifyAll();
     }
 
     public synchronized void brindarServicioTecnico(Tecnico t){
-        while(pedidosTecnico == 0){
+
+        while(this.pedidos.isEmpty()){
             try {
                 t.wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        this.pedidosTecnico--;
-        t.avisarObservador();
+
+        this.avisarObservador(t.getNombre() + " se encargó del pedido de " + pedidos.get(pedidos.size() - 1));
+
+        pedidos.remove(pedidos.size() - 1);
+
         this.tecnicosDisponibles++;
+
         notifyAll();
     }
 
     public void sumarTecnicoDisponible(){
         this.tecnicosDisponibles++;
+        notifyAll();
     }
 
     public int getTecnicosDisponibles() {
@@ -43,12 +55,5 @@ public class ServicioTecnico{
     public void setTecnicosDisponibles(int tecnicosDisponibles) {
         this.tecnicosDisponibles = tecnicosDisponibles;
     }
-
-    public int getPedidosTecnico() {
-        return pedidosTecnico;
-    }
-
-    public void setPedidosTecnico(int pedidosTecnico) {
-        this.pedidosTecnico = pedidosTecnico;
-    }
+    
 }
