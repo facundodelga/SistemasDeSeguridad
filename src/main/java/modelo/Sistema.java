@@ -3,12 +3,7 @@ package modelo;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import contrataciones.AlarmaComercio;
-import contrataciones.AlarmaVivienda;
-import contrataciones.BotonAntipanico;
-import contrataciones.Camara;
 import contrataciones.Contratacion;
-import contrataciones.MovilAcompañamiento;
 import contrataciones.iContratable;
 import contrataciones.iServicio;
 import excepciones.ContratacionNoEncontradaException;
@@ -22,13 +17,13 @@ import excepciones.TipoDeContratableIncorrectoException;
 import excepciones.TipoDePersonaIncorrectoException;
 import excepciones.TipoDePromocionIncorrectoException;
 import excepciones.TipoDeServicioIncorrectoException;
+import factory.ContratableFactory;
+import factory.MedioPagoFactory;
+import factory.PersonaFactory;
+import factory.PromocionFactory;
+import factory.ServicioFactory;
 import persona.Domicilio;
 import persona.Persona;
-import persona.PersonaFisica;
-import persona.PersonaJuridica;
-import promociones.PromoDorada;
-import promociones.PromoPlatino;
-import promociones.SinPromo;
 import promociones.iPromocion;
 
 public class Sistema {
@@ -80,13 +75,11 @@ public class Sistema {
 	 * @param p, parámetro de tipo Persona, la persona asociada a la factura.
 	 * @param c, parámetro de tipo ArrayList<Contratacion>, la lista de contrataciones asociadas a la factura.
 	 */
-	public void crearFactura(Persona p, ArrayList<Contratacion> c) {
+	public Factura crearFactura(Persona p, ArrayList<Contratacion> c) {
 		assert p != null : "El parámetro p no puede ser nulo";
 		Factura f = p.crearFactura(c);
 		facturas.add(f);
-		/*
-		Factura f = new Factura(p, c);
-	    facturas.add(f);*/
+		return f;
 	}
 	
 	/**
@@ -100,12 +93,13 @@ public class Sistema {
 	 * @throws ContratacionYaRegistradaException si la contratación ya está registrada en otra factura.
 	 * @throws DomicilioYaRegistradoException si el domicilio de la contratación ya está registrado en otra factura.
 	 */
-	public void crearFactura(Persona p, Contratacion contr) throws ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+	public Factura crearFactura(Persona p, Contratacion contr) throws ContratacionYaRegistradaException, DomicilioYaRegistradoException {
 		assert p != null : "El parámetro p no puede ser nulo";
 		assert contr != null : "El parámetro contr no puede ser nulo";
 		ArrayList<Contratacion> c = new ArrayList<Contratacion>();
 	    c.add(contr);
-	    this.crearFactura(p, c);
+	    Factura f = this.crearFactura(p, c);
+	    return f;
 	}
 
 
@@ -196,15 +190,12 @@ public class Sistema {
 		Persona p1;
 		Factura f;
 		try {
-			p1=personas.buscaPorDni(dni);//la persona existe
-
+			p1=personas.buscaPorDni(dni);
 			contr=new Contratacion(dni,dom,serv,promo);			
 			try {
-				f=facturas.buscaPorPersona(p1);//la factura existe
+				f=facturas.buscaPorPersona(p1);
 				f.agregarContratacion(contr);
-
-			} catch (FacturaNoEncontradaException e) {//si no se encuentra la factura, la creo
-
+			} catch (FacturaNoEncontradaException e) {
 				this.crearFactura(p1,contr);
 			}
 		} catch (PersonaNoEncontradaException e) {
@@ -254,21 +245,12 @@ public class Sistema {
 
 	//PERSONA
 	
-	//creación de persona tipo Factory
+	//creación de persona
 	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException {
 		assert tipo != null && !tipo.isBlank() : "El campo tipo no debe estar vacio";
-		Persona nuevaP=null;
-		if(tipo.equalsIgnoreCase("JURIDICA")) 
-			nuevaP=new PersonaJuridica(nombre,dni);
-		else
-			if(tipo.equalsIgnoreCase("FISICA")) 
-				nuevaP=new PersonaFisica(nombre,dni);
-			else
-				throw new TipoDePersonaIncorrectoException(tipo);
-		
-		this.personas.add(nuevaP);
-
-		return nuevaP;
+		Persona p=PersonaFactory.crearPersona(nombre,dni,tipo);
+		this.personas.add(p);
+		return p;
 	}
 	
 	//DOMICILIO
@@ -293,48 +275,19 @@ public class Sistema {
 	//PROMOCIONES
 	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
 		assert promo != null && !promo.isBlank() : "El campo promo no debe estar vacio";
-		iPromocion pr=null;
-		if(promo.equalsIgnoreCase("DORADA"))
-			pr = new PromoDorada();
-		else
-			if(promo.equalsIgnoreCase("PLATINO"))
-				pr = new PromoPlatino();
-			else
-				if(promo.equalsIgnoreCase("SINPROMO"))
-					pr = new SinPromo();
-				else
-					throw new TipoDePromocionIncorrectoException(promo);
-		return pr;
+		return PromocionFactory.crearPromo(promo);
 	}
 
 	//SERVICIOS
 	public iServicio obtenerServicio(String serv) throws TipoDeServicioIncorrectoException {
-		assert serv != null && !serv.isBlank() : "El campo promo no debe estar vacio";
-		iServicio sr=null;
-		if(serv.equalsIgnoreCase("VIVIENDA"))
-			sr = new AlarmaVivienda();
-		else
-			if(serv.equalsIgnoreCase("COMERCIO"))
-				sr = new AlarmaComercio();
-			else	
-				throw new TipoDeServicioIncorrectoException(serv);
-		return sr;
+		assert serv != null && !serv.isBlank() : "El campo serv no debe estar vacio";
+		return ServicioFactory.crearServicio(serv);
 	}
 
 	public iContratable obtenerContratable(String cont) throws TipoDeContratableIncorrectoException {
-		iContratable cr=null;
-		if(cont.equalsIgnoreCase("BOTON"))
-			cr = new BotonAntipanico();
-		else
-			if(cont.equalsIgnoreCase("CAMARA"))
-				cr = new Camara();
-			else
-				if(cont.equalsIgnoreCase("MOVIL"))
-					cr = new MovilAcompañamiento();
-				else
-					throw new TipoDeContratableIncorrectoException(cont);
-		return cr;
-		}
+		assert cont != null && !cont.isBlank() : "El campo cont no debe estar vacio";
+		return ContratableFactory.crearContratable(cont);
+	}
 	
 	//CLONACIONES
 	
@@ -383,7 +336,22 @@ public class Sistema {
 			Persona personaClone=null;
 			personaClone=(Persona) this.personas.clonaPersona(dni);
 			return personaClone;
+	  }	
+	  /*
+	  public void clonaPersonaPorDni(String dni) {
+		Object personaClone;
+		try {
+			personaClone=this.personas.clonaPersona(dni);
+			System.out.println(personaClone.toString());
 		}
+		catch(PersonaNoEncontradaException e) {
+			System.out.println(e.toString());
+		}
+		catch(CloneNotSupportedException e) {
+			System.out.println(e.toString());
+		}
+	}
+	*/
 	  
 	  public String detalleFactura(int id, String opcion) throws FacturaNoEncontradaException {
 		  Factura f = facturas.buscaPorId(id);
@@ -415,19 +383,4 @@ public class Sistema {
 			return mp;
 		}
 	  
-	/*
-	  public void clonaPersonaPorDni(String dni) {
-		Object personaClone;
-		try {
-			personaClone=this.personas.clonaPersona(dni);
-			System.out.println(personaClone.toString());
-		}
-		catch(PersonaNoEncontradaException e) {
-			System.out.println(e.toString());
-		}
-		catch(CloneNotSupportedException e) {
-			System.out.println(e.toString());
-		}
-	}
-	*/
 }

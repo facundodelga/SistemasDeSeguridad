@@ -1,4 +1,10 @@
-package modelo;
+package factory;
+
+import modelo.Cheque;
+import modelo.Efectivo;
+import modelo.Factura;
+import modelo.MedioPago;
+import modelo.Tarjeta;
 
 public class MedioPagoFactory {
 	

@@ -138,7 +138,8 @@ public abstract class Persona implements Cloneable{
 	public abstract Factura crearFactura();
 
 	public abstract Factura crearFactura(ArrayList<Contratacion> c);
-		public void pagarFactura(Factura f, MedioPago mp) {
+	
+	public void pagarFactura(Factura f, MedioPago mp) {
 		this.estado.pagarFactura(f,mp);
 	}
 		
