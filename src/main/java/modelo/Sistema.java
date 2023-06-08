@@ -160,14 +160,9 @@ public class Sistema {
 	public void pagarFactura(Factura f,String mp, GregorianCalendar fecha) throws FacturaNoEncontradaException {
 		assert f != null : "El parámetro f no puede ser nulo";
 		assert mp != null && !mp.isBlank() : "El parámetro mp no puede ser nulo ni vacío";
-<<<<<<< HEAD
 		MedioPago medio = MedioPagoFactory.getMedioPago(mp, f);
 		f.pagarFactura(medio);
 		//f.pagarFactura(mp, fecha);
-		
-=======
-		f.pagarFactura(mp, fecha);
->>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 	}
 	
 	public Factura buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
