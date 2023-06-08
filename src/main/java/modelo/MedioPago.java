@@ -1,5 +1,6 @@
 package modelo;
 
 public interface MedioPago {
-	double getValor();
+	double calcularTotal();
+	String descripcion();
 }

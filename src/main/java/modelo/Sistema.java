@@ -134,20 +134,21 @@ public class Sistema {
 	 * @return el total pagado de la factura.
 	 * @throws FacturaNoEncontradaException
 	 */
-	public double pagarFactura(int id,String mp) throws FacturaNoEncontradaException {
+	/*public double pagarFactura(int id,String mp) throws FacturaNoEncontradaException {
 		assert id >= 0 : "El parámetro id debe ser positivo";
 		assert mp != null && !mp.isEmpty() : "El parámetro mp no puede ser nulo ni vacío";
 	    Factura f;
 		double total;
 	    try{
 			f = this.facturas.buscaPorId(id);
-			total = f.totalModificadorMP(mp);
+			MedioPago medio = MedioPagoFactory.getMedioPago(mp);
+			total = f.calcularBonificacion(medio);
 	    }catch(FacturaNoEncontradaException e) {
 			throw e;
 	    }
 		return total;
 	}
-	
+	*/
 	/**
 	* <b>PRE:</b> Parámetro f distinto de null, parámetro mp distinto de null y distinto de “”
 	* Método que genera el valor de una factura luego de haber indicado el método de pago de la misma
@@ -159,7 +160,14 @@ public class Sistema {
 	public void pagarFactura(Factura f,String mp, GregorianCalendar fecha) throws FacturaNoEncontradaException {
 		assert f != null : "El parámetro f no puede ser nulo";
 		assert mp != null && !mp.isBlank() : "El parámetro mp no puede ser nulo ni vacío";
+<<<<<<< HEAD
+		MedioPago medio = MedioPagoFactory.getMedioPago(mp, f);
+		f.pagarFactura(medio);
+		//f.pagarFactura(mp, fecha);
+		
+=======
 		f.pagarFactura(mp, fecha);
+>>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 	}
 	
 	public Factura buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
@@ -383,7 +391,10 @@ public class Sistema {
 		}
 	  
 	  public String detalleFactura(int id, String opcion) throws FacturaNoEncontradaException {
-	        return facturas.buscaPorId(id).detalle(opcion);
+		  Factura f = facturas.buscaPorId(id);
+		  MedioPago mp = MedioPagoFactory.getMedioPago(opcion, f);   
+		  
+		  return f.detalle(mp);
 	    }
 
 	    public String detalleFacturas() {
@@ -402,6 +413,12 @@ public class Sistema {
 
 	        return res;
 	    }
+
+
+		public MedioPago getMedioPago(String metodoPago, Factura f) {
+			MedioPago mp= MedioPagoFactory.getMedioPago(metodoPago, f);
+			return mp;
+		}
 	  
 	/*
 	  public void clonaPersonaPorDni(String dni) {

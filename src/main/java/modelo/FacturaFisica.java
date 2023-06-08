@@ -22,7 +22,7 @@ public class FacturaFisica extends Factura {
 	 */
 
 	@Override
-	public double calcularBonificacion() {
+	public double calcularTotal() {
 		double total = 0;
 		for (Contratacion contratacion : contrataciones) {
 			total += contratacion.getTarifa();
@@ -31,7 +31,13 @@ public class FacturaFisica extends Factura {
 			while (it.hasNext()) 
 				total += it.next().getTarifa();
 		}
+		this.setTotalOriginal(total);
 		return total;
+	}
+
+	@Override
+	public String descripcion() {
+		return "Factura Juridica";
 	}
 
 }

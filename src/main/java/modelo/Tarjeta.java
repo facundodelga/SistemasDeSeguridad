@@ -2,9 +2,6 @@ package modelo;
 
 public class Tarjeta extends MedioPagoDecorator {
 
-	public Tarjeta() {
-		
-	}
 	
 	public Tarjeta(MedioPago mp) {
 		super.setEncapsulado(mp);
@@ -16,8 +13,8 @@ public class Tarjeta extends MedioPagoDecorator {
 	}
 
 	@Override
-	public double getValor() {
-		return encapsulado.getValor() * 1.05;
+	public double calcularTotal() {
+		return encapsulado.calcularTotal() * 1.05;
 	}
 
 }

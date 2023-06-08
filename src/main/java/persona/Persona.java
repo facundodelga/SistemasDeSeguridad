@@ -11,6 +11,10 @@ import excepciones.AccionNoAutorizadaException;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
+<<<<<<< HEAD
+import modelo.MedioPago;
+=======
+>>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 import promociones.iPromocion;
 
 public abstract class Persona implements Cloneable{
@@ -138,9 +142,20 @@ public abstract class Persona implements Cloneable{
 
 	public abstract Factura crearFactura(ArrayList<Contratacion> c);
 	
+<<<<<<< HEAD
+	public void pagarFactura(Factura f, MedioPago mp) {
+		this.estado.pagarFactura(f,mp);
+	}
+		
+	/*
+	public void pagarFactura(Factura f, String mp, GregorianCalendar fecha) {
+		this.estado.pagarFactura(f, fecha, mp);
+	}*/
+=======
 	public void pagarFactura(Factura f, String mp, GregorianCalendar fecha) {
 		this.estado.pagarFactura(f, fecha, mp);
 	}
+>>>>>>> 380f070f2f8e37269b6998cfe461d6daa440bcd5
 	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException{
 		
 	}

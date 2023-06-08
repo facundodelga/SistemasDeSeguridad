@@ -2,10 +2,6 @@ package modelo;
 
 public class Cheque extends MedioPagoDecorator {
 
-	public Cheque() {
-		super();
-	}
-	
 	public Cheque(MedioPago encapsulado) {
 		super.setEncapsulado(encapsulado);
 	}
@@ -16,8 +12,8 @@ public class Cheque extends MedioPagoDecorator {
 	}
 
 	@Override
-	public double getValor() {
-		return encapsulado.getValor() * 1.1;
+	public double calcularTotal() {
+		return encapsulado.calcularTotal() * 1.1;
 	}
 
 }
