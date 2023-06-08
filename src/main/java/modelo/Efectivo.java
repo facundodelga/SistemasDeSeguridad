@@ -12,8 +12,9 @@ public class Efectivo extends MedioPagoDecorator {
 	}
 
 	@Override
-	public double getValor() {
-		return encapsulado.getValor() * 0.8;
+	public double calcularTotal() {
+		return encapsulado.calcularTotal() * 0.8;
 	}
+
 
 }

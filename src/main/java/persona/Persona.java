@@ -5,14 +5,19 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import contrataciones.Contratacion;
+import contrataciones.iServicio;
+import excepciones.AccionNoAutorizadaException;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
+import modelo.MedioPago;
+import promociones.iPromocion;
 
 public abstract class Persona implements Cloneable{
 	private String nombre;
 	private String dni;
 	private ArrayList<Domicilio> domicilios;
+	private IEstado estado;
 	
 	/**
 	 * <b>PRE:</b>El parámetro nombre debe ser distinto de null y distinto de "". El parámetro dni debe ser distinto de null y distinto de "". 
@@ -132,6 +137,21 @@ public abstract class Persona implements Cloneable{
 	public abstract Factura crearFactura();
 
 	public abstract Factura crearFactura(ArrayList<Contratacion> c);
+	
+	public void pagarFactura(Factura f, MedioPago mp) {
+		this.estado.pagarFactura(f,mp);
+	}
+		
+	/*
+	public void pagarFactura(Factura f, String mp, GregorianCalendar fecha) {
+		this.estado.pagarFactura(f, fecha, mp);
+	}*/
+	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException{
+		
+	}
+	public void darDeBajaServicio(Contratacion c,Factura f) throws AccionNoAutorizadaException{
+		
+	}
 	
 	
 }
