@@ -21,8 +21,11 @@ import factory.MedioPagoFactory;
 import factory.PersonaFactory;
 import factory.PromocionFactory;
 import factory.ServicioFactory;
+import persona.ConContratacionEstado;
 import persona.Domicilio;
+import persona.MorosoEstado;
 import persona.Persona;
+import persona.SinContratacionEstado;
 import promociones.iPromocion;
 
 public class Sistema {
@@ -60,13 +63,19 @@ public class Sistema {
 
 	//MES ACTUAL
 	public void adelantarMes() {
-		this.mes++;
-		//se deben chequear los estados de todas la personas
-		//pensaba en crear un metodo de busqueda de facturas por dni y por mes, para que sea mas sencillo implementar los cambios de estado
-		//ademas, ayudaría para el metodo de eliminar contrataciones, por ahora, solo lo probé para una unica factura en sistema
+		if(this.mes<12)
+			this.mes++;
+		else 
+			this.mes=1;
+		this.chequearEstados();
+		this.crearNuevasFacturas();
 	}
+
 	public void atrasarMes() {
-		this.mes--;
+		if(this.mes!=1)
+			this.mes--;
+		else
+			this.mes=12;
 	}
 	
 	//FACTURA
@@ -83,9 +92,6 @@ public class Sistema {
 		assert p != null : "El parámetro p no puede ser nulo";
 		Factura f = p.crearFactura();
 		facturas.add(f);
-		/*Factura f = new Factura(p);
-	    facturas.add(f);
-	    */
 		return f;
 	}
 
@@ -151,23 +157,7 @@ public class Sistema {
 	 * @return el total pagado de la factura.
 	 * @throws FacturaNoEncontradaException
 	 * @throws PersonaNoEncontradaException 
-	 */
-	/*public double pagarFactura(int id,String mp) throws FacturaNoEncontradaException {
-		assert id >= 0 : "El parámetro id debe ser positivo";
-		assert mp != null && !mp.isEmpty() : "El parámetro mp no puede ser nulo ni vacío";
-	    Factura f;
-		double total;
-	    try{
-			f = this.facturas.buscaPorId(id);
-			MedioPago medio = MedioPagoFactory.getMedioPago(mp);
-			total = f.calcularBonificacion(medio);
-	    }catch(FacturaNoEncontradaException e) {
-			throw e;
-	    }
-		return total;
-	}
-	*/
-	
+	 */	
 	public boolean pagarFactura(String dni, int id, String mp) throws FacturaNoEncontradaException, PersonaNoEncontradaException {
 		assert id >= 0 : "El parámetro id debe ser positivo";
 		Factura f;
@@ -179,7 +169,7 @@ public class Sistema {
 		return f.isPagoRealizado();
 	}
 		
-	public Factura buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
+	public ArrayList<Factura> buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
 		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Persona p=personas.buscaPorDni(dni);
 		return facturas.buscaPorPersona(p);
@@ -189,7 +179,14 @@ public class Sistema {
 		assert id >= 0 : "El parámetro id debe ser positivo";
 		return facturas.buscaPorId(id);
 	}
-	
+
+	private void crearNuevasFacturas() {
+		Factura f = null;
+		for (Persona p : personas) {
+			f = this.crearFactura(p, p.getContrataciones());
+			this.facturas.add(f);
+		}
+	}
 	
 	//CONTRATACIONES
 	/**
@@ -207,32 +204,16 @@ public class Sistema {
 	public Contratacion crearContratacion(String dni, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
 		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Contratacion contr=null;
-		Persona p1;
-		Factura f;
-		try {
-			p1=personas.buscaPorDni(dni);
-			contr=new Contratacion(dni,dom,serv,promo);			
-			try {
-				f=facturas.buscaPorPersona(p1);
-				f.agregarContratacion(contr);
-			} catch (FacturaNoEncontradaException e) {
-				this.crearFactura(p1,contr);
-			}
-		} catch (PersonaNoEncontradaException e) {
-			throw e;
-		}		
+		Persona p = this.personas.buscaPorDni(dni);
+		contr=new Contratacion(dni,dom,serv,promo);			
+		p.agregarContratacion(contr);
 		return contr;
 	}
 
 	
-	
 	public void eliminarContratacion(String dni, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
 		Persona p = this.personas.buscaPorDni(dni);
-		Factura f = this.buscarFacturaPorPersona(dni);
-		Contratacion c = f.buscarContratacion(dom);
-		
-		p.eliminarDomicilio(dom);
-		f.eliminarContratacion(c);
+		p.eliminarContratacion(dom);
 	}
 
 
@@ -254,20 +235,15 @@ public class Sistema {
 		assert d != null : "El campo Domicilio debe estar instanciado";
 		assert a != null : "El campo iContratable debe estar instanciado";
 		Persona p1,p2;
-		Factura f;
-		int i=0;
+		
 		p1 = personas.buscaPorDni(dni);//la persona existe
 		p2 = personas.buscaPorDomicilio(d);
+
 		if(p1.equals(p2)) {//el domicilio pertenece a la persona esperada
-			try {
-				f=facturas.buscaPorPersona(p1);
-				while(i<f.getContrataciones().size() && !d.equals(f.getContrataciones().get(i).getDomicilio())) {
-					i++;
-				}
-					f.getContrataciones().get(i).agregarContratable(a);
-			
-			} catch (FacturaNoEncontradaException e) {
-				throw new ContratacionNoEncontradaException();
+			ArrayList<Contratacion> cont= p1.getContrataciones();
+			for (Contratacion c : cont) {
+				if(c.getDomicilio()==d)
+					c.agregarContratable(a);
 			}
 		}else {
 			throw new DomicilioNoPerteneceAPersona(p1,d);
@@ -282,6 +258,51 @@ public class Sistema {
 		Persona p=PersonaFactory.crearPersona(nombre,dni,tipo);
 		this.personas.add(p);
 		return p;
+	}
+	
+	private void chequearEstados() {
+		/*
+		 1. selecciono la primer persona de la lista (foreach)
+		 2. busco su ultima factura
+		 	a. existe
+		 		i. esta paga: estado conContrataciones
+		 		ii. no esta paga, busco la factura anterior
+		 		 	*. no existe, estado conContrataciones
+		 		 	*. existe
+		 		 		.. esta paga, estado conContrataciones
+		 		 		.. no esta paga, estado Moroso 
+		 	b. no existe, significa que no tiene contrataciones, entonces sinContrataciones
+		 3. creo la nueva a partir de la ultima factura
+		 */
+		ArrayList<Factura> facs;
+		
+		for (Persona p : personas) {
+			try {
+				facs = this.facturas.buscaPorPersona(p);
+			} catch (FacturaNoEncontradaException e) {
+				facs = null;
+			}
+			if (facs == null) {
+				if(p.getContrataciones().size()!=0)
+					p.setEstado(new ConContratacionEstado(p));
+				else
+					p.setEstado(new SinContratacionEstado(p));
+			}else{
+				//busco la factura por mes
+				Factura f1=null,f2=null;
+				for (Factura factura : facs) {
+					if(factura.getMes()==(this.mes-1))
+						f1 = factura;
+					else
+						if(factura.getMes()==(this.mes-2))
+							f2 = factura;
+				}
+				if(!f1.isPagoRealizado() && !f2.isPagoRealizado())
+					p.setEstado(new MorosoEstado(p));
+				else 
+					p.setEstado(new ConContratacionEstado(p));
+			}
+		}
 	}
 	
 	//DOMICILIO

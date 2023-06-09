@@ -5,7 +5,6 @@ import java.util.Iterator;
 import contrataciones.Contratacion;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
-import persona.Domicilio;
 import persona.Persona;
 import utils.DoubleUtils;
 
@@ -95,17 +94,6 @@ public abstract class Factura implements MedioPago,Cloneable{
 		} else
 			throw new ContratacionYaRegistradaException(con, this.persona);
 	}
-	
-	/**
-	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
-	 * Método que elimina una contratacion existente de la colección de contrataciones de la persona. OPCIONAL! Lanza excepción cuando la contratacion no se encuentra en la lista. 
-	 * @param dom Parámetro de tipo Domicilio, es una contratacion que pertenecia a la factura, pero que se desea retirar
-	 */
-	public void eliminarContratacion(Contratacion con) {
-		assert con != null : "El campo Contratacion debe estar instanciado";
-		if(this.existeContratacion(con))
-			this.contrataciones.remove(con);
-	}
 
 	/**
 	 * <b>PRE:</b> el parámetro debe ser distinto de null
@@ -155,23 +143,6 @@ public abstract class Factura implements MedioPago,Cloneable{
 			throw new CloneNotSupportedException("No se pudo clonar Factura, FALLO="+e.toString());
 		}
 	}	
-	
-
-	public double getTotalOriginal() {
-		return totalOriginal;
-	}
-
-	public double getTotalBonificado() {
-		return totalBonificado;
-	}
-
-	public void setTotalOriginal(double totalOriginal) {
-		this.totalOriginal = totalOriginal;
-	}
-
-	public void setTotalBonificado(double totalBonificado) {
-		this.totalBonificado = totalBonificado;
-	}
 		
 	public String detalle() {
 		return detalle("");
@@ -211,26 +182,55 @@ public abstract class Factura implements MedioPago,Cloneable{
 		return res;
 	}
 
-	public boolean isPagoRealizado() {
-		return pagoRealizado;
+
+	public double getTotalOriginal() {
+		return totalOriginal;
 	}
 
-	public void setPagoRealizado(boolean pagoRealizado) {
-		this.pagoRealizado = pagoRealizado;
+	public double getTotalBonificado() {
+		return totalBonificado;
+	}
+
+	public boolean isPagoRealizado() {
+		return pagoRealizado;
 	}
 
 	public int getMes() {
 		return mes;
 	}
 
-	public Contratacion buscarContratacion(Domicilio dom) {
-		Contratacion con = null;
-		for (Contratacion contratacion : contrataciones) {
-			if(contratacion.getDomicilio()==dom)
-				con=contratacion;
-		}
-		return con;
+	public static void setUltFactura(int ultFactura) {
+		Factura.ultFactura = ultFactura;
 	}
+
+	public void setNumFactura(int numFactura) {
+		this.numFactura = numFactura;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
+	public void setContrataciones(ArrayList<Contratacion> contrataciones) {
+		this.contrataciones = contrataciones;
+	}
+
+	public void setTotalOriginal(double totalOriginal) {
+		this.totalOriginal = totalOriginal;
+	}
+
+	public void setTotalBonificado(double totalBonificado) {
+		this.totalBonificado = totalBonificado;
+	}
+
+	public void setPagoRealizado(boolean pagoRealizado) {
+		this.pagoRealizado = pagoRealizado;
+	}
+
+	public void setMes(int mes) {
+		this.mes = mes;
+	}
+
 
 
 }

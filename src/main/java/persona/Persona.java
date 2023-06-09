@@ -7,6 +7,7 @@ import java.util.Objects;
 import contrataciones.Contratacion;
 import contrataciones.iServicio;
 import excepciones.AccionNoAutorizadaException;
+import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import modelo.Factura;
@@ -18,6 +19,7 @@ public abstract class Persona implements Cloneable{
 	private String dni;
 	private ArrayList<Domicilio> domicilios;
 	private IEstado estado;
+	protected ArrayList<Contratacion> contrataciones;
 	
 	/**
 	 * <b>PRE:</b>El parámetro nombre debe ser distinto de null y distinto de "". El parámetro dni debe ser distinto de null y distinto de "". 
@@ -80,6 +82,69 @@ public abstract class Persona implements Cloneable{
 		if(this.existeDomicilio(dom))
 			this.domicilios.remove(dom);
 		else throw new DomicilioNoEncontradoException(dni,dom);
+	}	
+	
+	//CONTRATACIONES
+	public ArrayList<Contratacion> getContrataciones() {
+		return contrataciones;
+	}
+	
+	/**
+	 * Verifica si existe una contratación específica en la lista de contrataciones.
+	 * @param con la contratación que se desea buscar.
+	 * @return true si la contratación existe en la lista, false en caso contrario.
+	 */
+	public boolean existeContratacion(Contratacion con) {
+		assert con != null : "El campo Contratacion debe estar instanciado";
+		return contrataciones.contains(con);
+	}
+	
+	/**
+	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
+	 * Método que inserta una contratacion nueva en la colección de contrataciones de la factura. Lanza excepción cuando la contratacion ya esta registrado. 
+	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la factura instanciada
+	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException 
+	 */
+	
+	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+		assert con != null : "El campo Contratacion debe estar instanciado";
+		if (!this.existeContratacion(con)) {
+			if (this.existeDomicilio(con.getDomicilio())) {
+				throw new DomicilioYaRegistradoException(con.getDni(), con.getDomicilio());
+			}
+			this.contrataciones.add(con);
+		} else
+			throw new ContratacionYaRegistradaException(con, this);
+	}
+	
+	/**
+	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
+	 * Método que elimina una contratacion existente de la colección de contrataciones de la persona. OPCIONAL! Lanza excepción cuando la contratacion no se encuentra en la lista. 
+	 * @param dom Parámetro de tipo Domicilio, es una contratacion que pertenecia a la factura, pero que se desea retirar
+	 */
+	public void eliminarContratacion(Contratacion con) {
+		assert con != null : "El campo Contratacion debe estar instanciado";
+		if(this.existeContratacion(con)) {
+			this.domicilios.remove(con.getDomicilio());
+			this.contrataciones.remove(con);
+		}
+	}	
+	
+	private Contratacion buscarContratacion(Domicilio dom) {
+		Contratacion con = null;
+		for (Contratacion contratacion : contrataciones) {
+			if(contratacion.getDomicilio()==dom)
+				con=contratacion;
+		}
+		return con;
+	}
+	public void eliminarContratacion(Domicilio dom) {
+		assert dom != null : "El campo domicilio debe estar instanciado";
+		Contratacion con = this.buscarContratacion(dom);
+		if(this.existeContratacion(con)) {
+			this.domicilios.remove(con.getDomicilio());
+			this.contrataciones.remove(con);
+		}
 	}	
 	
 	@Override
@@ -147,5 +212,33 @@ public abstract class Persona implements Cloneable{
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar Persona, FALLO="+e.toString());
 		}
+	}
+
+	public ArrayList<Domicilio> getDomicilios() {
+		return domicilios;
+	}
+
+	public IEstado getEstado() {
+		return estado;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public void setDomicilios(ArrayList<Domicilio> domicilios) {
+		this.domicilios = domicilios;
+	}
+
+	public void setEstado(IEstado estado) {
+		this.estado = estado;
+	}
+
+	public void setContrataciones(ArrayList<Contratacion> contrataciones) {
+		this.contrataciones = contrataciones;
 	}
 }
