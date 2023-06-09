@@ -1,9 +1,20 @@
 package simulacion;
 
-public class Observable {
-    protected Observer ojo = new ObserverSimulacion();
+import java.util.ArrayList;
 
-    protected void avisarObservador(String mensaje){
-        this.ojo.update(mensaje);
+public abstract class Observable {
+    protected ArrayList<Observer> ojos = new ArrayList<>();
+    public void avisarObservador(Object arg) throws IllegalAccessException {
+        for(Observer o : this.ojos){
+            o.update(this , arg);
+        }
     }
+    public void agregarObservador(Observer observer){
+        this.ojos.add(observer);
+    }
+    public void eliminarObservador(Observer observer){
+        this.ojos.remove(observer);
+    }
+
+
 }

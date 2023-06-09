@@ -30,18 +30,25 @@ import promociones.PromoDorada;
 import promociones.PromoPlatino;
 import promociones.SinPromo;
 import promociones.iPromocion;
+import simulacion.ServicioTecnico;
+import simulacion.Tecnico;
 
 public class Sistema {
 	private static Sistema instancia  = null;
 	private ArregloFacturas facturas;
 	private ArregloPersonas personas;
+	private ArrayList<Tecnico> tecnicos;
+	private ServicioTecnico servicioTecnico;
 
-	
 	private Sistema() {
 		super();
 		this.facturas=new ArregloFacturas();
 		this.personas=new ArregloPersonas();
+		this.tecnicos=new ArrayList<>();
+		this.servicioTecnico = new ServicioTecnico();
 	}
+
+
 	
 	
 	public static Sistema getInstancia(){
@@ -402,6 +409,12 @@ public class Sistema {
 
 	        return res;
 	    }
+
+		public void darAltaTecnico(String nombre){
+		  assert nombre != null : "El campo nombre no debe estar vacio";
+			Tecnico t = new Tecnico(nombre,servicioTecnico);
+			this.tecnicos.add(t);
+		}
 	  
 	/*
 	  public void clonaPersonaPorDni(String dni) {
