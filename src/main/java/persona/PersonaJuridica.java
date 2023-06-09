@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import contrataciones.Contratacion;
 import modelo.Factura;
 import modelo.FacturaJuridica;
+import modelo.Sistema;
 
 public class PersonaJuridica extends Persona{
 
@@ -12,7 +13,15 @@ public class PersonaJuridica extends Persona{
 		super(nombre, dni);
 	}
 	
-	
+	@Override
+	public Factura crearFactura() {
+		return new FacturaJuridica(this, Sistema.getInstancia().getMes());
+	}
+
+	@Override
+	public Factura crearFactura(ArrayList<Contratacion> c) {
+		return new FacturaJuridica(this,c, Sistema.getInstancia().getMes());
+	}
 	/**
 	 * Lanza una excepción de tipo CloneNotSupportedException indicando que la clonación de una PersonaJuridica no está permitida.
 	 *
@@ -21,15 +30,5 @@ public class PersonaJuridica extends Persona{
 	@Override
 	public Object clone()throws CloneNotSupportedException{
 		throw new CloneNotSupportedException("PersonaJuridica no puede clonarse");
-	}
-	
-	@Override
-	public Factura crearFactura() {
-		return new FacturaJuridica(this);
-	}
-
-	@Override
-	public Factura crearFactura(ArrayList<Contratacion> c) {
-		return new FacturaJuridica(this,c);
 	}
 }

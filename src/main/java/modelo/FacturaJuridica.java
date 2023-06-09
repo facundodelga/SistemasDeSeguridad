@@ -9,12 +9,12 @@ import persona.Persona;
 
 public class FacturaJuridica extends Factura {
 
-	public FacturaJuridica(Persona persona, ArrayList<Contratacion> c) {
-		super(persona, c);
+	public FacturaJuridica(Persona persona, ArrayList<Contratacion> c, int mes) {
+		super(persona, c, mes);
 	}
 
-	public FacturaJuridica(Persona persona) {
-		super(persona);
+	public FacturaJuridica(Persona persona, int mes) {
+		super(persona, mes);
 	}
 
 	/**

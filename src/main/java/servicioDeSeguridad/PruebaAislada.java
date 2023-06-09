@@ -260,15 +260,15 @@ public class PruebaAislada {
 			System.out.println(e.getMessage());
 		}
 		
-		MedioPago cheque = MedioPagoFactory.getMedioPago("CHEQUE", factura);
 		
-		System.out.println(factura.detalle(cheque));
+		System.out.println(factura.detalle("cheque"));
 		
 		if (!DoubleUtils.equals(factura.calcularTotal(), 48450)) {
 			throw new Error("ERROR DE PRUEBA: El precio de factura esta mal calculado");
 		}
 	
 		System.out.println("PRUEBA COMPLETADA: Factura\n"); 
+		
 		
 	}
 }

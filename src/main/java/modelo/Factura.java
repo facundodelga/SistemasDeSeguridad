@@ -1,11 +1,11 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import contrataciones.Contratacion;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
+import persona.Domicilio;
 import persona.Persona;
 import utils.DoubleUtils;
 
@@ -17,24 +17,24 @@ public abstract class Factura implements MedioPago,Cloneable{
 	private double totalOriginal;
 	private double totalBonificado;
 	private boolean pagoRealizado;
-	private GregorianCalendar fecha;
+	private int mes;
 
 	/**
 	 * <b>PRE:</b> el parámetro persona debe ser distinto de null. El parámetro mpago debe ser distinto de null
 	 * @param persona parámetro de tipo Persona, es el individuo que debe pagar la factura instanciada
 	 * @param mpago parámetro de tipo MedioPago, es el medio de pago que se utilizará para pagar la factura instanciada
 	 */
-	public Factura(Persona persona) {
+	public Factura(Persona persona, int mes) {
 		super();
 		assert persona != null : "El campo Persona debe estar instanciado";
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = new ArrayList<Contratacion>();
 		this.setPagoRealizado(false);
-		this.fecha = (GregorianCalendar) GregorianCalendar.getInstance();
+		this.mes = mes;
 	}
 
-	public Factura(Persona persona,ArrayList<Contratacion> c) {
+	public Factura(Persona persona,ArrayList<Contratacion> c, int mes) {
 		super();
 		assert persona != null : "El campo Persona debe estar instanciado";
         assert c != null : "El campo ArrayList<Contratacion> debe estar instanciado";
@@ -42,7 +42,7 @@ public abstract class Factura implements MedioPago,Cloneable{
 		this.persona = persona;
 		this.contrataciones = c;
 		this.setPagoRealizado(false);
-		this.fecha = (GregorianCalendar) GregorianCalendar.getInstance();
+		this.mes = mes;
 	}
 
 	public int getNumFactura() {
@@ -103,7 +103,7 @@ public abstract class Factura implements MedioPago,Cloneable{
 	 */
 	public void eliminarContratacion(Contratacion con) {
 		assert con != null : "El campo Contratacion debe estar instanciado";
-		if(!this.existeContratacion(con))
+		if(this.existeContratacion(con))
 			this.contrataciones.remove(con);
 	}
 
@@ -114,8 +114,9 @@ public abstract class Factura implements MedioPago,Cloneable{
 	 * @return total a pagar por una factura, dependiendo de el tipo de la instancia persona.
 	 */
 	public double calcularBonificacion(MedioPago mp) {
-		this.totalBonificado= mp.calcularTotal();
-		return this.totalBonificado;
+		//this.totalBonificado= mp.calcularTotal();
+		//return this.totalBonificado;
+		return mp.calcularTotal();
 	}
 
 	/**
@@ -173,20 +174,26 @@ public abstract class Factura implements MedioPago,Cloneable{
 	}
 		
 	public String detalle() {
-		return detalle(null);
+		return detalle("");
 	}
 
 	public String descripcion() {
 		return "Factura";
 	}
-	public String detalle(MedioPago mp) {
-		String res = "N° Factura: " + numFactura + " | " + "Abonado: " + persona + " | Contrataciones:";
-
+	public String detalle(String medio) {
+		MedioPago mp = Sistema.getInstancia().getMedioPago(medio, this);
+		
+		String res = "N° Factura: " + numFactura + " | " + "Abonado: " + persona + " | Estado de pago: ";
+		if(this.pagoRealizado)
+			res+="realizado";
+		else
+			res+="por pagar";
+			
+		res+=" | Contrataciones:";
+		
 		for (Contratacion contratacion : contrataciones) {
 			res += "\n\n" + contratacion.detalle();
 		}
-		
-		this.calcularTotal();
 		
 		if (mp != null) {
 			this.totalBonificado = this.calcularBonificacion(mp);
@@ -200,6 +207,7 @@ public abstract class Factura implements MedioPago,Cloneable{
 		if (this.totalBonificado != this.totalOriginal) {
 			res += "\nTotal Factura Final (c/ metodo de pago " + mp.descripcion() + " ): $" + DoubleUtils.format(this.totalBonificado);
 		}
+		
 		return res;
 	}
 
@@ -211,7 +219,18 @@ public abstract class Factura implements MedioPago,Cloneable{
 		this.pagoRealizado = pagoRealizado;
 	}
 
-	public GregorianCalendar getFecha() {
-		return fecha;
-	}	
+	public int getMes() {
+		return mes;
+	}
+
+	public Contratacion buscarContratacion(Domicilio dom) {
+		Contratacion con = null;
+		for (Contratacion contratacion : contrataciones) {
+			if(contratacion.getDomicilio()==dom)
+				con=contratacion;
+		}
+		return con;
+	}
+
+
 }

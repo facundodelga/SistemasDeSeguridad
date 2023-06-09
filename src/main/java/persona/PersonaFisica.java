@@ -12,6 +12,15 @@ public class PersonaFisica extends Persona{
 		super(nombre, dni);
 	}
 
+	@Override
+	public Factura crearFactura() {
+		return new FacturaFisica(this, Sistema.getInstancia().getMes());
+	}
+
+	@Override
+	public Factura crearFactura(ArrayList<Contratacion> c) {
+		return new FacturaFisica(this,c, Sistema.getInstancia().getMes());
+	}
 	/**
 	 * Crea y devuelve un clon de la instancia actual de PersonaFisica.
 	 *
@@ -27,15 +36,5 @@ public class PersonaFisica extends Persona{
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar PersonaFisica, FALLO="+e.toString());
 		}
-	}
-
-	@Override
-	public Factura crearFactura() {
-		return new FacturaFisica(this);
-	}
-
-	@Override
-	public Factura crearFactura(ArrayList<Contratacion> c) {
-		return new FacturaFisica(this,c);
 	}
 }

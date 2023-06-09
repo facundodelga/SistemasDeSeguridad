@@ -1,7 +1,6 @@
 package persona;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -32,6 +31,7 @@ public abstract class Persona implements Cloneable{
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = new ArrayList<Domicilio>();
+		this.estado = new SinContratacionEstado(this);
 	}
 	
 	//getters
@@ -77,37 +77,11 @@ public abstract class Persona implements Cloneable{
 	 */
 	public void eliminarDomicilio(Domicilio dom) throws DomicilioNoEncontradoException{
 		assert dom != null : "El campo Domicilio debe estar instanciado";
-		if(!this.existeDomicilio(dom))
+		if(this.existeDomicilio(dom))
 			this.domicilios.remove(dom);
 		else throw new DomicilioNoEncontradoException(dni,dom);
 	}	
 	
-	//bonificaciones
-	
-	/**
-	 * Crea y devuelve una copia superficial de este objeto Persona.
-	 * 
-	 * @return una copia superficial de este objeto Persona.
-	 * @throws CloneNotSupportedException si la clonación no es compatible o el objeto no es clonable.
-	 */
-	@Override
-	public Object clone()throws CloneNotSupportedException{
-		int i;
-		try {
-			Persona nObj=(Persona)super.clone();
-			nObj.dni=this.dni;
-			nObj.nombre=this.nombre;
-			nObj.domicilios = new ArrayList<Domicilio>();// linea de correccion de clone, consultar
-			for(i=0;i<this.domicilios.size();i++) {
-				nObj.domicilios.add( (Domicilio) this.domicilios.get(i).clone());
-			}
-			return nObj;
-		}
-		catch(CloneNotSupportedException e) {
-			throw new CloneNotSupportedException("No se pudo clonar Persona, FALLO="+e.toString());
-		}
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(dni);
@@ -143,17 +117,35 @@ public abstract class Persona implements Cloneable{
 		this.estado.pagarFactura(f,mp);
 	}
 		
-	/*
-	public void pagarFactura(Factura f, String mp, GregorianCalendar fecha) {
-		this.estado.pagarFactura(f, fecha, mp);
-	}*/
-
 	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException{
 		
 	}
 	public void darDeBajaServicio(Contratacion c,Factura f) throws AccionNoAutorizadaException{
 		
 	}
-	
-	
+
+	/**
+	 * Crea y devuelve una copia superficial de este objeto Persona.
+	 * 
+	 * @return una copia superficial de este objeto Persona.
+	 * @throws CloneNotSupportedException si la clonación no es compatible o el objeto no es clonable.
+	 */
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		int i;
+		try {
+			Persona nObj=(Persona)super.clone();
+			nObj.dni=this.dni;
+			nObj.nombre=this.nombre;
+			nObj.domicilios = new ArrayList<Domicilio>();// linea de correccion de clone, consultar
+			for(i=0;i<this.domicilios.size();i++) {
+				nObj.domicilios.add( (Domicilio) this.domicilios.get(i).clone());
+			}
+			nObj.estado=this.estado;
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Persona, FALLO="+e.toString());
+		}
+	}
 }

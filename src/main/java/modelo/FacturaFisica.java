@@ -9,12 +9,12 @@ import persona.Persona;
 
 public class FacturaFisica extends Factura {
 
-	public FacturaFisica(Persona persona) {
-		super(persona);
+	public FacturaFisica(Persona persona, int mes) {
+		super(persona, mes);
 	}
 
-	public FacturaFisica(Persona persona, ArrayList<Contratacion> c) {
-		super(persona, c);
+	public FacturaFisica(Persona persona, ArrayList<Contratacion> c, int mes) {
+		super(persona, c, mes);
 	}
 	/**
 	 * Método que calcula el total a pagar por una persona física por la factura.

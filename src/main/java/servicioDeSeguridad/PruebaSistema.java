@@ -17,6 +17,7 @@ import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
+import modelo.MedioPago;
 import modelo.Sistema;
 import persona.Domicilio;
 import persona.Persona;

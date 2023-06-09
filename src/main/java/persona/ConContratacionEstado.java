@@ -15,11 +15,6 @@ public class ConContratacionEstado implements IEstado {
 	}
 
 
-/*	@Override
-	public void pagarFactura(Factura f, GregorianCalendar fecha, String metodoPago) {
-		//f.setPago(new Pago(f.totalModificadorMP(metodoPago), fecha, true));
-	}
-*/
 	@Override
 	public void pagarFactura(Factura f, MedioPago metodoPago) {
 		f.calcularBonificacion(metodoPago);	
