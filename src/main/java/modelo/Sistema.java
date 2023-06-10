@@ -389,13 +389,17 @@ public class Sistema {
 	    }
 
 
-		public void darAltaTecnico(String nombre){
-		  assert nombre != null : "El campo nombre no debe estar vacio";
-			Tecnico t = new Tecnico(nombre,servicioTecnico);
+		public void darAltaTecnico(String nombre) {
+			assert nombre != null : "El campo nombre no debe estar vacio";
+			Tecnico t = new Tecnico(nombre, servicioTecnico);
 			this.tecnicos.add(t);
 		}
-	  
-	/*
+
+	public int getMes() {
+		return mes;
+	}
+
+/*
 	  public void clonaPersonaPorDni(String dni) {
 		Object personaClone;
 		try {
@@ -417,6 +421,7 @@ public class Sistema {
 		public void setMes(int mes) {
 			this.mes = mes;
 		}
-}
 */
+}
+
  

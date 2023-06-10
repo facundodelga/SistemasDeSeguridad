@@ -60,7 +60,7 @@ public class PersonaFisica extends Persona{
 
 
 	public PersonaFisica(String nombre, String dni, ArrayList<Domicilio> domicilios, IEstado estado) {
-		super(nombre, dni, domicilios, estado);
+		super(nombre, dni, domicilios);
 		this.estado = estado;
 	}
 

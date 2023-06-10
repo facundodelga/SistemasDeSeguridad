@@ -1,7 +1,5 @@
 package persistencia;
 
-import modelo.Pago;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,7 +8,6 @@ public class FacturaJuridicaDTO implements Serializable {
     private int numFactura;
     private PersonaFisicaDTO persona;
     private ArrayList<ContratacionDTO> contrataciones;
-    private Pago pago;
 
     public int getNumFactura() {
         return numFactura;
@@ -36,11 +33,4 @@ public class FacturaJuridicaDTO implements Serializable {
         this.contrataciones = contrataciones;
     }
 
-    public Pago getPago() {
-        return pago;
-    }
-
-    public void setPago(Pago pago) {
-        this.pago = pago;
-    }
 }

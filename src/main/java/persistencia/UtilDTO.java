@@ -2,6 +2,7 @@ package persistencia;
 
 import modelo.ArregloFacturas;
 import modelo.Factura;
+import modelo.FacturaFisica;
 import modelo.Sistema;
 import persona.*;
 
@@ -9,27 +10,36 @@ import java.util.ArrayList;
 
 public class UtilDTO {
     public static Sistema SistemaDTOASistema(SistemaDTO sDto){
-        Sistema s = new Sistema(sDto.getFacturas(),);
+        //Sistema s = new Sistema(sDto.getFacturas(),);
 
     }
 
-    public static ArregloFacturas arregloFacturasDTOAArregloFacturas(ArrayList<FacturaFisicaDTO> Dto){
+    public static ArregloFacturas arregloFacturasDTOAArregloFacturas(ArrayList<FacturaFisicaDTO> dto){
         ArregloFacturas arregloFacturas = new ArregloFacturas();
 
-        for(FacturaFisicaDTO fDto : Dto){
-            arregloFacturas.add( facturaDtoAFactura(fDto) );
+        for(FacturaFisicaDTO fDto : dto){
+            arregloFacturas.add( facturaFisicaDtoAFactura(fDto) );
         }
+
+        return arregloFacturas;
     }
 
-    public static Factura facturaDtoAFactura(FacturaFisicaDTO Dto){
-        Factura f = new Factura(
-                personaDtoAPersona(Dto.getPersona()),
+    public static FacturaFisica facturaFisicaDtoAFactura(FacturaFisicaDTO dto){
+        FacturaFisica f = new Factura(
+                personaFisicaDtoAPersona(dto.getPersona()),
+                dto.getContrataciones(),
+                dto.
                 );
         return f;
     }
 
-    public static PersonaFisica personaDtoAPersona(PersonaFisicaDTO dto){
-        PersonaFisica p = new PersonaFisica(dto.getNombre(), dto.getDni(),dto.getDomicilios(),estadoDTOAEstado(dto));
+    public static PersonaFisica personaFisicaDtoAPersona(PersonaFisicaDTO dto){
+        PersonaFisica p = new PersonaFisica(
+                dto.getNombre(),
+                dto.getDni(),
+                ArregloDomicliosDTOAArregloDomicilio(dto.getDomicilios()),
+                estadoDTOAEstado(dto)
+        );
 
         return p;
     }
@@ -54,7 +64,6 @@ public class UtilDTO {
         for(String domicilio : dto){
             d.add(DomicilioDTOADomicilio(domicilio));
         }
-
         return d;
     }
 
@@ -66,4 +75,6 @@ public class UtilDTO {
 
         return new Domicilio(nombreCalle,numero);
     }
+
+
 }
