@@ -35,7 +35,7 @@ public class MorosoEstado implements IEstado {
 	}
 
 	@Override
-	public void darDeBajaServicio(Contratacion c, Factura f) throws AccionNoAutorizadaException {
+	public void darDeBajaServicio(Contratacion c) throws AccionNoAutorizadaException {
 		throw new AccionNoAutorizadaException("Persona morosa",p);
 	}
 
