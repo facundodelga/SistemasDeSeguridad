@@ -1,12 +1,9 @@
 package persona;
 
-import java.util.GregorianCalendar;
-
 import contrataciones.Contratacion;
 import contrataciones.iServicio;
-import excepciones.AccionNoAutorizadaException;
 import modelo.Factura;
-import modelo.Pago;
+import modelo.MedioPago;
 import promociones.iPromocion;
 
 public class ConContratacionEstado implements IEstado {
@@ -17,9 +14,11 @@ public class ConContratacionEstado implements IEstado {
 		this.p = p;
 	}
 
+
 	@Override
-	public void pagarFactura(Factura f, GregorianCalendar fecha, String metodoPago) {
-		f.setPago(new Pago(f.totalModificadorMP(metodoPago), fecha, true));
+	public void pagarFactura(Factura f, MedioPago metodoPago) {
+		f.calcularBonificacion(metodoPago);	
+		f.setPagoRealizado(true);
 	}
 
 	@Override
@@ -27,6 +26,6 @@ public class ConContratacionEstado implements IEstado {
 	}
 
 	@Override
-	public void darDeBajaServicio(Contratacion c, Factura f) {
+	public void darDeBajaServicio(Contratacion c) {
 	}
 }

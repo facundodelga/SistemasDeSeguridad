@@ -3,8 +3,17 @@ package persona;
 import java.util.ArrayList;
 
 import contrataciones.Contratacion;
+import contrataciones.iServicio;
+import excepciones.AccionNoAutorizadaException;
+import excepciones.ContratacionYaRegistradaException;
+import excepciones.DomicilioNoEncontradoException;
+import excepciones.DomicilioYaRegistradoException;
+import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
 import modelo.FacturaJuridica;
+import modelo.MedioPago;
+import modelo.Sistema;
+import promociones.iPromocion;
 
 public class PersonaJuridica extends Persona{
 
@@ -12,7 +21,33 @@ public class PersonaJuridica extends Persona{
 		super(nombre, dni);
 	}
 	
+	@Override
+	public Factura crearFactura() {
+		return new FacturaJuridica(this, Sistema.getInstancia().getMes());
+	}
+
+	@Override
+	public Factura crearFactura(ArrayList<Contratacion> c) {
+		return new FacturaJuridica(this,c, Sistema.getInstancia().getMes());
+	}
+
+	@Override
+	public void pagarFactura(Factura f, MedioPago mp) {
+		f.calcularBonificacion(mp);	
+		f.setPagoRealizado(true);
+	}
+
+	@Override
+	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo, Factura f)throws AccionNoAutorizadaException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+		Sistema.getInstancia().crearContratacion(getDni(), dom, serv, promo);
+	}
+
+	@Override
+	public void darDeBajaServicio(Contratacion c) throws AccionNoAutorizadaException {
+		this.eliminarContratacion(c.getDomicilio());
+	}
 	
+
 	/**
 	 * Lanza una excepción de tipo CloneNotSupportedException indicando que la clonación de una PersonaJuridica no está permitida.
 	 *
@@ -22,14 +57,9 @@ public class PersonaJuridica extends Persona{
 	public Object clone()throws CloneNotSupportedException{
 		throw new CloneNotSupportedException("PersonaJuridica no puede clonarse");
 	}
-	
-	@Override
-	public Factura crearFactura() {
-		return new FacturaJuridica(this);
-	}
 
 	@Override
-	public Factura crearFactura(ArrayList<Contratacion> c) {
-		return new FacturaJuridica(this,c);
+	public void actualizar(Factura f1, Factura f2) {
+		//no realiza acciones porque no tiene estado
 	}
 }

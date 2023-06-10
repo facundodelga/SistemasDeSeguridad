@@ -9,12 +9,12 @@ import persona.Persona;
 
 public class FacturaFisica extends Factura {
 
-	public FacturaFisica(Persona persona) {
-		super(persona);
+	public FacturaFisica(Persona persona, int mes) {
+		super(persona, mes);
 	}
 
-	public FacturaFisica(Persona persona, ArrayList<Contratacion> c) {
-		super(persona, c);
+	public FacturaFisica(Persona persona, ArrayList<Contratacion> c, int mes) {
+		super(persona, c, mes);
 	}
 	/**
 	 * Método que calcula el total a pagar por una persona física por la factura.
@@ -22,7 +22,7 @@ public class FacturaFisica extends Factura {
 	 */
 
 	@Override
-	public double calcularBonificacion() {
+	public double calcularTotal() {
 		double total = 0;
 		for (Contratacion contratacion : contrataciones) {
 			total += contratacion.getTarifa();
@@ -31,7 +31,13 @@ public class FacturaFisica extends Factura {
 			while (it.hasNext()) 
 				total += it.next().getTarifa();
 		}
+		this.setTotalOriginal(total);
 		return total;
+	}
+
+	@Override
+	public String descripcion() {
+		return "Factura Juridica";
 	}
 
 }

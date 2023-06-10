@@ -9,12 +9,12 @@ import persona.Persona;
 
 public class FacturaJuridica extends Factura {
 
-	public FacturaJuridica(Persona persona, ArrayList<Contratacion> c) {
-		super(persona, c);
+	public FacturaJuridica(Persona persona, ArrayList<Contratacion> c, int mes) {
+		super(persona, c, mes);
 	}
 
-	public FacturaJuridica(Persona persona) {
-		super(persona);
+	public FacturaJuridica(Persona persona, int mes) {
+		super(persona, mes);
 	}
 
 	/**
@@ -22,7 +22,7 @@ public class FacturaJuridica extends Factura {
 	 * @return total a pagar por la factura, siendo una persona de tipo juridica
 	 */
 	@Override
-	public double calcularBonificacion() {
+	public double calcularTotal() {
 		double total = 0;
 		int cont = 1;
 
@@ -37,8 +37,14 @@ public class FacturaJuridica extends Factura {
 				total += it.next().getTarifa() * mod;
 			cont++;
 		}
+		this.setTotalOriginal(total);
 		return total;
 	
+	}
+	
+	@Override
+	public String descripcion() {
+		return "Factura Juridica";
 	}
 
 }

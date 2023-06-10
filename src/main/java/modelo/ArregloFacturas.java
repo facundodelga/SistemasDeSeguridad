@@ -59,17 +59,18 @@ public class ArregloFacturas extends ArrayList<Factura>{
      * @throws FacturaNoEncontradaException 
 	 * @throws Exception si el DNI buscado no existe.
 	 */
-    public Factura buscaPorPersona(Persona p) throws FacturaNoEncontradaException{
+    public ArrayList<Factura> buscaPorPersona(Persona p) throws FacturaNoEncontradaException{
 		Factura f = null;
+		ArrayList<Factura>facs=new ArrayList<Factura>();
 		
 		for(int i = 0; i<this.size();i++) {
 			if(p.getDni().equals(this.get(i).getPersona().getDni()))
 				f = this.get(i);
+				facs.add(f);
 		}
-		
 		if(f == null)
 			throw new FacturaNoEncontradaException();
-		return f;
+		return facs;
     }
 
     /**

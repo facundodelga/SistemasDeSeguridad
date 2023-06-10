@@ -8,7 +8,9 @@ import contrataciones.Contratacion;
 import contrataciones.MovilAcompañamiento;
 import contrataciones.iContratable;
 import contrataciones.iServicio;
+import factory.MedioPagoFactory;
 import modelo.Factura;
+import modelo.MedioPago;
 import persona.Domicilio;
 import persona.Persona;
 import persona.PersonaFisica;
@@ -38,7 +40,7 @@ public class PruebaAislada {
 	public static iPromocion sinPromocion = new SinPromo();
 	public static iPromocion promoDorada = new PromoDorada();
 	public static iPromocion promoPlatino = new PromoPlatino();
-
+	
 
 	public static void main(String[] args) throws Exception {
 		testDomicilio();
@@ -258,12 +260,15 @@ public class PruebaAislada {
 			System.out.println(e.getMessage());
 		}
 		
-		System.out.println(factura.detalle("CHEQUE"));
 		
-		if (!DoubleUtils.equals(factura.totalOriginal(), 48450)) {
+		System.out.println(factura.detalle("cheque"));
+		
+		if (!DoubleUtils.equals(factura.calcularTotal(), 48450)) {
 			throw new Error("ERROR DE PRUEBA: El precio de factura esta mal calculado");
 		}
 	
 		System.out.println("PRUEBA COMPLETADA: Factura\n"); 
+		
+		
 	}
 }

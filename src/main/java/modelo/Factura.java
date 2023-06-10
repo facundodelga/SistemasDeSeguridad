@@ -1,44 +1,47 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import contrataciones.Contratacion;
-import contrataciones.iContratable;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
 import utils.DoubleUtils;
 
-public abstract class Factura implements Cloneable{
+public abstract class Factura implements MedioPago,Cloneable{
 	private static int ultFactura = 0;
 	private int numFactura;
 	private Persona persona;
 	protected ArrayList<Contratacion> contrataciones;
-	private Pago pago;
+	private double totalOriginal;
+	private double totalBonificado;
+	private boolean pagoRealizado;
+	private int mes;
 
 	/**
 	 * <b>PRE:</b> el parámetro persona debe ser distinto de null. El parámetro mpago debe ser distinto de null
 	 * @param persona parámetro de tipo Persona, es el individuo que debe pagar la factura instanciada
 	 * @param mpago parámetro de tipo MedioPago, es el medio de pago que se utilizará para pagar la factura instanciada
 	 */
-	public Factura(Persona persona) {
+	public Factura(Persona persona, int mes) {
 		super();
 		assert persona != null : "El campo Persona debe estar instanciado";
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = new ArrayList<Contratacion>();
-//		this.pago = new Pago(totalOriginal());
+		this.setPagoRealizado(false);
+		this.mes = mes;
 	}
 
-	public Factura(Persona persona,ArrayList<Contratacion> c) {
+	public Factura(Persona persona,ArrayList<Contratacion> c, int mes) {
 		super();
 		assert persona != null : "El campo Persona debe estar instanciado";
         assert c != null : "El campo ArrayList<Contratacion> debe estar instanciado";
 		this.numFactura = ultFactura++;
 		this.persona = persona;
 		this.contrataciones = c;
-//		this.pago = new Pago(totalOriginal());
+		this.setPagoRealizado(false);
+		this.mes = mes;
 	}
 
 	public int getNumFactura() {
@@ -61,15 +64,6 @@ public abstract class Factura implements Cloneable{
 	 */
 	public boolean existeContratacion(Contratacion con) {
 		assert con != null : "El campo Contratacion debe estar instanciado";
-		/*boolean existe = true;
-		int i = 0;
-		while(i < contrataciones.size() && (!con.getDomicilio().equals(contrataciones.get(i).getDomicilio()) || !con.getDni().equals(contrataciones.get(i).getDni()))) {
-			i++;
-		}
-		if(i == contrataciones.size()){
-			existe = false;
-		}
-		return existe;*/
 		return contrataciones.contains(con);
 	}
 	
@@ -100,61 +94,33 @@ public abstract class Factura implements Cloneable{
 		} else
 			throw new ContratacionYaRegistradaException(con, this.persona);
 	}
-	
-	/**
-	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
-	 * Método que elimina una contratacion existente de la colección de contrataciones de la persona. OPCIONAL! Lanza excepción cuando la contratacion no se encuentra en la lista. 
-	 * @param dom Parámetro de tipo Domicilio, es una contratacion que pertenecia a la factura, pero que se desea retirar
-	 */
-	public void eliminarContratacion(Contratacion con) {
-		assert con != null : "El campo Contratacion debe estar instanciado";
-		if(!this.existeContratacion(con))
-			this.contrataciones.remove(con);
-		//else exception ContratacionNoEncontradaException
-	}
 
 	/**
 	 * <b>PRE:</b> el parámetro debe ser distinto de null
 	 * Método abstracto de permite calcular una bonificación sobre el importe de una factura dependiendo del tipo de persona
-	 * @param factura Parámetro de tipo Factura, es una factura asociada a la persona.
+	 * @param <MetodoPago>
 	 * @return total a pagar por una factura, dependiendo de el tipo de la instancia persona.
 	 */
-	public abstract double calcularBonificacion();
+	public double calcularBonificacion(MedioPago mp) {
+		//this.totalBonificado= mp.calcularTotal();
+		//return this.totalBonificado;
+		return mp.calcularTotal();
+	}
 
 	/**
 	 * Método que calcula el total a pagar por la factura sin descuentos por métodos de pago.
 	 * @return total a pagar por la factura
 	 */	
-	public double totalOriginal() {
-		return this.calcularBonificacion();
-	}
+/*	public double totalOriginal() {
+		this.totalOriginal=this.calcularTotal();
+		return this.totalOriginal;
+	}*/
 
-	/**
-	 * Método que calcula el total a pagar por la factura con descuentos por métodos de pago.
-	 * @return total a pagar por la factura
-	 */	
-	public double totalModificadorMP(String metodo) {
-		assert metodo != null && !metodo.isBlank(): "El campo metodo no debe estar vacio";
-		this.pago=new Pago(totalOriginal());
-		MedioPago mp = this.pago;
-		
-		if(metodo.equalsIgnoreCase("CHEQUE"))
-			mp = new Cheque(mp);
-
-		if(metodo.equalsIgnoreCase("EFECTIVO"))
-			mp = new Efectivo(mp);
-
-		if(metodo.equalsIgnoreCase("TARJETA"))
-			mp = new Tarjeta(mp);
-		
-		
-		return mp.getValor();
-	}
+	public abstract double calcularTotal();
 	
-	public void pagarFactura(String mp, GregorianCalendar fecha) {
-		persona.pagarFactura(this, mp, fecha);
+	public void pagarFactura(MedioPago medio) {
+		persona.pagarFactura(this, medio);
 	}
-		
 	/**
 	 * Crea y devuelve una copia profunda de esta instancia de Factura.
 	 *
@@ -169,50 +135,102 @@ public abstract class Factura implements Cloneable{
 			for(i=0;i<this.contrataciones.size();i++) {
 				nObj.contrataciones.add( (Contratacion) this.contrataciones.get(i).clone());
 			}
-			nObj.pago=(Pago)this.pago.clone();
+			//nObj.pago=(Pago)this.pago.clone();
 			nObj.persona=(Persona)persona.clone();
 			return nObj;
 		}
 		catch(CloneNotSupportedException e) {
 			throw new CloneNotSupportedException("No se pudo clonar Factura, FALLO="+e.toString());
 		}
-	}
-
-	public Pago getPago() {
-		return pago;
-	}
-
-	
-	public void setPago(Pago pago) {
-		this.pago = pago;
-	}
-
+	}	
+		
 	public String detalle() {
 		return detalle("");
 	}
-	
-	public String detalle(String metodoPago) {
-		String res = "N° Factura: " + numFactura + " | " + "Abonado: " + persona + " | Contrataciones:";
 
+	public String descripcion() {
+		return "Factura";
+	}
+	public String detalle(String medio) {
+		MedioPago mp = Sistema.getInstancia().getMedioPago(medio, this);
+		
+		String res = "N° Factura: " + numFactura + " | " + "Abonado: " + persona + " | Estado de pago: ";
+		if(this.pagoRealizado)
+			res+="realizado";
+		else
+			res+="por pagar";
+			
+		res+=" | Contrataciones:";
+		
 		for (Contratacion contratacion : contrataciones) {
 			res += "\n\n" + contratacion.detalle();
 		}
 		
-		double totOrig = totalOriginal();
-		double totFinal;
-		
-		if (!metodoPago.isEmpty()) {
-			totFinal = totalModificadorMP(metodoPago);
+		if (mp != null) {
+			this.totalBonificado = this.calcularBonificacion(mp);
 		}
 		else {
-			totFinal = totOrig;
+			this.totalBonificado = this.totalOriginal;
 		}
 		
-		res += "\n\nTotal Factura: $" + DoubleUtils.format(totOrig);
+		res += "\n\nTotal Factura: $" + DoubleUtils.format(this.totalOriginal);
 		
-		if (totOrig != totFinal) {
-			res += "\nTotal Factura Final (c/ metodo de pago " + metodoPago + " ): $" + DoubleUtils.format(totFinal);
+		if (this.totalBonificado != this.totalOriginal) {
+			res += "\nTotal Factura Final (c/ metodo de pago " + mp.descripcion() + " ): $" + DoubleUtils.format(this.totalBonificado);
 		}
+		
 		return res;
-	}	
+	}
+
+
+	public double getTotalOriginal() {
+		return totalOriginal;
+	}
+
+	public double getTotalBonificado() {
+		return totalBonificado;
+	}
+
+	public boolean isPagoRealizado() {
+		return pagoRealizado;
+	}
+
+	public int getMes() {
+		return mes;
+	}
+
+	public static void setUltFactura(int ultFactura) {
+		Factura.ultFactura = ultFactura;
+	}
+
+	public void setNumFactura(int numFactura) {
+		this.numFactura = numFactura;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
+	public void setContrataciones(ArrayList<Contratacion> contrataciones) {
+		this.contrataciones = contrataciones;
+	}
+
+	public void setTotalOriginal(double totalOriginal) {
+		this.totalOriginal = totalOriginal;
+	}
+
+	public void setTotalBonificado(double totalBonificado) {
+		this.totalBonificado = totalBonificado;
+	}
+
+	public void setPagoRealizado(boolean pagoRealizado) {
+		this.pagoRealizado = pagoRealizado;
+	}
+
+	public void setMes(int mes) {
+		this.mes = mes;
+	}
+
+
+
 }

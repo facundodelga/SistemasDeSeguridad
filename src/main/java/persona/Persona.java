@@ -1,23 +1,25 @@
 package persona;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Objects;
 
 import contrataciones.Contratacion;
 import contrataciones.iServicio;
 import excepciones.AccionNoAutorizadaException;
+import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
+import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
+import modelo.MedioPago;
 import promociones.iPromocion;
 
 public abstract class Persona implements Cloneable{
 	private String nombre;
 	private String dni;
 	private ArrayList<Domicilio> domicilios;
-	private IEstado estado;
+	protected ArrayList<Contratacion> contrataciones;
 	
 	/**
 	 * <b>PRE:</b>El parámetro nombre debe ser distinto de null y distinto de "". El parámetro dni debe ser distinto de null y distinto de "". 
@@ -83,37 +85,74 @@ public abstract class Persona implements Cloneable{
 	 */
 	public void eliminarDomicilio(Domicilio dom) throws DomicilioNoEncontradoException{
 		assert dom != null : "El campo Domicilio debe estar instanciado";
-		if(!this.existeDomicilio(dom))
+		if(this.existeDomicilio(dom))
 			this.domicilios.remove(dom);
 		else throw new DomicilioNoEncontradoException(dni,dom);
 	}	
 	
-	//bonificaciones
+	//CONTRATACIONES
+	public ArrayList<Contratacion> getContrataciones() {
+		return contrataciones;
+	}
 	
 	/**
-	 * Crea y devuelve una copia superficial de este objeto Persona.
-	 * 
-	 * @return una copia superficial de este objeto Persona.
-	 * @throws CloneNotSupportedException si la clonación no es compatible o el objeto no es clonable.
+	 * Verifica si existe una contratación específica en la lista de contrataciones.
+	 * @param con la contratación que se desea buscar.
+	 * @return true si la contratación existe en la lista, false en caso contrario.
 	 */
-	@Override
-	public Object clone()throws CloneNotSupportedException{
-		int i;
-		try {
-			Persona nObj=(Persona)super.clone();
-			nObj.dni=this.dni;
-			nObj.nombre=this.nombre;
-			nObj.domicilios = new ArrayList<Domicilio>();// linea de correccion de clone, consultar
-			for(i=0;i<this.domicilios.size();i++) {
-				nObj.domicilios.add( (Domicilio) this.domicilios.get(i).clone());
-			}
-			return nObj;
-		}
-		catch(CloneNotSupportedException e) {
-			throw new CloneNotSupportedException("No se pudo clonar Persona, FALLO="+e.toString());
-		}
+	public boolean existeContratacion(Contratacion con) {
+		assert con != null : "El campo Contratacion debe estar instanciado";
+		return contrataciones.contains(con);
 	}
-
+	
+	/**
+	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
+	 * Método que inserta una contratacion nueva en la colección de contrataciones de la factura. Lanza excepción cuando la contratacion ya esta registrado. 
+	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la factura instanciada
+	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException 
+	 */
+	
+	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
+		assert con != null : "El campo Contratacion debe estar instanciado";
+		if (!this.existeContratacion(con)) {
+			if (this.existeDomicilio(con.getDomicilio())) {
+				throw new DomicilioYaRegistradoException(con.getDni(), con.getDomicilio());
+			}
+			this.contrataciones.add(con);
+		} else
+			throw new ContratacionYaRegistradaException(con, this);
+	}
+	
+	/**
+	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
+	 * Método que elimina una contratacion existente de la colección de contrataciones de la persona. OPCIONAL! Lanza excepción cuando la contratacion no se encuentra en la lista. 
+	 * @param dom Parámetro de tipo Domicilio, es una contratacion que pertenecia a la factura, pero que se desea retirar
+	 */
+	public void eliminarContratacion(Contratacion con) {
+		assert con != null : "El campo Contratacion debe estar instanciado";
+		if(this.existeContratacion(con)) {
+			this.domicilios.remove(con.getDomicilio());
+			this.contrataciones.remove(con);
+		}
+	}	
+	
+	private Contratacion buscarContratacion(Domicilio dom) {
+		Contratacion con = null;
+		for (Contratacion contratacion : contrataciones) {
+			if(contratacion.getDomicilio()==dom)
+				con=contratacion;
+		}
+		return con;
+	}
+	public void eliminarContratacion(Domicilio dom) {
+		assert dom != null : "El campo domicilio debe estar instanciado";
+		Contratacion con = this.buscarContratacion(dom);
+		if(this.existeContratacion(con)) {
+			this.domicilios.remove(con.getDomicilio());
+			this.contrataciones.remove(con);
+		}
+	}	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(dni);
@@ -145,15 +184,57 @@ public abstract class Persona implements Cloneable{
 
 	public abstract Factura crearFactura(ArrayList<Contratacion> c);
 	
-	public void pagarFactura(Factura f, String mp, GregorianCalendar fecha) {
-		this.estado.pagarFactura(f, fecha, mp);
-	}
-	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException{
+	public abstract void pagarFactura(Factura f, MedioPago mp);
 		
-	}
-	public void darDeBajaServicio(Contratacion c,Factura f) throws AccionNoAutorizadaException{
-		
-	}
+	public abstract void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException;
 	
-	
+	public abstract void darDeBajaServicio(Contratacion c) throws AccionNoAutorizadaException;
+
+	/**
+	 * Crea y devuelve una copia superficial de este objeto Persona.
+	 * 
+	 * @return una copia superficial de este objeto Persona.
+	 * @throws CloneNotSupportedException si la clonación no es compatible o el objeto no es clonable.
+	 */
+	@Override
+	public Object clone()throws CloneNotSupportedException{
+		int i;
+		try {
+			Persona nObj=(Persona)super.clone();
+			nObj.dni=this.dni;
+			nObj.nombre=this.nombre;
+			nObj.domicilios = new ArrayList<Domicilio>();// linea de correccion de clone, consultar
+			for(i=0;i<this.domicilios.size();i++) {
+				nObj.domicilios.add( (Domicilio) this.domicilios.get(i).clone());
+			}
+			return nObj;
+		}
+		catch(CloneNotSupportedException e) {
+			throw new CloneNotSupportedException("No se pudo clonar Persona, FALLO="+e.toString());
+		}
+	}
+
+	public ArrayList<Domicilio> getDomicilios() {
+		return domicilios;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public void setDomicilios(ArrayList<Domicilio> domicilios) {
+		this.domicilios = domicilios;
+	}
+
+	public void setContrataciones(ArrayList<Contratacion> contrataciones) {
+		this.contrataciones = contrataciones;
+	}
+
+	public abstract void actualizar(Factura f1, Factura f2);
+
+
 }
