@@ -34,14 +34,14 @@ public abstract class Persona implements Cloneable{
 		this.dni = dni;
 		this.domicilios = new ArrayList<Domicilio>();
 	}
-
-	public Persona(String nombre, String dni, ArrayList<Domicilio> domicilios, IEstado estado) {
+	
+	public Persona(String nombre, String dni, ArrayList<Domicilio> domicilios) {
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = domicilios;
-		this.estado = estado;
 	}
 
+	
 	//getters
 	public String getNombre() {
 		return nombre;

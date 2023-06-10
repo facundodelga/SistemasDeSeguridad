@@ -31,35 +31,25 @@ public class Sistema {
 	private static Sistema instancia  = null;
 	private ArregloFacturas facturas;
 	private ArregloPersonas personas;
-	private ArrayList<Tecnico> tecnicos;
-	private ServicioTecnico servicioTecnico;
 	private int mes;
+	private ArrayList<Tecnico> tecnicos;
+    private ServicioTecnico servicioTecnico;
 	
-	public ArregloFacturas getFacturas() {
-		return facturas;
-	}
-
-
-	public ArregloPersonas getPersonas() {
-		return personas;
-	}
-
+	
+	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos, ServicioTecnico servicioTecnico) {
+        this.facturas = facturas;
+        this.personas = personas;
+        this.tecnicos = tecnicos;
+        this.servicioTecnico = servicioTecnico;
+    }
 	private Sistema() {
 		super();
 		this.facturas=new ArregloFacturas();
 		this.personas=new ArregloPersonas();
-		this.tecnicos=new ArrayList<>();
-		this.servicioTecnico = new ServicioTecnico();
 		this.mes = 0;
 	}
-
-	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos, ServicioTecnico servicioTecnico) {
-		this.facturas = facturas;
-		this.personas = personas;
-		this.tecnicos = tecnicos;
-		this.servicioTecnico = servicioTecnico;
-	}
-
+	
+	
 	public static Sistema getInstancia(){
 		if(instancia == null){
 			instancia = new Sistema();
@@ -315,6 +305,13 @@ public class Sistema {
 		this.personas.buscaPorDni(dni).agregarDomicilio(dom);
 	}
 	
+	//SERVICIO TECNICO
+	public void darAltaTecnico(String nombre) {
+        assert nombre != null : "El campo nombre no debe estar vacio";
+        Tecnico t = new Tecnico(nombre, servicioTecnico);
+        this.tecnicos.add(t);
+    }
+	
 	
 	//PROMOCIONES
 	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
@@ -388,24 +385,9 @@ public class Sistema {
 	        return res;
 	    }
 
-
-		public void darAltaTecnico(String nombre){
-		  assert nombre != null : "El campo nombre no debe estar vacio";
-			Tecnico t = new Tecnico(nombre,servicioTecnico);
-			this.tecnicos.add(t);
-		}
-	  
-	/*
-	  public void clonaPersonaPorDni(String dni) {
-		Object personaClone;
-		try {
-			personaClone=this.personas.clonaPersona(dni);
-			System.out.println(personaClone.toString());
-
 		public MedioPago getMedioPago(String metodoPago, Factura f) {
 			MedioPago mp= MedioPagoFactory.getMedioPago(metodoPago, f);
 			return mp;
-
 		}
 
 
@@ -417,7 +399,15 @@ public class Sistema {
 		public void setMes(int mes) {
 			this.mes = mes;
 		}
-*/
-}
+		
+		public ArregloFacturas getFacturas() {
+			return facturas;
+		}
 
- 
+
+		public ArregloPersonas getPersonas() {
+			return personas;
+		}
+
+
+}

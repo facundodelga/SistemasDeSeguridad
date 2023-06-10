@@ -20,10 +20,6 @@ public class SinContratacionEstado  implements IEstado{
 		this.p = p;
 	}
 
-/*	@Override
-	public void pagarFactura(Factura f, GregorianCalendar fecha, String metodoPago) {
-		f.setPago(new Pago(f.totalModificadorMP(metodoPago), fecha, true));
-	}*/
 	@Override
 	public void pagarFactura(Factura f, MedioPago metodoPago) {
 		//no hace nada

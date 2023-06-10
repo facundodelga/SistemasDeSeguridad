@@ -15,13 +15,6 @@ public class MorosoEstado implements IEstado {
 		this.p = p;
 	}
 
-/*	@Override
-	public void pagarFactura(Factura f, GregorianCalendar fecha, String metodoPago) {
-		//recargo del 30
-		f.setPago(new Pago(f.totalModificadorMP(metodoPago) * 1.3, fecha, true));
-		f.setTotalBonificado(f.getTotalBonificado()*1.3);		
-	}
-*/
 	@Override
 	public void pagarFactura(Factura f, MedioPago metodoPago) {
 		f.calcularBonificacion(metodoPago);
