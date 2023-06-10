@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Observable {
     protected ArrayList<Observer> ojos = new ArrayList<>();
+
     public void avisarObservador(Object arg) throws IllegalAccessException {
         for(Observer o : this.ojos){
             o.update(this , arg);

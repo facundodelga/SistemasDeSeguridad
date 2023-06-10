@@ -15,4 +15,5 @@ public class ObserverSimulacion implements Observer{
         }
         //enviar mensaje al log
     }
+
 }

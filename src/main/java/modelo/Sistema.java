@@ -48,9 +48,13 @@ public class Sistema {
 		this.servicioTecnico = new ServicioTecnico();
 	}
 
+	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos, ServicioTecnico servicioTecnico) {
+		this.facturas = facturas;
+		this.personas = personas;
+		this.tecnicos = tecnicos;
+		this.servicioTecnico = servicioTecnico;
+	}
 
-	
-	
 	public static Sistema getInstancia(){
 		if(instancia == null){
 			instancia = new Sistema();

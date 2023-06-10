@@ -8,6 +8,14 @@ public class ServicioTecnico extends Observable {
     private int tecnicosDisponibles = 0;
     private ArrayList<String> pedidos = new ArrayList<>();
 
+    public ServicioTecnico() {
+    }
+
+    public ServicioTecnico(int tecnicosDisponibles, ArrayList<String> pedidos) {
+        this.tecnicosDisponibles = tecnicosDisponibles;
+        this.pedidos = pedidos;
+    }
+
     public synchronized void pedirTecnico(ClienteThread c){
 
         while(this.tecnicosDisponibles == 0){

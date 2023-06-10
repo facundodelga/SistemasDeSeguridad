@@ -26,6 +26,13 @@ public class Pago implements MedioPago,Cloneable{
 		this.recargoMoroso = recargoMoroso;
 	}
 
+	public Pago(double valor, GregorianCalendar fechaDePago, boolean recargoMoroso, MedioPago mp) {
+		this.valor = valor;
+		this.fechaDePago = fechaDePago;
+		this.recargoMoroso = recargoMoroso;
+		this.mp = mp;
+	}
+
 	/**
      * Crea un objeto Pago con el valor proporcionado.
      * @param valor el valor del pago.
