@@ -10,7 +10,6 @@ public class ClienteThread implements Runnable{
     public ClienteThread(String nombre,ServicioTecnico st){
         this.nombre = nombre;
         this.servicioTecnico = st;
-
     }
 
     public String getNombre() {

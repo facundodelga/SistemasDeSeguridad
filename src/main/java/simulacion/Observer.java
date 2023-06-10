@@ -1,5 +1,5 @@
 package simulacion;
 
 public interface Observer {
-    void update(String mensaje);
+    void update(Observable o,Object mensaje) throws IllegalAccessException;
 }

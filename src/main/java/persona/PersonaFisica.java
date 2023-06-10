@@ -58,6 +58,12 @@ public class PersonaFisica extends Persona{
 					this.setEstado(new MorosoEstado(this));				
 	}
 
+
+	public PersonaFisica(String nombre, String dni, ArrayList<Domicilio> domicilios, IEstado estado) {
+		super(nombre, dni, domicilios, estado);
+		this.estado = estado;
+	}
+
 	/**
 	 * Crea y devuelve un clon de la instancia actual de PersonaFisica.
 	 *

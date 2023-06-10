@@ -45,6 +45,15 @@ public class Contratacion implements Cloneable {
 		this.contratados = new ArrayList<iContratable>();
 	}
 
+	public Contratacion(int id, String dni, Domicilio domicilio, iServicio servicio, ArrayList<iContratable> contratados, iPromocion promo) {
+		this.id = id;
+		this.dni = dni;
+		this.domicilio = domicilio;
+		this.servicio = servicio;
+		this.contratados = contratados;
+		this.promo = promo;
+	}
+
 	public double getTarifa() {
 		return this.getTarifa(this.promo);
 	}
@@ -185,6 +194,6 @@ public class Contratacion implements Cloneable {
 		return id == other.id;
 	}
 	
-	
+
 	
 }
