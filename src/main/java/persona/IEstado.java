@@ -3,6 +3,10 @@ package persona;
 import contrataciones.Contratacion;
 import contrataciones.iServicio;
 import excepciones.AccionNoAutorizadaException;
+import excepciones.ContratacionYaRegistradaException;
+import excepciones.DomicilioNoEncontradoException;
+import excepciones.DomicilioYaRegistradoException;
+import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
 import modelo.MedioPago;
 import promociones.iPromocion;
@@ -10,6 +14,6 @@ import promociones.iPromocion;
 public interface IEstado{
 	
 	void pagarFactura(Factura f, MedioPago metodoPago);
-	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException;
-	public void darDeBajaServicio(Contratacion c,Factura f) throws AccionNoAutorizadaException;
+	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException;
+	public void darDeBajaServicio(Contratacion c) throws AccionNoAutorizadaException;
 }

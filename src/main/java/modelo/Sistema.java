@@ -21,11 +21,8 @@ import factory.MedioPagoFactory;
 import factory.PersonaFactory;
 import factory.PromocionFactory;
 import factory.ServicioFactory;
-import persona.ConContratacionEstado;
 import persona.Domicilio;
-import persona.MorosoEstado;
 import persona.Persona;
-import persona.SinContratacionEstado;
 import promociones.iPromocion;
 
 public class Sistema {
@@ -188,6 +185,15 @@ public class Sistema {
 		}
 	}
 	
+	public String historicoFactura(Persona p) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
+		String res="";
+		ArrayList<Factura> facs = this.buscarFacturaPorPersona(p.getDni());
+		for (Factura f : facs) {
+			res += f.detalle();
+		}		
+		return res;
+	}
+	
 	//CONTRATACIONES
 	/**
 	 * 
@@ -201,13 +207,12 @@ public class Sistema {
 	 * @throws ContratacionYaRegistradaException
 	 * @throws PersonaNoEncontradaException 
 	 */
-	public Contratacion crearContratacion(String dni, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+	public void crearContratacion(String dni, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
 		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Contratacion contr=null;
 		Persona p = this.personas.buscaPorDni(dni);
 		contr=new Contratacion(dni,dom,serv,promo);			
 		p.agregarContratacion(contr);
-		return contr;
 	}
 
 	
@@ -261,20 +266,8 @@ public class Sistema {
 	}
 	
 	private void chequearEstados() {
-		/*
-		 1. selecciono la primer persona de la lista (foreach)
-		 2. busco su ultima factura
-		 	a. existe
-		 		i. esta paga: estado conContrataciones
-		 		ii. no esta paga, busco la factura anterior
-		 		 	*. no existe, estado conContrataciones
-		 		 	*. existe
-		 		 		.. esta paga, estado conContrataciones
-		 		 		.. no esta paga, estado Moroso 
-		 	b. no existe, significa que no tiene contrataciones, entonces sinContrataciones
-		 3. creo la nueva a partir de la ultima factura
-		 */
 		ArrayList<Factura> facs;
+		Factura f1=null,f2=null;
 		
 		for (Persona p : personas) {
 			try {
@@ -282,14 +275,7 @@ public class Sistema {
 			} catch (FacturaNoEncontradaException e) {
 				facs = null;
 			}
-			if (facs == null) {
-				if(p.getContrataciones().size()!=0)
-					p.setEstado(new ConContratacionEstado(p));
-				else
-					p.setEstado(new SinContratacionEstado(p));
-			}else{
-				//busco la factura por mes
-				Factura f1=null,f2=null;
+			if(facs!=null) {
 				for (Factura factura : facs) {
 					if(factura.getMes()==(this.mes-1))
 						f1 = factura;
@@ -297,12 +283,9 @@ public class Sistema {
 						if(factura.getMes()==(this.mes-2))
 							f2 = factura;
 				}
-				if(!f1.isPagoRealizado() && !f2.isPagoRealizado())
-					p.setEstado(new MorosoEstado(p));
-				else 
-					p.setEstado(new ConContratacionEstado(p));
 			}
-		}
+			p.actualizar(f1,f2);
+		}	
 	}
 	
 	//DOMICILIO

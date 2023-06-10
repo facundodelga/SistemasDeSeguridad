@@ -26,6 +26,6 @@ public class ConContratacionEstado implements IEstado {
 	}
 
 	@Override
-	public void darDeBajaServicio(Contratacion c, Factura f) {
+	public void darDeBajaServicio(Contratacion c) {
 	}
 }

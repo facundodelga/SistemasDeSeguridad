@@ -1,11 +1,15 @@
 package persona;
 
-import java.util.GregorianCalendar;
 
 import contrataciones.Contratacion;
 import contrataciones.iServicio;
+import excepciones.ContratacionYaRegistradaException;
+import excepciones.DomicilioNoEncontradoException;
+import excepciones.DomicilioYaRegistradoException;
+import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
 import modelo.MedioPago;
+import modelo.Sistema;
 import promociones.iPromocion;
 
 public class SinContratacionEstado  implements IEstado{
@@ -22,15 +26,16 @@ public class SinContratacionEstado  implements IEstado{
 	}*/
 	@Override
 	public void pagarFactura(Factura f, MedioPago metodoPago) {
-		f.calcularBonificacion(metodoPago);	
-		f.setPagoRealizado(true);
+		//no hace nada
 	}
 	
 	@Override
-	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo, Factura f) {
+	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo, Factura f) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+		Sistema.getInstancia().crearContratacion(p.getDni(), dom, serv, promo);
 	}
 
 	@Override
-	public void darDeBajaServicio(Contratacion c, Factura f) {
+	public void darDeBajaServicio(Contratacion c) {
+		//no hace nada
 	}
 }

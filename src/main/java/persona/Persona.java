@@ -10,6 +10,7 @@ import excepciones.AccionNoAutorizadaException;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
+import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
 import modelo.MedioPago;
 import promociones.iPromocion;
@@ -18,7 +19,6 @@ public abstract class Persona implements Cloneable{
 	private String nombre;
 	private String dni;
 	private ArrayList<Domicilio> domicilios;
-	private IEstado estado;
 	protected ArrayList<Contratacion> contrataciones;
 	
 	/**
@@ -33,7 +33,6 @@ public abstract class Persona implements Cloneable{
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = new ArrayList<Domicilio>();
-		this.estado = new SinContratacionEstado(this);
 	}
 	
 	//getters
@@ -178,16 +177,11 @@ public abstract class Persona implements Cloneable{
 
 	public abstract Factura crearFactura(ArrayList<Contratacion> c);
 	
-	public void pagarFactura(Factura f, MedioPago mp) {
-		this.estado.pagarFactura(f,mp);
-	}
+	public abstract void pagarFactura(Factura f, MedioPago mp);
 		
-	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException{
-		
-	}
-	public void darDeBajaServicio(Contratacion c,Factura f) throws AccionNoAutorizadaException{
-		
-	}
+	public abstract void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException;
+	
+	public abstract void darDeBajaServicio(Contratacion c) throws AccionNoAutorizadaException;
 
 	/**
 	 * Crea y devuelve una copia superficial de este objeto Persona.
@@ -206,7 +200,6 @@ public abstract class Persona implements Cloneable{
 			for(i=0;i<this.domicilios.size();i++) {
 				nObj.domicilios.add( (Domicilio) this.domicilios.get(i).clone());
 			}
-			nObj.estado=this.estado;
 			return nObj;
 		}
 		catch(CloneNotSupportedException e) {
@@ -216,10 +209,6 @@ public abstract class Persona implements Cloneable{
 
 	public ArrayList<Domicilio> getDomicilios() {
 		return domicilios;
-	}
-
-	public IEstado getEstado() {
-		return estado;
 	}
 
 	public void setNombre(String nombre) {
@@ -234,11 +223,11 @@ public abstract class Persona implements Cloneable{
 		this.domicilios = domicilios;
 	}
 
-	public void setEstado(IEstado estado) {
-		this.estado = estado;
-	}
-
 	public void setContrataciones(ArrayList<Contratacion> contrataciones) {
 		this.contrataciones = contrataciones;
 	}
+
+	public abstract void actualizar(Factura f1, Factura f2);
+
+
 }
