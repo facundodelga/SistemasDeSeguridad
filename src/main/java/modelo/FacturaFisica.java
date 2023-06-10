@@ -37,7 +37,7 @@ public class FacturaFisica extends Factura {
 
 	@Override
 	public String descripcion() {
-		return "Factura Juridica";
+		return "Factura Fisica";
 	}
 
 }

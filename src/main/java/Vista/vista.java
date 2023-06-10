@@ -17,33 +17,58 @@ import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Choice;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import net.miginfocom.swing.MigLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
 
-public class vista extends JFrame {
+public class vista extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;
 	private JPanel panelAbonados;
 	private JPanel panelTecnnicos;
 	private JPanel panelFacturasHistoricas;
 	private JButton btnAgregaTecnico;
-	private JLabel lblNewLabel;
-	private JTextField textField;
-	private JButton btnNewButton;
-	private JTextArea textArea;
-	private JLabel lblNewLabel_1;
-	private JComboBox comboBox;
-	private JLabel lblNewLabel_2;
-	private JTextArea textArea_1;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
-	private JTextField textField_1;
-	private JLabel lblNewLabel_5;
-	private JTextField textField_2;
-	private JLabel lblNewLabel_6;
-	private JComboBox comboBox_1;
-	private JButton btnNewButton_1;
-	private JLabel lblNewLabel_7;
-	private JTextArea textArea_2;
+	private JLabel lblNombreTecnico;
+	private JTextField textField_NombreTecnico;
+	private JButton btnIniciaSimulacion;
+	private JTextArea textLogTecnicos;
+	private JLabel lblLogTecnicos;
+	private JComboBox comboBox_Accion;
+	private JLabel lblAccion;
+	private JTextArea textArea_Estado;
+	private JLabel lblEstado;
+	private JLabel lblNombreYApellido;
+	private JTextField textField_DNI;
+	private JLabel lblDNI;
+	private JTextField textField_NombreYApellido;
+	private JLabel lblFactura;
+	private JComboBox comboBox_Factura;
+	private JButton btnEjecuta;
+	private JLabel lblDireccion;
+	private JTextField textField_Direccion;
+	private JButton btnAgregaDireccion;
+	private JTextArea textFacturas;
+	private JLabel lblFacturas;
+	private JLabel lblDatosAbonante;
+	private JLabel lblNombreYApellidoHistoricas;
+	private JTextField textField_NombreYApellidoHistoricas;
+	private JTextField textField_DNIHistoricas;
+	private JLabel lblDNIHistoricas;
+	private JLabel lblDireccionHistoricas;
+	private JTextField textField_DireccionHistoricas;
+	private JButton btnAgregaDireccionHistoricas;
+	private JButton btnBuscaFacturas;
 
 	/**
 	 * Launch the application.
@@ -65,9 +90,11 @@ public class vista extends JFrame {
 	 * Create the frame.
 	 */
 	public vista() {
+		setTitle("Sistema de Seguridad");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		setBounds(100, 100, 676, 480);
 		setLocationRelativeTo(null);
-		setBounds(100, 100, 721, 483);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(this.contentPane);
@@ -80,94 +107,148 @@ public class vista extends JFrame {
 		this.tabbedPane.addTab("Abonados", null, this.panelAbonados, null);
 		this.panelAbonados.setLayout(null);
 		
-		this.comboBox = new JComboBox();
-		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Pagar factura", "Contratar nuevo servicio", "Baja de un servicio"}));
-		this.comboBox.setBounds(131, 28, 117, 22);
-		this.panelAbonados.add(this.comboBox);
+		this.comboBox_Accion = new JComboBox();
+		this.comboBox_Accion.setBounds(97, 23, 227, 21);
+		this.comboBox_Accion.setModel(new DefaultComboBoxModel(new String[] {"...", "Pagar factura", "Contratar nuevo servicio", "Baja de un servicio"}));
+		this.panelAbonados.add(this.comboBox_Accion);
 		
-		this.lblNewLabel_2 = new JLabel("Acción:");
-		this.lblNewLabel_2.setBounds(34, 32, 46, 14);
-		this.panelAbonados.add(this.lblNewLabel_2);
+		this.lblAccion = new JLabel("Acción:");
+		this.lblAccion.setBounds(6, 26, 87, 14);
+		this.panelAbonados.add(this.lblAccion);
 		
-		this.textArea_1 = new JTextArea();
-		this.textArea_1.setBounds(363, 27, 317, 368);
-		this.panelAbonados.add(this.textArea_1);
+		this.textArea_Estado = new JTextArea();
+		this.textArea_Estado.setBounds(328, 23, 317, 369);
+		this.panelAbonados.add(this.textArea_Estado);
 		
-		this.lblNewLabel_3 = new JLabel("Estado:");
-		this.lblNewLabel_3.setBounds(363, 11, 66, 14);
-		this.panelAbonados.add(this.lblNewLabel_3);
+		this.lblEstado = new JLabel("Estado:");
+		this.lblEstado.setBounds(328, 6, 184, 14);
+		this.panelAbonados.add(this.lblEstado);
 		
-		this.lblNewLabel_4 = new JLabel("Nombre/Apellido:");
-		this.lblNewLabel_4.setBounds(34, 98, 87, 14);
-		this.panelAbonados.add(this.lblNewLabel_4);
+		this.lblNombreYApellido = new JLabel("Nombre/Apellido:");
+		this.lblNombreYApellido.setBounds(6, 95, 87, 14);
+		this.panelAbonados.add(this.lblNombreYApellido);
 		
-		this.textField_1 = new JTextField();
-		this.textField_1.setBounds(131, 127, 117, 22);
-		this.panelAbonados.add(this.textField_1);
-		this.textField_1.setColumns(10);
+		this.textField_DNI = new JTextField();
+		this.textField_DNI.setBounds(97, 126, 227, 20);
+		this.panelAbonados.add(this.textField_DNI);
+		this.textField_DNI.setColumns(10);
 		
-		this.lblNewLabel_5 = new JLabel("DNI:");
-		this.lblNewLabel_5.setBounds(34, 131, 46, 14);
-		this.panelAbonados.add(this.lblNewLabel_5);
+		this.lblDNI = new JLabel("DNI:");
+		this.lblDNI.setBounds(6, 129, 87, 14);
+		this.panelAbonados.add(this.lblDNI);
 		
-		this.textField_2 = new JTextField();
-		this.textField_2.setBounds(131, 94, 117, 22);
-		this.panelAbonados.add(this.textField_2);
-		this.textField_2.setColumns(10);
+		this.textField_NombreYApellido = new JTextField();
+		this.textField_NombreYApellido.setBounds(97, 92, 227, 20);
+		this.panelAbonados.add(this.textField_NombreYApellido);
+		this.textField_NombreYApellido.setColumns(10);
 		
-		this.lblNewLabel_6 = new JLabel("Factura");
-		this.lblNewLabel_6.setBounds(34, 63, 46, 14);
-		this.panelAbonados.add(this.lblNewLabel_6);
+		this.lblFactura = new JLabel("Factura:");
+		this.lblFactura.setBounds(6, 61, 87, 14);
+		this.panelAbonados.add(this.lblFactura);
 		
-		this.comboBox_1 = new JComboBox();
-		this.comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"", "Fisica", "Juridica"}));
-		this.comboBox_1.setBounds(131, 59, 117, 22);
-		this.panelAbonados.add(this.comboBox_1);
+		this.comboBox_Factura = new JComboBox();
+		this.comboBox_Factura.setBounds(97, 58, 227, 20);
+		this.comboBox_Factura.setModel(new DefaultComboBoxModel(new String[] {"...", "Fisica", "Juridica"}));
+		this.panelAbonados.add(this.comboBox_Factura);
 		
-		this.btnNewButton_1 = new JButton("Ejecutar accion");
-		this.btnNewButton_1.setBounds(248, 372, 105, 23);
-		this.panelAbonados.add(this.btnNewButton_1);
+		this.btnEjecuta = new JButton("Ejecutar");
+		this.btnEjecuta.setBounds(207, 369, 117, 23);
+		this.panelAbonados.add(this.btnEjecuta);
 		
-		this.lblNewLabel_7 = new JLabel("Direccion/es:");
-		this.lblNewLabel_7.setBounds(34, 156, 73, 14);
-		this.panelAbonados.add(this.lblNewLabel_7);
+		this.lblDireccion = new JLabel("Dirección/es:");
+		this.lblDireccion.setBounds(6, 163, 87, 14);
+		this.panelAbonados.add(this.lblDireccion);
 		
-		this.textArea_2 = new JTextArea();
-		this.textArea_2.setEnabled(false);
-		this.textArea_2.setBounds(131, 160, 219, 59);
-		this.panelAbonados.add(this.textArea_2);
+		this.textField_Direccion = new JTextField();
+		this.textField_Direccion.setBounds(97, 160, 227, 21);
+		this.panelAbonados.add(this.textField_Direccion);
+		this.textField_Direccion.setColumns(10);
+		
+		this.btnAgregaDireccion = new JButton("Agregar dirección");
+		this.btnAgregaDireccion.setBounds(207, 195, 117, 23);
+		this.panelAbonados.add(this.btnAgregaDireccion);
 		
 		this.panelTecnnicos = new JPanel();
 		this.tabbedPane.addTab("Tecnicos", null, this.panelTecnnicos, null);
 		this.panelTecnnicos.setLayout(null);
 		
 		this.btnAgregaTecnico = new JButton("Agregar tecnico");
-		this.btnAgregaTecnico.setBounds(216, 80, 109, 23);
+		this.btnAgregaTecnico.setBounds(155, 113, 109, 23);
 		this.panelTecnnicos.add(this.btnAgregaTecnico);
 		
-		this.lblNewLabel = new JLabel("Nombre");
-		this.lblNewLabel.setBounds(23, 84, 46, 14);
-		this.panelTecnnicos.add(this.lblNewLabel);
+		this.lblNombreTecnico = new JLabel("Nombre:");
+		this.lblNombreTecnico.setBounds(10, 48, 67, 14);
+		this.panelTecnnicos.add(this.lblNombreTecnico);
 		
-		this.textField = new JTextField();
-		this.textField.setBounds(79, 81, 86, 20);
-		this.panelTecnnicos.add(this.textField);
-		this.textField.setColumns(10);
+		this.textField_NombreTecnico = new JTextField();
+		this.textField_NombreTecnico.setBounds(79, 45, 185, 20);
+		this.panelTecnnicos.add(this.textField_NombreTecnico);
+		this.textField_NombreTecnico.setColumns(10);
 		
-		this.btnNewButton = new JButton("Inicia simulacion");
-		this.btnNewButton.setBounds(216, 114, 109, 23);
-		this.panelTecnnicos.add(this.btnNewButton);
+		this.btnIniciaSimulacion = new JButton("Inicia simulacion");
+		this.btnIniciaSimulacion.setBounds(155, 371, 109, 23);
+		this.panelTecnnicos.add(this.btnIniciaSimulacion);
 		
-		this.textArea = new JTextArea();
-		this.textArea.setBounds(367, 40, 313, 355);
-		this.panelTecnnicos.add(this.textArea);
+		this.textLogTecnicos = new JTextArea();
+		this.textLogTecnicos.setBounds(274, 27, 361, 367);
+		this.panelTecnnicos.add(this.textLogTecnicos);
 		
-		this.lblNewLabel_1 = new JLabel("  Log Tecnicos");
-		this.lblNewLabel_1.setBounds(367, 15, 79, 14);
-		this.panelTecnnicos.add(this.lblNewLabel_1);
+		this.lblLogTecnicos = new JLabel("  Log Tecnicos");
+		this.lblLogTecnicos.setBounds(274, 11, 67, 14);
+		this.panelTecnnicos.add(this.lblLogTecnicos);
 		
 		this.panelFacturasHistoricas = new JPanel();
 		this.tabbedPane.addTab("Facturas Historicas Abonado", null, this.panelFacturasHistoricas, null);
 		this.panelFacturasHistoricas.setLayout(null);
+		
+		this.textFacturas = new JTextArea();
+		this.textFacturas.setBounds(332, 23, 303, 369);
+		this.panelFacturasHistoricas.add(this.textFacturas);
+		
+		this.lblFacturas = new JLabel("Facturas:");
+		this.lblFacturas.setBounds(332, 6, 169, 14);
+		this.panelFacturasHistoricas.add(this.lblFacturas);
+		
+		this.lblDatosAbonante = new JLabel("Datos abonante:");
+		this.lblDatosAbonante.setBounds(6, 6, 224, 14);
+		this.panelFacturasHistoricas.add(this.lblDatosAbonante);
+		
+		this.lblNombreYApellidoHistoricas = new JLabel("Nombre/Apellido:");
+		this.lblNombreYApellidoHistoricas.setBounds(6, 40, 94, 14);
+		this.panelFacturasHistoricas.add(this.lblNombreYApellidoHistoricas);
+		
+		this.textField_NombreYApellidoHistoricas = new JTextField();
+		this.textField_NombreYApellidoHistoricas.setBounds(104, 34, 224, 20);
+		this.textField_NombreYApellidoHistoricas.setColumns(10);
+		this.panelFacturasHistoricas.add(this.textField_NombreYApellidoHistoricas);
+		
+		this.textField_DNIHistoricas = new JTextField();
+		this.textField_DNIHistoricas.setBounds(104, 68, 224, 21);
+		this.textField_DNIHistoricas.setColumns(10);
+		this.panelFacturasHistoricas.add(this.textField_DNIHistoricas);
+		
+		this.lblDNIHistoricas = new JLabel("DNI:");
+		this.lblDNIHistoricas.setBounds(6, 71, 94, 14);
+		this.panelFacturasHistoricas.add(this.lblDNIHistoricas);
+		
+		this.lblDireccionHistoricas = new JLabel("Dirección/es:");
+		this.lblDireccionHistoricas.setBounds(6, 107, 94, 14);
+		this.panelFacturasHistoricas.add(this.lblDireccionHistoricas);
+		
+		this.textField_DireccionHistoricas = new JTextField();
+		this.textField_DireccionHistoricas.setBounds(104, 103, 224, 22);
+		this.textField_DireccionHistoricas.setColumns(10);
+		this.panelFacturasHistoricas.add(this.textField_DireccionHistoricas);
+		
+		this.btnAgregaDireccionHistoricas = new JButton("Agregar dirección");
+		this.btnAgregaDireccionHistoricas.setBounds(211, 139, 117, 23);
+		this.btnAgregaDireccionHistoricas.addActionListener(this);
+		this.panelFacturasHistoricas.add(this.btnAgregaDireccionHistoricas);
+		
+		this.btnBuscaFacturas = new JButton("Buscar Facturas");
+		this.btnBuscaFacturas.setBounds(211, 369, 117, 23);
+		this.panelFacturasHistoricas.add(this.btnBuscaFacturas);
+	}
+	public void actionPerformed(ActionEvent e) {
 	}
 }
