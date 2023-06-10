@@ -1,6 +1,8 @@
 package modelo;
 
-public interface MedioPago {
+import java.io.Serializable;
+
+public interface MedioPago extends Serializable {
 	double calcularTotal();
 	String descripcion();
 }

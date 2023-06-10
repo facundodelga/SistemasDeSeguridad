@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ecae1af-f134-4c5b-8c9d-3a8cfdc91f48" name="Changes" comment="decorator de adicionales y Planteo de sevicio">
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/ContratableDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/ContratacionDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/FacturaFisicaDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/FacturaJuridicaDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/PagoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/PersonaFisicaDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/PersonaJuridicaDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/ServicioDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/ServicioTecnicoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/SistemaDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/TecnicoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/persistencia/UtilDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/contrataciones/Contratacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/contrataciones/Contratacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelo/Pago.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelo/Pago.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/modelo/Sistema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/modelo/Sistema.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persona/Persona.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persona/Persona.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/persona/PersonaFisica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/persona/PersonaFisica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulacion/ClienteThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulacion/ClienteThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulacion/Observable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulacion/Observable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulacion/ObserverSimulacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulacion/ObserverSimulacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulacion/ServicioTecnico.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulacion/ServicioTecnico.java" afterDir="false" />
-    </list>
+    <list default="true" id="0ecae1af-f134-4c5b-8c9d-3a8cfdc91f48" name="Changes" comment="decorator de adicionales y Planteo de sevicio" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

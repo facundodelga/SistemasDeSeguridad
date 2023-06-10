@@ -20,7 +20,11 @@ public class PersonaJuridica extends Persona{
 	public PersonaJuridica(String nombre, String dni) {
 		super(nombre, dni);
 	}
-	
+
+	public PersonaJuridica(String nombre, String dni, ArrayList<Domicilio> domicilios) {
+		super(nombre, dni, domicilios);
+	}
+
 	@Override
 	public Factura crearFactura() {
 		return new FacturaJuridica(this, Sistema.getInstancia().getMes());

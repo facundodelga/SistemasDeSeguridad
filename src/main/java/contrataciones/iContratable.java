@@ -1,6 +1,8 @@
 package contrataciones;
 
-public interface iContratable extends Cloneable{
+import java.io.Serializable;
+
+public interface iContratable extends Serializable,Cloneable{
 	public void setTarifa(double tarifa);
 	public double getTarifa();
 	public String descripcion();

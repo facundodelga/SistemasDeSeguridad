@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import contrataciones.Contratacion;
@@ -8,7 +9,7 @@ import excepciones.DomicilioYaRegistradoException;
 import persona.Persona;
 import utils.DoubleUtils;
 
-public abstract class Factura implements MedioPago,Cloneable{
+public abstract class Factura implements MedioPago,Cloneable, Serializable {
 	private static int ultFactura = 0;
 	private int numFactura;
 	private Persona persona;
@@ -231,6 +232,7 @@ public abstract class Factura implements MedioPago,Cloneable{
 		this.mes = mes;
 	}
 
-
-
+	public static int getUltFactura() {
+		return ultFactura;
+	}
 }

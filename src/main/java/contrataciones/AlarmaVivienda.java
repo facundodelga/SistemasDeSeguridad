@@ -6,7 +6,10 @@ import promociones.iPromocion;
 
 public class AlarmaVivienda implements iServicio, Cloneable {
 	private double tarifa=8500;
-	
+
+	public AlarmaVivienda() {
+	}
+
 	public void setTarifa(double tarifa) {
 		assert tarifa > 0 : "Tarifa debe ser mayor que 0";
 		this.tarifa=tarifa;
