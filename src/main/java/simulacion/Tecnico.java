@@ -1,6 +1,8 @@
 package simulacion;
 
-public class Tecnico implements Runnable {
+import java.io.Serializable;
+
+public class Tecnico implements Serializable,Runnable {
     private String nombre;
     private ServicioTecnico servicioTecnico;
     public Tecnico(String nombre, ServicioTecnico st){

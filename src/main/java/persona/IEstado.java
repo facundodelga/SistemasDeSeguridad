@@ -11,7 +11,9 @@ import modelo.Factura;
 import modelo.MedioPago;
 import promociones.iPromocion;
 
-public interface IEstado{
+import java.io.Serializable;
+
+public interface IEstado extends Serializable {
 	
 	void pagarFactura(Factura f, MedioPago metodoPago);
 	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException;

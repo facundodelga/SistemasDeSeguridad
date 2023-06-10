@@ -1,6 +1,8 @@
 package promociones;
 
-public interface iPromocion {
+import java.io.Serializable;
+
+public interface iPromocion extends Serializable {
 	// double getValor(iServicio servicio);
 	double getPromoVivienda(double valor);
 

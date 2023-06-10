@@ -1,11 +1,12 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import excepciones.FacturaNoEncontradaException;
 import persona.Persona;
 
-public class ArregloFacturas extends ArrayList<Factura>{
+public class ArregloFacturas extends ArrayList<Factura> implements Serializable {
     private static final long serialVersionUID = 1L;
     
     public ArregloFacturas() {
