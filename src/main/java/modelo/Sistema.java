@@ -43,7 +43,7 @@ public class Sistema implements Serializable, I_Sistema {
         this.tecnicos = tecnicos;
         this.servicioTecnico = servicioTecnico;
     }
-	public Sistema() {
+	private Sistema() {
 		super();
 		this.facturas=new ArregloFacturas();
 		this.personas=new ArregloPersonas();
@@ -90,42 +90,6 @@ public class Sistema implements Serializable, I_Sistema {
 		Factura f = p.crearFactura();
 		facturas.add(f);
 		return f;
-	}
-
-	/**
-	 * <b>PRE:</b> Parámetro p distinto de null, parámetro c distinto de null 
-	 * Crea una nueva factura asociada a una persona y una lista de contrataciones.
-	 * Crea una nueva factura asociada a la persona y la lista de contrataciones especificadas.
-	 * Agrega la factura a la lista de facturas.
-	 * 
-	 * @param p, parámetro de tipo Persona, la persona asociada a la factura.
-	 * @param c, parámetro de tipo ArrayList<Contratacion>, la lista de contrataciones asociadas a la factura.
-	 */
-	public Factura crearFactura(Persona p, ArrayList<Contratacion> c) {
-		assert p != null : "El parámetro p no puede ser nulo";
-		Factura f = p.crearFactura(c);
-		facturas.add(f);
-		return f;
-	}
-	
-	/**
-	 * <b>PRE:</b> Parámetro p distinto de null, parámetro contr distinto de null 
-	 * Crea una nueva factura asociada a una persona y una contratación.
-	 * Crea una nueva factura asociada a la persona y la contratación especificadas.
-	 * Agrega la factura a la lista de facturas.
-	 * 
-	 * @param p, parámetro de tipo Persona, la persona asociada a la factura.
-	 * @param contr, parámetro de tipo Contratacion, la contratación asociada a la factura.
-	 * @throws ContratacionYaRegistradaException si la contratación ya está registrada en otra factura.
-	 * @throws DomicilioYaRegistradoException si el domicilio de la contratación ya está registrado en otra factura.
-	 */
-	public Factura crearFactura(Persona p, Contratacion contr) throws ContratacionYaRegistradaException, DomicilioYaRegistradoException {
-		assert p != null : "El parámetro p no puede ser nulo";
-		assert contr != null : "El parámetro contr no puede ser nulo";
-		ArrayList<Contratacion> c = new ArrayList<Contratacion>();
-	    c.add(contr);
-	    Factura f = this.crearFactura(p, c);
-	    return f;
 	}
 
 
@@ -181,7 +145,7 @@ public class Sistema implements Serializable, I_Sistema {
 	private void crearNuevasFacturas() {
 		Factura f = null;
 		for (Persona p : personas) {
-			f = this.crearFactura(p, p.getContrataciones());
+			f = this.crearFactura(p);
 			this.facturas.add(f);
 		}
 	}
@@ -195,67 +159,28 @@ public class Sistema implements Serializable, I_Sistema {
 		return res;
 	}
 	
-	//CONTRATACIONES
-	/**
-	 * 
-	 * @param dni
-	 * @param dom
-	 * @param serv
-	 * @param promo
-	 * @return
-	 * @throws DomicilioYaRegistradoException
-	 * @throws DomicilioNoEncontradoException
-	 * @throws ContratacionYaRegistradaException
-	 * @throws PersonaNoEncontradaException 
-	 */
-	public void crearContratacion(String dni, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
-		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
-		Contratacion contr=null;
-		Persona p = this.personas.buscaPorDni(dni);
-		contr=new Contratacion(dni,dom,serv,promo);			
-		p.agregarContratacion(contr);
-	}
+	  public String detalleFactura(int id, String medio) throws FacturaNoEncontradaException {
+		  Factura f = facturas.buscaPorId(id);		  
+		  return f.detalle(medio);
+	    }
+
+	    public String detalleFacturas() {
+	        return detalleFacturas("");
+	    }
+
+	    public String detalleFacturas(String opcion) {
+	        String res = "";
+
+			for (Factura factura : facturas) {
+	            try {  
+	            	res += "\n" + detalleFactura(factura.getNumFactura(), opcion) + "\n";
+	            } catch (FacturaNoEncontradaException e) {
+	            }
+	        }
+	        return res;
+	    }
 
 	
-	public void eliminarContratacion(String dni, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
-		Persona p = this.personas.buscaPorDni(dni);
-		p.eliminarContratacion(dom);
-	}
-
-
-	//ADICIONALES
-	/**
-	 * 
-	 * @param c: refiere a la contratacion a la cual se le quiere agregar un Adicional
-	 * @param a: refiere a la variable adicional la cua lse quiere adicionar a la Contratacion
-	 */
-	public void contratarAdicional(Contratacion c,iContratable a) {
-		assert c != null : "El campo Contratacion debe estar instanciado";
-		assert a != null : "El campo iContratable debe estar instanciado";
-		c.agregarContratable(a);
-	}
-
-	//puede que no sea del todo necesaria, o que sea preferible usar solo el metodo anterior
-	public void contratarAdicional(String dni,Domicilio d,iContratable a) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, ContratacionNoEncontradaException, DomicilioNoPerteneceAPersona {
-		assert dni != null && !dni.isBlank() : "El campo dni debe estar vacio";
-		assert d != null : "El campo Domicilio debe estar instanciado";
-		assert a != null : "El campo iContratable debe estar instanciado";
-		Persona p1,p2;
-		
-		p1 = personas.buscaPorDni(dni);//la persona existe
-		p2 = personas.buscaPorDomicilio(d);
-
-		if(p1.equals(p2)) {//el domicilio pertenece a la persona esperada
-			ArrayList<Contratacion> cont= p1.getContrataciones();
-			for (Contratacion c : cont) {
-				if(c.getDomicilio()==d)
-					c.agregarContratable(a);
-			}
-		}else {
-			throw new DomicilioNoPerteneceAPersona(p1,d);
-		}		
-	}
-
 	//PERSONA
 	
 	//creación de persona
@@ -297,16 +222,15 @@ public class Sistema implements Serializable, I_Sistema {
 		Domicilio dom = new Domicilio(calle,num);
 		return dom;
 	}
-	
-	public void asignarNuevoDomicilio(String dni, String calle, int num) throws DomicilioYaRegistradoException, PersonaNoEncontradaException {
-		Domicilio dom = this.crearDomicilio(calle,num);
-		this.personas.buscaPorDni(dni).agregarDomicilio(dom);
+	public void asignarNuevoDomicilio(Persona p, Domicilio d) throws DomicilioYaRegistradoException, PersonaNoEncontradaException {
+		this.personas.buscaPorDni(p.getDni()).agregarDomicilio(d);
 	}
-
+	
+	/*
 	public void asignarNuevoDomicilio(String dni, Domicilio dom) throws DomicilioYaRegistradoException, PersonaNoEncontradaException {
 		this.personas.buscaPorDni(dni).agregarDomicilio(dom);
 	}
-	
+	*/
 	//SERVICIO TECNICO
 	public void darAltaTecnico(String nombre) {
         assert nombre != null : "El campo nombre no debe estar vacio";
@@ -314,17 +238,85 @@ public class Sistema implements Serializable, I_Sistema {
         this.tecnicos.add(t);
     }
 	
-	
 	//PROMOCIONES
 	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
 		assert promo != null && !promo.isBlank() : "El campo promo no debe estar vacio";
 		return PromocionFactory.crearPromo(promo);
 	}
 
-	//SERVICIOS
+	//CONTRATACIONES - SERVICIOS
+
+	/**
+	 * 
+	 * @param dni
+	 * @param dom
+	 * @param serv
+	 * @param promo
+	 * @return
+	 * @throws DomicilioYaRegistradoException
+	 * @throws DomicilioNoEncontradoException
+	 * @throws ContratacionYaRegistradaException
+	 * @throws PersonaNoEncontradaException 
+	 */
+/*
+ 	public void crearContratacion(String dni, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
+		Contratacion contr=null;
+		Persona p = this.personas.buscaPorDni(dni);
+		contr=new Contratacion(dni,dom,serv,promo);			
+		p.agregarContratacion(contr);
+	}
+*/
+	public void crearContratacion(Persona p, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+		Contratacion contr=null;
+		contr=new Contratacion(p.getDni(),dom,serv,promo);			
+		p.agregarContratacion(contr);
+	}
+	
+	public void eliminarContratacion(Persona p, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
+		p.eliminarContratacion(dom);
+	}
+	/*
+	public void eliminarContratacion(String dni, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
+		Persona p = this.personas.buscaPorDni(dni);
+		p.eliminarContratacion(dom);
+	}
+	 */
 	public iServicio obtenerServicio(String serv) throws TipoDeServicioIncorrectoException {
 		assert serv != null && !serv.isBlank() : "El campo serv no debe estar vacio";
 		return ServicioFactory.crearServicio(serv);
+	}
+
+	//ADICIONALES - CONTRATABLES
+	/**
+	 * 
+	 * @param c: refiere a la contratacion a la cual se le quiere agregar un Adicional
+	 * @param a: refiere a la variable adicional la cua lse quiere adicionar a la Contratacion
+	 */
+	public void contratarAdicional(Contratacion c,iContratable a) {
+		assert c != null : "El campo Contratacion debe estar instanciado";
+		assert a != null : "El campo iContratable debe estar instanciado";
+		c.agregarContratable(a);
+	}
+
+	public void contratarAdicional(String dni,Domicilio d,iContratable a) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, ContratacionNoEncontradaException, DomicilioNoPerteneceAPersona {
+		assert dni != null && !dni.isBlank() : "El campo dni debe estar vacio";
+		assert d != null : "El campo Domicilio debe estar instanciado";
+		assert a != null : "El campo iContratable debe estar instanciado";
+		Persona p1,p2;
+		
+		p1 = personas.buscaPorDni(dni);//la persona existe
+		p2 = personas.buscaPorDomicilio(d);
+
+		if(p1.equals(p2)) {//el domicilio pertenece a la persona esperada
+			ArrayList<Contratacion> cont= p1.getContrataciones();
+			for (Contratacion c : cont) {
+				if(c.getDomicilio()==d)
+					c.agregarContratable(a);
+			}
+		}else {
+			throw new DomicilioNoPerteneceAPersona(p1,d);
+		}		
 	}
 
 	public iContratable obtenerContratable(String cont) throws TipoDeContratableIncorrectoException {
@@ -365,27 +357,6 @@ public class Sistema implements Serializable, I_Sistema {
 			return personaClone;
 	  }	
 	  
-	  public String detalleFactura(int id, String medio) throws FacturaNoEncontradaException {
-		  Factura f = facturas.buscaPorId(id);		  
-		  return f.detalle(medio);
-	    }
-
-	    public String detalleFacturas() {
-	        return detalleFacturas("");
-	    }
-
-	    public String detalleFacturas(String opcion) {
-	        String res = "";
-
-			for (Factura factura : facturas) {
-	            try {  
-	            	res += "\n" + detalleFactura(factura.getNumFactura(), opcion) + "\n";
-	            } catch (FacturaNoEncontradaException e) {
-	            }
-	        }
-
-	        return res;
-	    }
 
 		public MedioPago getMedioPago(String metodoPago, Factura f) {
 			MedioPago mp= MedioPagoFactory.getMedioPago(metodoPago, f);

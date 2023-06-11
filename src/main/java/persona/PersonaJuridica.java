@@ -31,11 +31,6 @@ public class PersonaJuridica extends Persona{
 	}
 
 	@Override
-	public Factura crearFactura(ArrayList<Contratacion> c) {
-		return new FacturaJuridica(this,c, Sistema.getInstancia().getMes());
-	}
-
-	@Override
 	public void pagarFactura(Factura f, MedioPago mp) {
 		f.calcularBonificacion(mp);	
 		f.setPagoRealizado(true);
@@ -43,7 +38,7 @@ public class PersonaJuridica extends Persona{
 
 	@Override
 	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo, Factura f)throws AccionNoAutorizadaException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
-		Sistema.getInstancia().crearContratacion(getDni(), dom, serv, promo);
+		Sistema.getInstancia().crearContratacion(this, dom, serv, promo);
 	}
 
 	@Override

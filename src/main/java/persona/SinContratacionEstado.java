@@ -13,9 +13,9 @@ import modelo.Sistema;
 import promociones.iPromocion;
 
 public class SinContratacionEstado  implements IEstado{
-	Persona p;
+	PersonaFisica p;
 
-	public SinContratacionEstado(Persona p) {
+	public SinContratacionEstado(PersonaFisica p) {
 		super();
 		this.p = p;
 	}
@@ -27,7 +27,7 @@ public class SinContratacionEstado  implements IEstado{
 	
 	@Override
 	public void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo, Factura f) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
-		Sistema.getInstancia().crearContratacion(p.getDni(), dom, serv, promo);
+		Sistema.getInstancia().crearContratacion(this.p, dom, serv, promo);
 	}
 
 	@Override

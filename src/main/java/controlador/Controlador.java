@@ -20,7 +20,7 @@ public class Controlador implements ActionListener{
 	public Controlador() {
 		this.vista = new VistaSistemaDeSeguridad();
 		this.vista.setActionListener(this);
-		this.sistema =new Sistema();
+		this.sistema = Sistema.getInstancia();
 	}
 	
 	@Override

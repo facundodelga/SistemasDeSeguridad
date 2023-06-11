@@ -17,7 +17,7 @@ public class Prueba {
 
 //		PruebaAislada.main(args);
 //		PruebaSistema.main(args);
-
+/*
 		Sistema s = Sistema.getInstancia();
 		
 		iPromocion pD= s.obtenerPromocion("Dorada");
@@ -34,7 +34,7 @@ public class Prueba {
 
 		s.asignarNuevoDomicilio("40256578", d1);
 		s.asignarNuevoDomicilio("40256578", d2);		
-		/*
+		
 		Contratacion c1 = s.crearContratacion("10256578", d1, aV, pD);
 		
 		s.contratarAdicional(c1, a1);

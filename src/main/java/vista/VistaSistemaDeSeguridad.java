@@ -336,4 +336,46 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	}
 	public void actionPerformed(ActionEvent e) {
 	}
+
+	@Override
+	public String getNombre() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCalle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getAltura() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDNI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String tipoPersona() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String tipoServicio() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String tipoPromo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
