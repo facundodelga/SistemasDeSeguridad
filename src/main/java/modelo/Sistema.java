@@ -43,7 +43,7 @@ public class Sistema implements Serializable, I_Sistema {
         this.tecnicos = tecnicos;
         this.servicioTecnico = servicioTecnico;
     }
-	private Sistema() {
+	public Sistema() {
 		super();
 		this.facturas=new ArregloFacturas();
 		this.personas=new ArregloPersonas();

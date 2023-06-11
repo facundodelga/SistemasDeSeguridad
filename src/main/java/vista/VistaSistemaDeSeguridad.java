@@ -39,7 +39,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
-public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVista, ActionListener   {
+public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVista   {
 
 	/**
 	 * 
@@ -114,21 +114,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	
 	
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VistaSistemaDeSeguridad frame = new VistaSistemaDeSeguridad();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
