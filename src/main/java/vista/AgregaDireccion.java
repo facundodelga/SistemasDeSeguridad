@@ -23,7 +23,7 @@ public class AgregaDireccion extends JFrame {
 	private JPanel panel_1;
 	private JScrollPane scrollPane;
 	private JLabel lblDireccionesAgregadas;
-	private JTextArea textArea;
+	private JTextArea textArea_DireccionesAgregadas;
 	private JPanel panel_2;
 	private JPanel panel_3;
 	private JLabel lblDirecccion;
@@ -83,8 +83,8 @@ public class AgregaDireccion extends JFrame {
 		this.lblDireccionesAgregadas = new JLabel("Direciones agregadas");
 		this.scrollPane.setColumnHeaderView(this.lblDireccionesAgregadas);
 		
-		this.textArea = new JTextArea();
-		this.scrollPane.setViewportView(this.textArea);
+		this.textArea_DireccionesAgregadas = new JTextArea();
+		this.scrollPane.setViewportView(this.textArea_DireccionesAgregadas);
 		
 		this.panel_2 = new JPanel();
 		this.contentPane.add(this.panel_2, BorderLayout.WEST);

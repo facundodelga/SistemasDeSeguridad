@@ -62,7 +62,6 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	private JLabel lblAccion;
 	private JPanel panel_3;
 	private JButton btnEjecuta;
-	private JTextField textField_Accion;
 	private JSplitPane splitPane;
 	private JSplitPane splitPane_1;
 	private JPanel panel_4;
@@ -108,11 +107,23 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	private JPanel panelSiguienteMes;
 	private JButton btnSiguienteMes;
 	private JPanel panel;
+	private JComboBox comboBox;
 	
 	
 	
 	
-	
+	public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VistaSistemaDeSeguridad frame = new VistaSistemaDeSeguridad();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 	
 	
 
@@ -198,9 +209,8 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		this.btnEjecuta.setActionCommand("Ejecuta");
 		this.panel_3.add(this.btnEjecuta);
 		
-		this.textField_Accion = new JTextField();
-		this.textField_Accion.setColumns(10);
-		this.panel_1.add(this.textField_Accion, BorderLayout.CENTER);
+		this.comboBox = new JComboBox();
+		this.panel_1.add(this.comboBox, BorderLayout.CENTER);
 		
 		this.scrollPane_AbonadosSistema = new JScrollPane();
 		this.splitPane.setRightComponent(this.scrollPane_AbonadosSistema);

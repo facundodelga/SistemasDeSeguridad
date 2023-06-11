@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -23,6 +25,7 @@ import java.awt.FlowLayout;
 
 public class VistaAgregaPersona extends JFrame {
 
+	private ActionListener actionListener;
 	private JPanel contentPane;
 	private JPanel panel;
 	private JLabel lblDatosPersona;
@@ -33,12 +36,12 @@ public class VistaAgregaPersona extends JFrame {
 	private JPanel panel_7;
 	private JPanel panel_10;
 	private JTextField textField_DNI;
-	private JTextField textField_5;
+	private JTextField textField_TipoFactura;
 	private JLabel lblDNI;
 	private JLabel lblTipoFactura;
 	private JPanel panel_13;
 	private JButton btnAgregarPersona;
-	private JTextField textField;
+	private JTextField textField_NombreApellido;
 
 	/**
 	 * Launch the application.
@@ -64,7 +67,10 @@ public class VistaAgregaPersona extends JFrame {
 		setBounds(100, 100, 500, 300);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		iniciaComponentes();
+		
+	}
+	public void iniciaComponentes() {
 		setContentPane(this.contentPane);
 		this.contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -97,9 +103,9 @@ public class VistaAgregaPersona extends JFrame {
 		this.lblNombreApellido = new JLabel("   Nombre/Apellido:");
 		this.panel_Nombre.add(this.lblNombreApellido);
 		
-		this.textField = new JTextField();
-		this.textField.setColumns(10);
-		this.panel_Nombre.add(this.textField);
+		this.textField_NombreApellido = new JTextField();
+		this.textField_NombreApellido.setColumns(10);
+		this.panel_Nombre.add(this.textField_NombreApellido);
 		
 		this.panel_Direccion = new JPanel();
 		this.panel_1.add(this.panel_Direccion);
@@ -119,8 +125,8 @@ public class VistaAgregaPersona extends JFrame {
 		this.lblTipoFactura = new JLabel("   Tipo de facura:");
 		this.panel_10.add(this.lblTipoFactura);
 		
-		this.textField_5 = new JTextField();
-		this.panel_10.add(this.textField_5);
-		this.textField_5.setColumns(10);
+		this.textField_TipoFactura = new JTextField();
+		this.panel_10.add(this.textField_TipoFactura);
+		this.textField_TipoFactura.setColumns(10);
 	}
 }
