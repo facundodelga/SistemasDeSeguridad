@@ -28,7 +28,7 @@ import promociones.iPromocion;
 import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
-public class Sistema implements Serializable {
+public class Sistema implements Serializable, I_Sistema {
 	private static Sistema instancia  = null;
 	private ArregloFacturas facturas;
 	private ArregloPersonas personas;
@@ -166,12 +166,13 @@ public class Sistema implements Serializable {
 		return f.isPagoRealizado();
 	}
 		
-	public ArrayList<Factura> buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
+	public ArrayList<Factura> buscarFacturaPorPersonaDNI(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
 		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Persona p=personas.buscaPorDni(dni);
 		return facturas.buscaPorPersona(p);
 	}
-
+	
+	
 	public Factura buscarFacturaPorId(int id) throws FacturaNoEncontradaException {
 		assert id >= 0 : "El parámetro id debe ser positivo";
 		return facturas.buscaPorId(id);
@@ -187,7 +188,7 @@ public class Sistema implements Serializable {
 	
 	public String historicoFactura(Persona p) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
 		String res="";
-		ArrayList<Factura> facs = this.buscarFacturaPorPersona(p.getDni());
+		ArrayList<Factura> facs = this.buscarFacturaPorPersonaDNI(p.getDni());
 		for (Factura f : facs) {
 			res += f.detalle();
 		}		
