@@ -188,7 +188,7 @@ public class Sistema implements Serializable, I_Sistema {
 	
 	public String historicoFactura(Persona p) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
 		String res="";
-		ArrayList<Factura> facs = this.buscarFacturaPorPersona(p.getDni());
+		ArrayList<Factura> facs = this.buscarFacturaPorPersonaDNI(p.getDni());
 		for (Factura f : facs) {
 			res += f.detalle();
 		}		

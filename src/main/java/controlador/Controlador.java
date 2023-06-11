@@ -29,7 +29,7 @@ public class Controlador implements ActionListener{
 			//Llama a la funcion siguiente mes del sistema
 			this.sistema.adelantarMes();
 			//setea todos los textField en vacio menos el de simulacion de tecnicos
-			this.vista.
+//			this.vista.
 		}
 		else if(comando.equalsIgnoreCase("Ejecutar")){
 			//Debe tomar lo que se ingreso por el textField_Accion y ejecutar la accion que se requiera
