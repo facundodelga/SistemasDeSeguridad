@@ -8,9 +8,9 @@ import modelo.MedioPago;
 import promociones.iPromocion;
 
 public class MorosoEstado implements IEstado {
-	Persona p;
+	PersonaFisica p;
 
-	public MorosoEstado(Persona p) {
+	public MorosoEstado(PersonaFisica  p) {
 		super();
 		this.p = p;
 	}

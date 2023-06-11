@@ -29,18 +29,7 @@ public abstract class Factura implements MedioPago,Cloneable, Serializable {
 		assert persona != null : "El campo Persona debe estar instanciado";
 		this.numFactura = ultFactura++;
 		this.persona = persona;
-		this.contrataciones = new ArrayList<Contratacion>();
-		this.setPagoRealizado(false);
-		this.mes = mes;
-	}
-
-	public Factura(Persona persona,ArrayList<Contratacion> c, int mes) {
-		super();
-		assert persona != null : "El campo Persona debe estar instanciado";
-        assert c != null : "El campo ArrayList<Contratacion> debe estar instanciado";
-		this.numFactura = ultFactura++;
-		this.persona = persona;
-		this.contrataciones = c;
+		this.contrataciones = persona.getContrataciones();
 		this.setPagoRealizado(false);
 		this.mes = mes;
 	}
@@ -66,34 +55,6 @@ public abstract class Factura implements MedioPago,Cloneable, Serializable {
 	public boolean existeContratacion(Contratacion con) {
 		assert con != null : "El campo Contratacion debe estar instanciado";
 		return contrataciones.contains(con);
-	}
-	
-	/**
-	 * <b>PRE:</b>El parámetro con debe ser distinto de null.
-	 * Método que inserta una contratacion nueva en la colección de contrataciones de la factura. Lanza excepción cuando la contratacion ya esta registrado. 
-	 * @param con Parámetro de tipo Contratacion, es una nueva contratacion de la factura instanciada
-	 * @throws ContratacionYaRegistradaException, DomicilioYaRegistradoException 
-	 */
-	
-	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
-		assert con != null : "El campo Contratacion debe estar instanciado";
-		if (!this.existeContratacion(con)) {
-
-			boolean domicilioYaRegistrado = false;
-			Iterator<Contratacion> it = this.contrataciones.iterator();
-
-			while (it.hasNext() && !domicilioYaRegistrado) {
-				Contratacion contratacion = it.next();
-				if (contratacion.getDomicilio().equals(con.getDomicilio())) {
-					domicilioYaRegistrado = true;
-				}
-			}	
-			if (domicilioYaRegistrado) {
-				throw new DomicilioYaRegistradoException(con.getDni(), con.getDomicilio());
-			}
-			this.contrataciones.add(con);
-		} else
-			throw new ContratacionYaRegistradaException(con, this.persona);
 	}
 
 	/**

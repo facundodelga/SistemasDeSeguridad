@@ -39,7 +39,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
-public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVista, ActionListener   {
+public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVista   {
 
 	/**
 	 * 
@@ -114,21 +114,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	
 	
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VistaSistemaDeSeguridad frame = new VistaSistemaDeSeguridad();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
@@ -349,5 +335,47 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		
 	}
 	public void actionPerformed(ActionEvent e) {
+	}
+
+	@Override
+	public String getNombre() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCalle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getAltura() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDNI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String tipoPersona() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String tipoServicio() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String tipoPromo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

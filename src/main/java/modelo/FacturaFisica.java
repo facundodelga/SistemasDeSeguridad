@@ -13,9 +13,6 @@ public class FacturaFisica extends Factura {
 		super(persona, mes);
 	}
 
-	public FacturaFisica(Persona persona, ArrayList<Contratacion> c, int mes) {
-		super(persona, c, mes);
-	}
 	/**
 	 * Método que calcula el total a pagar por una persona física por la factura.
 	 * @return total a pagar por la factura, siendo una persona de tipo física
