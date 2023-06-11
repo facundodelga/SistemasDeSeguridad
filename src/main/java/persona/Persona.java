@@ -1,4 +1,4 @@
-wpackage persona;
+package persona;
 
 import java.util.ArrayList;
 import java.util.Iterator;

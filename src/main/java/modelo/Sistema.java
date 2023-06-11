@@ -27,7 +27,7 @@ import promociones.iPromocion;
 import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
-public class Sistema {
+public class Sistema implements I_Sistema{
 	private static Sistema instancia  = null;
 	private ArregloFacturas facturas;
 	private ArregloPersonas personas;
@@ -165,12 +165,13 @@ public class Sistema {
 		return f.isPagoRealizado();
 	}
 		
-	public ArrayList<Factura> buscarFacturaPorPersona(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
+	public ArrayList<Factura> buscarFacturaPorPersonaDNI(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
 		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Persona p=personas.buscaPorDni(dni);
 		return facturas.buscaPorPersona(p);
 	}
-
+	
+	
 	public Factura buscarFacturaPorId(int id) throws FacturaNoEncontradaException {
 		assert id >= 0 : "El parámetro id debe ser positivo";
 		return facturas.buscaPorId(id);
