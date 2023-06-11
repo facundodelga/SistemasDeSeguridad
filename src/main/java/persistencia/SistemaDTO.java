@@ -1,25 +1,21 @@
 package persistencia;
 
+import modelo.ArregloFacturas;
+import modelo.ArregloPersonas;
+import modelo.Sistema;
+import simulacion.ServicioTecnico;
+import simulacion.Tecnico;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SistemaDTO implements Serializable {
-    private int generadorId;
     private int ultimaFactura;
-    private static SistemaDTO instancia;
-    private ArrayList<FacturaFisicaDTO> facturas;
-    private ArrayList<PersonaFisicaDTO> personas;
-    private ArrayList<TecnicoDTO> tecnicos;
-    private ServicioTecnicoDTO servicioTecnico;
-
-    public int getGeneradorId() {
-        return generadorId;
-    }
-
-    public void setGeneradorId(int generadorId) {
-        this.generadorId = generadorId;
-    }
+    private ArregloFacturas facturas;
+    private ArregloPersonas personas;
+    private int mes;
+    private ArrayList<Tecnico> tecnicos;
+    private ServicioTecnico servicioTecnico;
 
     public int getUltimaFactura() {
         return ultimaFactura;
@@ -29,43 +25,43 @@ public class SistemaDTO implements Serializable {
         this.ultimaFactura = ultimaFactura;
     }
 
-    public static SistemaDTO getInstancia() {
-        return instancia;
-    }
-
-    public static void setInstancia(SistemaDTO instancia) {
-        SistemaDTO.instancia = instancia;
-    }
-
-    public ArrayList<FacturaFisicaDTO> getFacturas() {
+    public ArregloFacturas getFacturas() {
         return facturas;
     }
 
-    public void setFacturas(ArrayList<FacturaFisicaDTO> facturas) {
+    public void setFacturas(ArregloFacturas facturas) {
         this.facturas = facturas;
     }
 
-    public ArrayList<PersonaFisicaDTO> getPersonas() {
+    public ArregloPersonas getPersonas() {
         return personas;
     }
 
-    public void setPersonas(ArrayList<PersonaFisicaDTO> personas) {
+    public void setPersonas(ArregloPersonas personas) {
         this.personas = personas;
     }
 
-    public ArrayList<TecnicoDTO> getTecnicos() {
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public ArrayList<Tecnico> getTecnicos() {
         return tecnicos;
     }
 
-    public void setTecnicos(ArrayList<TecnicoDTO> tecnicos) {
+    public void setTecnicos(ArrayList<Tecnico> tecnicos) {
         this.tecnicos = tecnicos;
     }
 
-    public ServicioTecnicoDTO getServicioTecnico() {
+    public ServicioTecnico getServicioTecnico() {
         return servicioTecnico;
     }
 
-    public void setServicioTecnico(ServicioTecnicoDTO servicioTecnico) {
+    public void setServicioTecnico(ServicioTecnico servicioTecnico) {
         this.servicioTecnico = servicioTecnico;
     }
 }

@@ -1,5 +1,6 @@
 package persona;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
@@ -15,7 +16,7 @@ import modelo.Factura;
 import modelo.MedioPago;
 import promociones.iPromocion;
 
-public abstract class Persona implements Cloneable{
+public abstract class Persona implements Serializable,Cloneable{
 	private String nombre;
 	private String dni;
 	private ArrayList<Domicilio> domicilios;

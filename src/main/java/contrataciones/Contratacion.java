@@ -1,5 +1,6 @@
 package contrataciones;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import persona.Domicilio;
 import promociones.iPromocion;
 import utils.DoubleUtils;
 
-public class Contratacion implements Cloneable {
+public class Contratacion implements Serializable,Cloneable {
 	private static int generadorId = 0;
 	private int id;
 	private String dni;

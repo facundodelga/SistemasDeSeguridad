@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import contrataciones.Contratacion;
@@ -27,7 +28,7 @@ import promociones.iPromocion;
 import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
-public class Sistema implements I_Sistema{
+public class Sistema implements Serializable, I_Sistema {
 	private static Sistema instancia  = null;
 	private ArregloFacturas facturas;
 	private ArregloPersonas personas;
@@ -410,5 +411,28 @@ public class Sistema implements I_Sistema{
 			return personas;
 		}
 
+	public ArrayList<Tecnico> getTecnicos() {
+		return tecnicos;
+	}
 
+	public void setTecnicos(ArrayList<Tecnico> tecnicos) {
+		this.tecnicos = tecnicos;
+	}
+
+	public ServicioTecnico getServicioTecnico() {
+		return servicioTecnico;
+	}
+
+	public void setServicioTecnico(ServicioTecnico servicioTecnico) {
+		this.servicioTecnico = servicioTecnico;
+	}
+
+
+	public void setFacturas(ArregloFacturas facturas) {
+		this.facturas = facturas;
+	}
+
+	public void setPersonas(ArregloPersonas personas) {
+		this.personas = personas;
+	}
 }

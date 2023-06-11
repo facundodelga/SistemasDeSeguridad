@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import java.util.Iterator;
@@ -11,7 +12,7 @@ import excepciones.PersonaNoEncontradaException;
 import persona.Domicilio;
 import persona.Persona;
 
-public class ArregloPersonas extends ArrayList<Persona>{
+public class ArregloPersonas extends ArrayList<Persona> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
     public ArregloPersonas() {

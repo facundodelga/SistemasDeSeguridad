@@ -1,8 +1,9 @@
 package persona;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Domicilio implements Cloneable{
+public class Domicilio implements Serializable,Cloneable{
 	private String calle;
 	private int numero;
 	
