@@ -56,32 +56,30 @@ public class VistaContrataciones extends JFrame implements IVista{
 
 
 		this.contratacionesJList = new JList<Contratacion>(this.controlador.getListaContrataciones());
-		//this.contratacionesPanel.setViewportView(this.contratacionesJList);
-	
-
 		contratacionesJList.setVisibleRowCount(20);
 		contratacionesPanel.add(contratacionesJList);
 		
 		tituloContratacionesPanel = new JPanel();
 		panel.add(tituloContratacionesPanel, BorderLayout.NORTH);
 		
-		lblNewLabel = new JLabel("Arias, Iñaki Gabriel");
+		lblNewLabel = new JLabel(this.controlador.getNombre());
 		tituloContratacionesPanel.add(lblNewLabel);
 		
 		botonesPanel = new JPanel();
 		panel.add(botonesPanel, BorderLayout.SOUTH);
 		
-		botonAgregar = new JButton("Nueva Contratación");
+		botonAgregar = new JButton("Nueva Contratacion");
 		botonesPanel.add(botonAgregar);
 		
-		botonAgregar_1 = new JButton("Eliminar Contratación");
+		botonAgregar_1 = new JButton("Eliminar Contratacion");
 		botonesPanel.add(botonAgregar_1);
 		
 		this.addWindowListener(controlador);
+		this.addActionListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-//		this.controlador=controlador;
+	//	this.controlador=(Controlador) controlador;
 	}
 
 	@Override

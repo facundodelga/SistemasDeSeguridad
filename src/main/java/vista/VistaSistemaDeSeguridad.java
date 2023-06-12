@@ -216,7 +216,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.panel_3.add(this.btnEjecuta);
 		
 		this.comboBox = new JComboBox<String>();
-		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Crear Contratación", "Mostrar factura","Agregar domicilio"}));
+		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ver Contrataciones", "Mostrar factura", "Agregar domicilio"}));
 		this.panel_1.add(this.comboBox, BorderLayout.CENTER);
 		
 		this.scrollPane_AbonadosSistema = new JScrollPane();

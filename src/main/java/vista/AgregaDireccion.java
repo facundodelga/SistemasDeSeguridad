@@ -141,4 +141,10 @@ public class AgregaDireccion extends JFrame implements IVista{
 	    this.btnAgregarDireccion.addActionListener(controlador);
 	    this.btnSiguiente.addActionListener(controlador);
 	}
+
+	public void actualizarDirecciones(String dom) {
+		this.textArea_DireccionesAgregadas.append(dom+"\n");
+	}
+	
+	
 }
