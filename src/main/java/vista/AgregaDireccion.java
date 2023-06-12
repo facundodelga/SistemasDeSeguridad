@@ -1,26 +1,24 @@
 package vista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import java.awt.BorderLayout;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
-import javax.swing.BoxLayout;
-import javax.swing.JSplitPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import controlador.Controlador;
 
 public class AgregaDireccion extends JFrame implements IVista{
 	
 	//Controlador
-	ActionListener controlador;
+	Controlador controlador;
 	
 	private JPanel contentPane;
 	private JPanel panel;
@@ -47,9 +45,9 @@ public class AgregaDireccion extends JFrame implements IVista{
 	/**
 	 * Create the frame.
 	 */
-	public AgregaDireccion(ActionListener controlador) {
+	public AgregaDireccion(Controlador controlador) {
 		setTitle("Sistema de Seguridad-Direcciones");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
 		setBounds(100, 100, 650, 477);
 		this.contentPane = new JPanel();
@@ -120,11 +118,11 @@ public class AgregaDireccion extends JFrame implements IVista{
 		this.panel_8.add(this.textField_Altura);
 		this.textField_Altura.setColumns(10);
 		
-		addActionListener(this.controlador);
+		this.addWindowListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-		this.controlador=controlador;
+//		this.controlador=controlador;
 	}
 	
 	public String getCalle() {

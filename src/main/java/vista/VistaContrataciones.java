@@ -1,35 +1,22 @@
 package vista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
-import javax.swing.JSplitPane;
-import javax.swing.BoxLayout;
-import javax.swing.JLayeredPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JList;
-import java.awt.FlowLayout;
 import javax.swing.AbstractListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import controlador.Controlador;
 
 public class VistaContrataciones extends JFrame implements IVista{
 	
 	//Controlador
-	private ActionListener controlador;
+	private Controlador controlador;
 	
 	private JPanel contentPane;
 	private JPanel panel;
@@ -45,9 +32,9 @@ public class VistaContrataciones extends JFrame implements IVista{
 	/**
 	 * Create the frame.
 	 */
-	public VistaContrataciones(ActionListener controlador) {
+	public VistaContrataciones(Controlador controlador) {
 		setTitle("Contrataciones");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
 		setBounds(100, 100, 609, 351);
 		this.contentPane = new JPanel();
@@ -91,10 +78,12 @@ public class VistaContrataciones extends JFrame implements IVista{
 		
 		botonAgregar_1 = new JButton("Eliminar Contratación");
 		botonesPanel.add(botonAgregar_1);
+		
+		this.addWindowListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-		this.controlador=controlador;
+//		this.controlador=controlador;
 	}
 
 	@Override

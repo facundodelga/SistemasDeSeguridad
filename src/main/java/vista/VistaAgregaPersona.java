@@ -1,32 +1,23 @@
 package vista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
-import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.JSplitPane;
-import javax.swing.BoxLayout;
-import javax.swing.JLayeredPane;
-import javax.swing.JScrollPane;
-import java.awt.FlowLayout;
+import javax.swing.border.EmptyBorder;
+
+import controlador.Controlador;
 
 public class VistaAgregaPersona extends JFrame implements IVista {
 
 
-	private ActionListener controlador;
+	private Controlador controlador;
 	
 	
 	private JPanel contentPane;
@@ -49,8 +40,8 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 	/**
 	 * Create the frame.
 	 */
-	public VistaAgregaPersona(ActionListener controlador) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public VistaAgregaPersona(Controlador controlador) {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
 		setBounds(100, 100, 500, 300);
 		this.contentPane = new JPanel();
@@ -58,7 +49,7 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 		iniciaComponentes(controlador);
 		
 	}
-	public void iniciaComponentes(ActionListener controlador) {
+	public void iniciaComponentes(Controlador controlador) {
 		setContentPane(this.contentPane);
 		this.contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -117,11 +108,11 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 		this.panel_10.add(this.textField_TipoFactura);
 		this.textField_TipoFactura.setColumns(10);
 		
-		addActionListener(this.controlador);
+		this.addWindowListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-		this.controlador=controlador;
+//		this.controlador=controlador;
 	}
 	
 	

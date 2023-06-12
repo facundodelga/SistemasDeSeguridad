@@ -1,33 +1,28 @@
 package vista;
 
-import java.awt.EventQueue;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import controlador.Controlador;
 import modelo.Factura;
-
-import java.awt.BorderLayout;
-import javax.swing.JSplitPane;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import java.awt.GridLayout;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 public class VistaFacturasPersona extends JFrame implements IVista{
 
 	//Controlador
-	private ActionListener controlador;
+	private Controlador controlador;
 
 	private JPanel contentPane;
 	private JPanel panel;
@@ -51,9 +46,9 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 	/**
 	 * Create the frame.
 	 */
-	public VistaFacturasPersona(ActionListener controlador) {
+	public VistaFacturasPersona(Controlador controlador) {
 		setTitle("Sistema de seguridad-Pagar factura");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 550, 400);
 		this.setActionListener(controlador);
 		this.contentPane = new JPanel();
@@ -63,7 +58,7 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		
 		
 	}
-	public void iniciarComponentes(ActionListener controlador) {
+	public void iniciarComponentes(Controlador controlador) {
 		setContentPane(this.contentPane);
 		
 		this.contentPane.setLayout(new BorderLayout(0, 0));
@@ -121,15 +116,13 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		this.comboBox_MetodoPago.setModel(new DefaultComboBoxModel(new String[] {"Seleccione una opcion", "Efectivo", "Cheque", "Tarjeta"}));
 		this.panel_4.add(this.comboBox_MetodoPago);
 		
-		this.addWindowListener((WindowListener) controlador);
-	       
-		
-		addActionListener(this.controlador);
+		this.addWindowListener(controlador);
+	     
 	
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-		this.controlador=controlador;
+		//this.controlador=controlador;
 	}
 	@Override
 	public void addActionListener(ActionListener controlador) {

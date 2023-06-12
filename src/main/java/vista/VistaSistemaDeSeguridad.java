@@ -127,6 +127,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	 */
 	public VistaSistemaDeSeguridad(ActionListener controlador,Observable o) {
 		setTitle("Sistema de Seguridad");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setActionListener(controlador);
 		this.setVisible(true);

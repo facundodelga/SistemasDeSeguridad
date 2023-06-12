@@ -69,6 +69,8 @@ public class Controlador implements ActionListener,WindowListener{
 		else if(comando.equalsIgnoreCase("Agregar Persona")){
 			//llama a la vista de agregar persona
 		    System.out.println("ejecutar");
+		    vistaAgregarPersonas.setVisible(true);
+		    vistaPrincipal.setVisible(false);
 			//toma los valores ingresados por los text field
 			
 			//ingresa la peersona al sistema con el metodo correspondiente
@@ -102,14 +104,19 @@ public class Controlador implements ActionListener,WindowListener{
 	   else if(s.equalsIgnoreCase( "Pagar Factura")) {
 	       this.vistaFacturasPersona.setVisible(true);
 	   }
+	   else {
+		   return;
+	   }
 	   
 	   this.vistaPrincipal.setVisible(false);
 	}
 	
 	public void windowClosing(WindowEvent e){
-            int i=JOptionPane.showConfirmDialog(null, "Seguro que quiere salir?");
-            if(i==0)
-        	vistaPrincipal.setVisible(true);
+            int i=JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?");
+            if(i==0) {
+            	vistaPrincipal.setVisible(true);
+            	e.getWindow().setVisible(false);
+            }
         }
 	
 	public void agregaTecnico() {

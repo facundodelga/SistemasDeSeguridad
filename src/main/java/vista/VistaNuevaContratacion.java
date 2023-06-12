@@ -1,41 +1,33 @@
 package vista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
-import javax.swing.JSplitPane;
-import javax.swing.BoxLayout;
-import javax.swing.JLayeredPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JList;
-import java.awt.FlowLayout;
 import javax.swing.AbstractListModel;
-import javax.swing.JComboBox;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.Component;
-import java.awt.CardLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
-import java.awt.Color;
+import javax.swing.border.EmptyBorder;
+
+import controlador.Controlador;
 
 public class VistaNuevaContratacion extends JFrame implements IVista{
 	
 	//controlador
-	private ActionListener controlador;
+	private Controlador controlador;
 	
 	private JPanel contentPane;
 	private JPanel panel;
@@ -75,9 +67,9 @@ public class VistaNuevaContratacion extends JFrame implements IVista{
 	/**
 	 * Create the frame.
 	 */
-	public VistaNuevaContratacion(ActionListener controlador) {
+	public VistaNuevaContratacion(Controlador controlador) {
 		setTitle("Nueva Contratación");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
 		setBounds(100, 100, 609, 400);
 		this.contentPane = new JPanel();
@@ -227,11 +219,11 @@ public class VistaNuevaContratacion extends JFrame implements IVista{
 		lblNewLabel = new JLabel("Arias, Iñaki Gabriel");
 		tituloContratacionesPanel.add(lblNewLabel);
 		
-		addActionListener(this.controlador);
+		this.addWindowListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-		this.controlador=controlador;
+//		this.controlador=controlador;
 	}
 
 	@Override
