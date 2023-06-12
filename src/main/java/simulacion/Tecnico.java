@@ -8,7 +8,8 @@ public class Tecnico extends Thread implements Serializable {
     private boolean activo = true;
     
     public Tecnico(String nombre, ServicioTecnico st){
-        this.nombre = nombre;
+        super(nombre);
+	this.nombre = nombre;
         this.servicioTecnico = st;
         st.sumarTecnicoDisponible();
     }

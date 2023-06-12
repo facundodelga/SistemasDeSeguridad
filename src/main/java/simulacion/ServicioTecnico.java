@@ -21,11 +21,11 @@ public class ServicioTecnico extends Observable implements Serializable {
         this.pedidos = pedidos;
     }
 
-    public synchronized void pedirTecnico(ClienteThread c){
+    public synchronized void pedirTecnico(ClienteThread c) throws IllegalAccessException{
 
         while(this.tecnicosDisponibles == 0){
             try {
-        	System.out.println("thread cliente esperando");
+        	this.avisarObservador( " **  " + c.getNombre() + " Está esperando para recibir Servicio Tecnico **");
                 wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

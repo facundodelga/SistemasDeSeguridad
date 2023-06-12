@@ -9,7 +9,8 @@ public class ClienteThread extends Thread implements Serializable{
     private ServicioTecnico servicioTecnico;
 
     public ClienteThread(String nombre,ServicioTecnico st){
-        this.nombre = nombre;
+        super(nombre);
+	this.nombre = nombre;
         this.servicioTecnico = st;
     }
 
@@ -21,7 +22,12 @@ public class ClienteThread extends Thread implements Serializable{
     public void run() {
 	this.activo = true;
         while(activo) {
-            servicioTecnico.pedirTecnico(this);
+            try {
+		servicioTecnico.pedirTecnico(this);
+	    } catch (IllegalAccessException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
             try {
 		Thread.sleep(10000);
 	    } catch (InterruptedException e) {

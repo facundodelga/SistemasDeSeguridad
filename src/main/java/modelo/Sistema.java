@@ -218,7 +218,7 @@ public class Sistema implements Serializable, I_Sistema {
 		Persona p=PersonaFactory.crearPersona(nombre,dni,tipo);
 		this.personas.add(p);
 		
-		//this.darAltaClienteThread(nombre);
+		this.darAltaClienteThread(nombre);
 		
 		return p;
 	}
@@ -279,8 +279,8 @@ public class Sistema implements Serializable, I_Sistema {
 	public void reiniciarSimulacion() {
 	    this.servicioTecnico.setPedidos(new ArrayList<String>());
 	    this.servicioTecnico.setTecnicosDisponibles(0);
-	    
-	    ArrayList<ClienteThread> auxClientes = new ArrayList(); 
+
+	    ArrayList<ClienteThread> auxClientes = new ArrayList<ClienteThread>(); 
             
 	    for (ClienteThread clienteThread : this.clientesHilo) {
 		clienteThread = new ClienteThread(clienteThread.getNombre(),this.servicioTecnico);
@@ -289,11 +289,12 @@ public class Sistema implements Serializable, I_Sistema {
 	    
 	    this.clientesHilo.clear();
 	    
-	    ArrayList<Tecnico> auxTecnicos = new ArrayList(); 
+	    ArrayList<Tecnico> auxTecnicos = new ArrayList<Tecnico>(); 
 	    
-	    for (Tecnico tecnico : auxTecnicos) {
+	    for (Tecnico tecnico : this.tecnicos) {
 		tecnico = new Tecnico(tecnico.getNombre(),this.servicioTecnico);
 		auxTecnicos.add(tecnico);
+
 	    }
 	    
 	    this.tecnicos.clear();
@@ -301,18 +302,21 @@ public class Sistema implements Serializable, I_Sistema {
             this.clientesHilo = auxClientes;
             this.tecnicos = auxTecnicos;
             
+            System.out.println("CANTIDAD DE TECNICOS DISPONIBLES " + this.tecnicos.size());
+            System.out.println("CANTIDAD DE CLIENTES " + this.clientesHilo.size());
+            this.servicioTecnico.setTecnicosDisponibles(this.tecnicos.size());
             iniciaSimulacion();
 	   
 	}
 	
 	public void iniciaSimulacion() {
 		for (Tecnico t : this.tecnicos) {
-		    	if(!t.isAlive())
+		    
 		    	    t.start();
 	           }
 		    
-		    for (ClienteThread clienteThread : clientesHilo) {
-			if(!clienteThread.isAlive())
+		    for (ClienteThread clienteThread : this.clientesHilo) {
+			
 			    clienteThread.start();
 		    }
 	    

@@ -64,7 +64,7 @@ public class Controlador implements ActionListener, WindowListener {
 	public Controlador() {
 		super();
 		this.sistema = Sistema.getInstancia();
-		//this.cargarDatos();	
+		this.cargarDatos();	
 		//iniciaSimulacion();
 		this.listaPersonas = new DefaultListModel<Persona>();
 		this.listaFacturas = new DefaultListModel<Factura>();
@@ -381,6 +381,7 @@ public class Controlador implements ActionListener, WindowListener {
 		if (e.getWindow() == this.vistaPrincipal) {
 			int i = JOptionPane.showConfirmDialog(null, "¿Desea finalizar la aplicación?");
 			if (i == 0) {
+			    	sistema.pararSimulacion();
 				vistaPrincipal.setVisible(false);
 				System.exit(0);
 			}
