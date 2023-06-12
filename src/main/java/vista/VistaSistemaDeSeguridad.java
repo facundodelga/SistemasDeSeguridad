@@ -41,7 +41,10 @@ import javax.swing.SwingConstants;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -54,7 +57,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	private static final long serialVersionUID = 1L;
 	
 	//ActionListener
-	private ActionListener controlador;
+	private Controlador controlador;
 	
 	//Componentes
 	//Panel principal
@@ -125,7 +128,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	 * Create the frame.
 	 * @param controlador2 
 	 */
-	public VistaSistemaDeSeguridad(ActionListener controlador,Observable o) {
+	public VistaSistemaDeSeguridad(Controlador controlador,Observable o) {
 		setTitle("Sistema de Seguridad");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -136,11 +139,12 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		o.agregarObservador(this);
 		this.observado = o;
 		this.iniciaVentana(controlador);
+		
 	}
 	
 	/* Inicia los componentes de la vista */
 	
-	private void iniciaVentana(ActionListener controlador) {
+	private void iniciaVentana(Controlador controlador) {
 		//Inicia Panel contenedor de todo
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -207,7 +211,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.panel_3.add(this.btnEjecuta);
 		
 		this.comboBox = new JComboBox<String>();
-		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Gestionar contratacion", "Contratar adicional", "Eliminar adicional", "Mostrar factura", "Pagar factura", "Agregar un adicional", "Eliminar contratacion"}));
+		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Gestionar contratacion", "Mostrar factura","Agregar domicilio"}));
 		this.panel_1.add(this.comboBox, BorderLayout.CENTER);
 		
 		this.scrollPane_AbonadosSistema = new JScrollPane();
@@ -344,7 +348,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	//Setea controlador
 	@Override
 	public void setActionListener(ActionListener controlador) {
-		this.controlador=controlador;
+		this.controlador=(Controlador) controlador;
 	}
 	
 	@Override
@@ -375,4 +379,13 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	            this.textArea_1.append(mensaje + "\n");
 	        }
 	}
+
+	public void setListaPersonas(DefaultListModel<Persona> listaPersonas) {
+	    // TODO Auto-generated method stub
+	    
+	}
+
+
+	
+	
 }
