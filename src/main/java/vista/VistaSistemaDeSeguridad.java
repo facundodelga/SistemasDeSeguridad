@@ -389,6 +389,26 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	    
 	}
 
+	public Persona getPersona() {
+		Persona p=list_PersonasAbonados.getSelectedValue();
+		if(p==null)
+			p=list_AbonantesHistoricas.getSelectedValue();
+		System.out.println(p);
+		return p;
+	}
+
+	public void informar(String msg) {
+		this.textArea_OutputAbonados.append(msg+"\n");		
+	}
+
+	public void vaciarTextFields() {
+		this.textArea_OutputAbonados.setText("");
+		this.textArea_1.setText("");
+		this.textField_NombreTecnico.setText("");
+		this.textArea_FacturasHistoricas.setText("");
+		
+	}
+
 
 	
 	

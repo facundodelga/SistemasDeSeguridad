@@ -13,6 +13,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
+import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
 import excepciones.PersonaYaExisteException;
@@ -40,12 +41,19 @@ public class Controlador implements ActionListener, WindowListener {
 	private AgregaDireccion vistaAgregaDireccion;
 	private VistaFacturasPersona vistaFacturasPersona;
 	private DefaultListModel<Persona> listaPersonas;
+	private DefaultListModel<Factura> listaFacturas;
+	private Persona persona;
+	private ServicioTecnico st;
+	
 
 	public Controlador(ServicioTecnico st) {
 		super();
 		this.sistema = Sistema.getInstancia();
 		this.cargarDatos();
+		this.st = st;
+		//iniciaSimulacion();
 		this.listaPersonas = new DefaultListModel<Persona>();
+		this.listaFacturas = new DefaultListModel<Factura>();
 
 		this.vistaPrincipal = new VistaSistemaDeSeguridad(this, st);
 		this.vistaPrincipal.setActionListener(this);
@@ -85,37 +93,87 @@ public class Controlador implements ActionListener, WindowListener {
 		if (comando.equalsIgnoreCase("Siguiente Mes")) {
 			// Llama a la funcion siguiente mes del sistema
 			this.sistema.adelantarMes();
+			this.vistaPrincipal.vaciarTextFields();
 			// setea todos los textField en vacio menos el de simulacion de tecnicos
 //			this.vista.
 		} else if (comando.equalsIgnoreCase("Ejecutar")) {
 			// Debe tomar lo que se ingreso por el textField_Accion y ejecutar la accion que
 			// se requiera
+			persona = vistaPrincipal.getPersona();
+			System.out.println(persona);
 			abrirVentanaAccion();
 
 		} else if (comando.equalsIgnoreCase("Agregar Persona")) {
 			// llama a la vista de agregar persona
-			vistaAgregarPersonas.setVisible(true);
-			vistaPrincipal.setVisible(false);
-			// toma los valores ingresados por los text field
-
-			// ingresa la peersona al sistema con el metodo correspondiente
+			this.habilitaVentanaAgregaPersonas();
+			this.inhabilitaVentanaPrincipal();
+			
 		} else if (comando.equalsIgnoreCase("Confirmar Persona")) {
 			agregarPersona();
+			
 		} else if (comando.equalsIgnoreCase("Agrega tecnico")) {
-			// llama a la funcion agrega tecnico
 			agregaTecnico();
+			
 		} else if (comando.equalsIgnoreCase("Inicia simulacion")) {
 			// llama a la funcion Inicia simulacion;
+			
 		} else if (comando.equalsIgnoreCase("Buscar Facturas")) {
+			buscarFacturas();
+		} else if (comando.equalsIgnoreCase("Pagar Factura")) {
+			pagarFacturas();
+			
+		}else if(comando.equalsIgnoreCase("Confirmar Domicilio")) {
+			agregarDomicilio();
 		}
+		
 
 	}
 
+
+	private void abrirVentanaAccion() {
+		// TODO Auto-generated method stub
+		String s = vistaPrincipal.getAccion();
+		if(persona!=null) {
+			if (s.equalsIgnoreCase("Gestionar Contratacion"))
+				this.habilitaVentanaNuevaContratacion();
+			else if (s.equalsIgnoreCase("Agregar Domicilio"))
+				this.habilitaVentanaAgregaDireccion();
+			else if (s.equalsIgnoreCase("Mostrar Factura")) {
+				//prep para la ventana
+				this.getFacturasImpagas();
+				this.habilitaVentanaFacturasPersona();
+			}
+			this.inhabilitaVentanaPrincipal();
+		}else
+			this.informarVistaPrincipal("Debe seleccionar una persona de la lista");
+	}
+	
+	//VISTAPRINCIPAL
+	//mensajes
+	void informarVistaPrincipal(String msg) {
+		this.vistaPrincipal.informar(msg);
+	}
+	//apartado abonados
+	public void agregarPersona() {
+		try {
+			sistema.crearPersona(this.vistaAgregarPersonas.getNombreApellido(), this.vistaAgregarPersonas.getDNI(),
+					this.vistaAgregarPersonas.getTipoFactura());
+			refreshPersonas();
+		} catch (TipoDePersonaIncorrectoException e) {
+			informarVistaPrincipal(e.getMessage());
+		} catch (PersonaYaExisteException e) {
+			informarVistaPrincipal(e.getMessage());
+		}finally {
+			inhabilitaVentanaAgregaPersonas();
+			habilitaVentanaPrincipal();
+			
+		}
+	}
+	
 	public void refreshPersonas() {
 		ArrayList<Persona> personas = sistema.getPersonas();
 //	    System.out.println(personas);
-		System.out.println("refrescando, listaModel");
-
+//		System.out.println("refrescando, listaModel");
 		this.listaPersonas.clear();
 
 		for (Persona persona : personas) {
@@ -128,45 +186,85 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	public DefaultListModel<Persona> getListaPersonas() {
+		System.out.println(listaPersonas);
 		return listaPersonas;
 	}
-
-	// Metodos habilitadores de ventanas
-	public void habilitaVentanaPrincipal() {
-		this.vistaPrincipal.setVisible(true);
-	}
-
-	private void abrirVentanaAccion() {
-		// TODO Auto-generated method stub
-		String s = vistaPrincipal.getAccion();
-
-		if (s.equalsIgnoreCase("Gestionar Contratacion"))
-			this.vistaNuevaContratacion.setVisible(true);
-
-		else if (s.equalsIgnoreCase("Agregar Domicilio"))
-			this.vistaAgregaDireccion.setVisible(true);
-
-		else if (s.equalsIgnoreCase("Mostrar Factura")) {
-			this.vistaFacturasPersona.setVisible(true);
-		}
-
-		this.vistaPrincipal.setVisible(false);
-	}
-
-	public void agregarPersona() {
+	
+	//apartado facturas historicas
+	private void buscarFacturas() {
 		try {
-			sistema.crearPersona(this.vistaAgregarPersonas.getNombreApellido(), this.vistaAgregarPersonas.getDNI(),
-					this.vistaAgregarPersonas.getTipoFactura());
-			refreshPersonas();
-		} catch (TipoDePersonaIncorrectoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PersonaYaExisteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			persona=this.vistaPrincipal.getPersona();
+			ArrayList<Factura> facturas = sistema.buscarFacturaPorPersonaDNI(persona.getDni());
+			this.listaFacturas.clear();
+			for (Factura f : facturas) {
+				this.listaFacturas.addElement(f);
+				//cuando se creen las primeras facturas, probarlo
+			}	
+		} catch (PersonaNoEncontradaException | FacturaNoEncontradaException e) {
+			this.informarVistaPrincipal(e.getMessage());
+		}
+	}
+	
+	public DefaultListModel<Factura> getListaFacturas() {
+		System.out.println(listaFacturas);
+		return listaFacturas;
+	}
+
+
+
+
+	
+	//VENTANA AGREGARDOMICILIO
+	public void agregarDomicilio() {
+	//Necesitamos saber cual es la persona primero
+	    try {
+			sistema.asignarNuevoDomicilio(
+					this.persona,
+					sistema.crearDomicilio(vistaAgregaDireccion.getCalle(),Integer.parseInt(vistaAgregaDireccion.getAltura())));
+		} catch (NumberFormatException | DomicilioYaRegistradoException | PersonaNoEncontradaException e) {
+			informarVistaPrincipal(e.getMessage());
+		}finally {
+			inhabilitaVentanaAgregaDireccion();
+			habilitaVentanaPrincipal();
 		}
 	}
 
+	//VENTANA FACTURASPERSONA	
+	//deberia mostrar solo las facturas sin pagar
+	private void pagarFacturas() {
+
+		System.out.println("Intento pagar\n");
+		try {
+			sistema.pagarFactura(
+					persona.getDni(), 
+					this.vistaFacturasPersona.getFactura().getNumFactura(), 
+					this.vistaFacturasPersona.getMetodoPago()
+					);
+			System.out.println("Factura abonada\n"+this.vistaFacturasPersona.getFactura());
+		} catch (FacturaNoEncontradaException | PersonaNoEncontradaException e) {
+			this.informarVistaPrincipal(e.getMessage());
+		}finally {
+			this.inhabilitaVentanaFacturasPersona();
+			this.habilitaVentanaPrincipal();
+		}
+	}
+	
+	public void getFacturasImpagas() {
+		try {
+			persona=this.vistaPrincipal.getPersona();
+			ArrayList<Factura> facturas = sistema.buscarFacturaPorPersonaDNI(persona.getDni());
+			this.listaFacturas.clear();
+			for (Factura f : facturas) {
+				if(f!=null && !f.isPagoRealizado() && !listaFacturas.contains(f))
+					this.listaFacturas.addElement(f);
+				//cuando se creen las primeras facturas, probarlo, solo facturas impagas
+			}	
+		} catch (PersonaNoEncontradaException | FacturaNoEncontradaException e) {
+			this.informarVistaPrincipal(e.getMessage());
+		}
+	}
+	
+	//EVENTOS VENTANA
 	public void windowClosing(WindowEvent e) {
 		if (e.getWindow() == this.vistaPrincipal) {
 			int i = JOptionPane.showConfirmDialog(null, "¿Desea finalizar la aplicación?");
@@ -188,9 +286,10 @@ public class Controlador implements ActionListener, WindowListener {
 		sistema.darAltaTecnico(vistaPrincipal.getNombreTecnico());
 
 	}
-
+	//falta
 	public void iniciaSimulacion() {
-
+		sistema.setServicioTecnico(st);
+		//st iniciado en el constructor del controlador, no funciona
 	}
 
 	@Override
@@ -268,13 +367,36 @@ public class Controlador implements ActionListener, WindowListener {
 		}
 
 	}
-
-//	public void agregaDomicilio() {
-//	//Necesitamos saber cual es la persona primero
-//	    sistema.asignarNuevoDomicilio(null,
-//		    sistema.crearDomicilio(vistaDireccion.getCalle(),Integer.parseInt(vistaDireccion.getAltura())
-//		    );
-//	}
-//	
-
+	// Metodos habilitadores de ventanas
+		public void habilitaVentanaPrincipal() {
+			this.vistaPrincipal.setVisible(true);
+		}
+		public void habilitaVentanaAgregaPersonas() {
+			this.vistaAgregarPersonas.setVisible(true);
+		}
+		public void habilitaVentanaAgregaDireccion() {
+			this.vistaAgregaDireccion.setVisible(true);
+		}
+		public void habilitaVentanaNuevaContratacion() {
+			this.vistaNuevaContratacion.setVisible(true);
+		}
+		public void habilitaVentanaFacturasPersona() {
+			this.vistaFacturasPersona.setVisible(true);
+		}
+		//Metodos inhabilitadores de ventanas
+		public void inhabilitaVentanaPrincipal() {
+			this.vistaPrincipal.setVisible(false);
+		}
+		public void inhabilitaVentanaAgregaPersonas() {
+			this.vistaAgregarPersonas.setVisible(false);
+		}
+		public void inhabilitaVentanaAgregaDireccion() {
+			this.vistaAgregaDireccion.setVisible(false);
+		}
+		public void inhabilitaVentanaNuevaContratacion() {
+			this.vistaNuevaContratacion.setVisible(false);
+		}
+		public void inhabilitaVentanaFacturasPersona() {
+			this.vistaFacturasPersona.setVisible(false);
+		}
 }

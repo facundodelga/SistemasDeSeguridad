@@ -53,7 +53,7 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		this.setActionListener(controlador);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
+		this.controlador = controlador;
 		iniciarComponentes(controlador);
 		
 		
@@ -79,10 +79,11 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		this.lblFacturas = new JLabel("Facturas");
 		this.scrollPane.setColumnHeaderView(this.lblFacturas);
 		
+		//cual es cual? list o list_Factura contiene a los elementos
 		this.list = new JList<Factura>();
 		this.scrollPane.setViewportView(this.list);
 		
-		this.list_Factura = new JList();
+		this.list_Factura = new JList<Factura>(this.controlador.getListaFacturas());
 		this.scrollPane.setViewportView(this.list_Factura);
 		
 		this.panel_3 = new JPanel();
@@ -128,7 +129,16 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 	public void addActionListener(ActionListener controlador) {
 	    this.btnPagarFactura.addActionListener(controlador);
 	}
-	
+	public Factura getFactura() {
+		return (Factura) this.list_Factura.getSelectedValue();
+	}
+	public String getMetodoPago() {
+		return (String) this.comboBox_MetodoPago.getSelectedItem();
+	}
+	//necesito un boton para mostrar el detalle de la factura
+	public void mostrarDetalle() {
+		this.textArea_Detalle.setText(getFactura().detalle());
+	}
 	
 	
 	

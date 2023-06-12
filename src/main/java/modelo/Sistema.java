@@ -221,11 +221,12 @@ public class Sistema implements Serializable, I_Sistema {
 			}
 			if(facs!=null) {
 				for (Factura factura : facs) {
-					if(factura.getMes()==(this.mes-1))
-						f1 = factura;
-					else
-						if(factura.getMes()==(this.mes-2))
-							f2 = factura;
+					if(factura!=null)
+						if(factura.getMes()==(this.mes-1))
+							f1 = factura;
+						else
+							if(factura.getMes()==(this.mes-2))
+								f2 = factura;
 				}
 			}
 			p.actualizar(f1,f2);
