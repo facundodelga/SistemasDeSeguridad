@@ -30,6 +30,7 @@ public class ServicioTecnico extends Observable {
 
         try {
             this.avisarObservador(c.getNombre() + " ha pedido un Tecnico");
+            c.setActivo(false);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

@@ -3,6 +3,7 @@ package persistencia;
 import modelo.ArregloFacturas;
 import modelo.ArregloPersonas;
 import modelo.Sistema;
+import simulacion.ClienteThread;
 import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
@@ -16,6 +17,7 @@ public class SistemaDTO implements Serializable {
     private int mes;
     private ArrayList<Tecnico> tecnicos;
     private ServicioTecnico servicioTecnico;
+    private ArrayList<ClienteThread> clientesHilo;
 
     public int getUltimaFactura() {
         return ultimaFactura;
@@ -63,5 +65,13 @@ public class SistemaDTO implements Serializable {
 
     public void setServicioTecnico(ServicioTecnico servicioTecnico) {
         this.servicioTecnico = servicioTecnico;
+    }
+
+    public ArrayList<ClienteThread> getClientesHilo() {
+	return clientesHilo;
+    }
+
+    public void setClientesHilo(ArrayList<ClienteThread> clientesHilo) {
+	this.clientesHilo = clientesHilo;
     }
 }

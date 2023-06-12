@@ -2,9 +2,11 @@ package simulacion;
 
 import java.io.Serializable;
 
-public class Tecnico implements Serializable,Runnable {
+public class Tecnico extends Thread implements Serializable {
     private String nombre;
     private ServicioTecnico servicioTecnico;
+    private boolean rompe = true;
+    
     public Tecnico(String nombre, ServicioTecnico st){
         this.nombre = nombre;
         this.servicioTecnico = st;
@@ -23,9 +25,15 @@ public class Tecnico implements Serializable,Runnable {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            if(!rompe)
+        	break;
         }
     }
-
+    
+    public void rompe() {
+	rompe = false;
+    }
+    
     public String getNombre() {
         return nombre;
     }

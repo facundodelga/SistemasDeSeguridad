@@ -28,6 +28,7 @@ import factory.ServicioFactory;
 import persona.Domicilio;
 import persona.Persona;
 import promociones.iPromocion;
+import simulacion.ClienteThread;
 import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
@@ -42,18 +43,22 @@ public class Sistema implements Serializable, I_Sistema {
 	private int mes;
 	private ArrayList<Tecnico> tecnicos;
     private ServicioTecnico servicioTecnico;
+    private ArrayList<ClienteThread> clientesHilo;
 	
 	
-	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos, ServicioTecnico servicioTecnico) {
-        this.facturas = facturas;
-        this.personas = personas;
-        this.tecnicos = tecnicos;
-        this.servicioTecnico = servicioTecnico;
-    }
+	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos,ArrayList<ClienteThread> clientesHilo, ServicioTecnico servicioTecnico) {
+            this.facturas = facturas;
+            this.personas = personas;
+            this.tecnicos = tecnicos;
+            this.servicioTecnico = servicioTecnico;
+            this.clientesHilo = clientesHilo;
+        }
 	private Sistema() {
 		super();
-		this.facturas=new ArregloFacturas();
-		this.personas=new ArregloPersonas();
+		this.facturas = new ArregloFacturas();
+		this.personas = new ArregloPersonas();
+		this.tecnicos = new ArrayList<Tecnico>();
+	    this.clientesHilo = new ArrayList<ClienteThread>();
 		this.mes = 0;
 	}
 	
@@ -206,6 +211,9 @@ public class Sistema implements Serializable, I_Sistema {
 		
 		Persona p=PersonaFactory.crearPersona(nombre,dni,tipo);
 		this.personas.add(p);
+		
+		this.darAltaClienteThread(nombre);
+		
 		return p;
 	}
 	
@@ -221,11 +229,12 @@ public class Sistema implements Serializable, I_Sistema {
 			}
 			if(facs!=null) {
 				for (Factura factura : facs) {
-					if(factura.getMes()==(this.mes-1))
-						f1 = factura;
-					else
-						if(factura.getMes()==(this.mes-2))
-							f2 = factura;
+					if(factura!=null)
+						if(factura.getMes()==(this.mes-1))
+							f1 = factura;
+						else
+							if(factura.getMes()==(this.mes-2))
+								f2 = factura;
 				}
 			}
 			p.actualizar(f1,f2);
@@ -255,6 +264,48 @@ public class Sistema implements Serializable, I_Sistema {
         Tecnico t = new Tecnico(nombre, servicioTecnico);
         this.tecnicos.add(t);
     }
+	
+	private void darAltaClienteThread(String nombre) {
+	    ClienteThread cliente = new ClienteThread(nombre,this.servicioTecnico);
+	    this.clientesHilo.add(cliente);
+	}
+	
+	public void reiniciarSimulacion() {
+            for (Tecnico t : this.tecnicos) {
+            	t.rompe();
+            }
+	    
+	    for (ClienteThread clienteThread : clientesHilo) {
+		clienteThread.setActivo(false);
+	    }
+	    
+	   this.servicioTecnico.setTecnicosDisponibles(0);
+	   this.servicioTecnico.setTecnicosDisponibles(this.tecnicos.size());
+	   
+	   for (Tecnico t : this.tecnicos) {
+           	t.start();
+           }
+	    
+	    for (ClienteThread clienteThread : clientesHilo) {
+		clienteThread.start();
+	    }
+	   
+	}
+	
+	public void iniciaSimulacion() {
+	    if(!this.tecnicos.isEmpty() && !this.clientesHilo.isEmpty()) {
+		for (Tecnico t : this.tecnicos) {
+	           	t.start();
+	           }
+		    
+		    for (ClienteThread clienteThread : clientesHilo) {
+			clienteThread.start();
+		    }
+	    }
+	    
+	}
+	
+	
 	
 	//PROMOCIONES
 	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
@@ -424,4 +475,13 @@ public class Sistema implements Serializable, I_Sistema {
 	public void setPersonas(ArregloPersonas personas) {
 		this.personas = personas;
 	}
+	public ArrayList<ClienteThread> getClientesHilo() {
+	    return clientesHilo;
+	}
+	public void setClientesHilo(ArrayList<ClienteThread> clientesHilo) {
+	    this.clientesHilo = clientesHilo;
+	}
+	
+	
+	
 }
