@@ -1,8 +1,9 @@
 package simulacion;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ServicioTecnico extends Observable {
+public class ServicioTecnico extends Observable implements Serializable {
     //ServicioTecnico es el recurso compartido se podria hacer Singleton xq solo se va a instanciar 1 vez
 
     private int tecnicosDisponibles = 0;

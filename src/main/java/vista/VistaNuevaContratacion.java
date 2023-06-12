@@ -23,6 +23,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Controlador;
+import persona.Domicilio;
 
 public class VistaNuevaContratacion extends JFrame implements IVista{
 	
@@ -54,7 +55,7 @@ public class VistaNuevaContratacion extends JFrame implements IVista{
 	private JComboBox comboBox_4;
 	private JPanel confirmarPanel;
 	private JPanel panel_6;
-	private JComboBox comboBox;
+	private JComboBox<Domicilio> comboDomicilio;
 	private JPanel panel_7;
 	private JButton botonAgregarAdicional;
 	private JButton botonResetAdicionales;
@@ -68,6 +69,7 @@ public class VistaNuevaContratacion extends JFrame implements IVista{
 	 * Create the frame.
 	 */
 	public VistaNuevaContratacion(Controlador controlador) {
+		this.controlador = controlador;
 		setTitle("Nueva Contratación");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
@@ -101,9 +103,8 @@ public class VistaNuevaContratacion extends JFrame implements IVista{
 		panel_1 = new JPanel();
 		domicilioPanel.add(panel_1);
 		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Domicilio 1", "Domicilio 2", "Domicilio 3"}));
-		panel_1.add(comboBox);
+		comboDomicilio = new JComboBox<>(this.controlador.getListaDomicilios());
+		panel_1.add(comboDomicilio);
 		
 		servicioPanel = new JPanel();
 		servicioPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 64, 128), new Color(0, 64, 128)));

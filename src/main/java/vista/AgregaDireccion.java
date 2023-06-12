@@ -46,6 +46,7 @@ public class AgregaDireccion extends JFrame implements IVista{
 	 * Create the frame.
 	 */
 	public AgregaDireccion(Controlador controlador) {
+		this.controlador = controlador;
 		setTitle("Sistema de Seguridad-Direcciones");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
@@ -92,6 +93,7 @@ public class AgregaDireccion extends JFrame implements IVista{
 		this.panel_6.setLayout(new BorderLayout(0, 0));
 		
 		this.btnAgregarDireccion = new JButton("Agregar direccion");
+		this.btnAgregarDireccion.setActionCommand("Confirmar Domicilio");
 		this.panel_6.add(this.btnAgregarDireccion, BorderLayout.EAST);
 		
 		this.panel_4 = new JPanel();
@@ -119,6 +121,7 @@ public class AgregaDireccion extends JFrame implements IVista{
 		this.textField_Altura.setColumns(10);
 		
 		this.addWindowListener(controlador);
+		this.addActionListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
