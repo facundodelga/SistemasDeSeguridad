@@ -3,17 +3,13 @@ package simulacion;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-<<<<<<< Updated upstream
 public class ServicioTecnico extends Observable implements Serializable {
-=======
-public class ServicioTecnico extends Observable implements Serializable  {
->>>>>>> Stashed changes
     //ServicioTecnico es el recurso compartido se podria hacer Singleton xq solo se va a instanciar 1 vez
 
     /**
      * 
      */
-    private static final long serialVersionUID = 1L;
+
     private int tecnicosDisponibles = 0;
     private ArrayList<String> pedidos = new ArrayList<>();
 

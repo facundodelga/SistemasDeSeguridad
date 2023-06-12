@@ -34,6 +34,10 @@ import simulacion.Tecnico;
 
 public class Sistema implements Serializable, I_Sistema {
 	
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7533724918767447614L;
 	//Controlador
 	private Controlador controlador;
 	//Del sistema
@@ -42,8 +46,8 @@ public class Sistema implements Serializable, I_Sistema {
 	private ArregloPersonas personas;
 	private int mes;
 	private ArrayList<Tecnico> tecnicos;
-    private ServicioTecnico servicioTecnico;
-    private ArrayList<ClienteThread> clientesHilo;
+        private ServicioTecnico servicioTecnico;
+        private ArrayList<ClienteThread> clientesHilo;
 	
 	
 	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos,ArrayList<ClienteThread> clientesHilo, ServicioTecnico servicioTecnico) {
@@ -53,20 +57,14 @@ public class Sistema implements Serializable, I_Sistema {
             this.servicioTecnico = servicioTecnico;
             this.clientesHilo = clientesHilo;
         }
+	
 	private Sistema() {
 		super();
-<<<<<<< Updated upstream
-		this.facturas = new ArregloFacturas();
-		this.personas = new ArregloPersonas();
-		this.tecnicos = new ArrayList<Tecnico>();
-	    this.clientesHilo = new ArrayList<ClienteThread>();
-=======
 		this.facturas=new ArregloFacturas();
 		this.personas=new ArregloPersonas();
 		this.servicioTecnico = new ServicioTecnico();
 		this.tecnicos = new ArrayList<>();
 		this.clientesHilo = new ArrayList<>();
->>>>>>> Stashed changes
 		this.mes = 0;
 	}
 	
@@ -78,7 +76,7 @@ public class Sistema implements Serializable, I_Sistema {
 		return instancia;
 	}
 	
-	//Setea controlador
+//	Setea controlador
 	public void setControlador(Controlador controlador) {
 		this.controlador=controlador;
 	}

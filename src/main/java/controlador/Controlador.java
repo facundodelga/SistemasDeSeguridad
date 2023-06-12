@@ -60,29 +60,17 @@ public class Controlador implements ActionListener, WindowListener {
 	private DefaultComboBoxModel<Domicilio> listaDomicilios;
 	private DefaultListModel<Contratacion> listaContrataciones;
 	private Persona persona;
-	private ServicioTecnico st;
 
 	public Controlador() {
 		super();
 		this.sistema = Sistema.getInstancia();
-		this.cargarDatos();
-<<<<<<< Updated upstream
-		this.st = st;
-		// iniciaSimulacion();
-		this.listaPersonas = new DefaultListModel<>();
-		this.listaFacturas = new DefaultListModel<>();
-		this.listaDomicilios = new DefaultComboBoxModel<>() ;
-		this.st = st;
-		this.sistema.setServicioTecnico(st);
-		this.vistaPrincipal = new VistaSistemaDeSeguridad(this, st);
-=======
-		
+		//this.cargarDatos();	
 		//iniciaSimulacion();
 		this.listaPersonas = new DefaultListModel<Persona>();
 		this.listaFacturas = new DefaultListModel<Factura>();
 
-		this.vistaPrincipal = new VistaSistemaDeSeguridad(this, sistema.getServicioTecnico());
->>>>>>> Stashed changes
+		this.vistaPrincipal = new VistaSistemaDeSeguridad(this,sistema.getServicioTecnico());
+
 		this.vistaPrincipal.setActionListener(this);
 
 		this.sistema.setControlador(this);
@@ -103,12 +91,7 @@ public class Controlador implements ActionListener, WindowListener {
 			}
 		});
 
-<<<<<<< Updated upstream
-		cargarDatos();
-=======
-		//cargarDatos();
 
->>>>>>> Stashed changes
 		refreshPersonas();
 		vistaPrincipal.addWindowListener(this);
 //		vistaPrincipal.addActionListener(this); //Estaba de mas, los eventos se ejecutaban dos veces
@@ -147,14 +130,8 @@ public class Controlador implements ActionListener, WindowListener {
 			agregaTecnico();
 
 		} else if (comando.equalsIgnoreCase("Inicia simulacion")) {
-<<<<<<< Updated upstream
-			sistema.iniciaSimulacion();
 
-=======
-		    	sistema.iniciaSimulacion();
-			// llama a la funcion Inicia simulacion;
-			
->>>>>>> Stashed changes
+			sistema.iniciaSimulacion();
 		} else if (comando.equalsIgnoreCase("Buscar Facturas")) {
 			buscarFacturas();
 		} else if (comando.equalsIgnoreCase("Pagar Factura")) {
@@ -419,16 +396,6 @@ public class Controlador implements ActionListener, WindowListener {
 		// sistema.setServicioTecnico(st);//error this thread is not owner
 		sistema.darAltaTecnico(vistaPrincipal.getNombreTecnico());
 
-	}
-
-	// falta
-	public void iniciaSimulacion() {
-<<<<<<< Updated upstream
-		sistema.setServicioTecnico(st);
-		// st iniciado en el constructor del controlador, no funciona
-=======
-		//st iniciado en el constructor del controlador, no funciona
->>>>>>> Stashed changes
 	}
 
 

@@ -11,6 +11,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SistemaDTO implements Serializable {
+    /**
+     * 
+     */
+
     private int ultimaFactura;
     private ArregloFacturas facturas;
     private ArregloPersonas personas;
