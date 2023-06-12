@@ -42,8 +42,8 @@ public class Sistema implements Serializable, I_Sistema {
 	private ArregloPersonas personas;
 	private int mes;
 	private ArrayList<Tecnico> tecnicos;
-        private ServicioTecnico servicioTecnico;
-        private ArrayList<ClienteThread> clientesHilo;
+    private ServicioTecnico servicioTecnico;
+    private ArrayList<ClienteThread> clientesHilo;
 	
 	
 	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos,ArrayList<ClienteThread> clientesHilo, ServicioTecnico servicioTecnico) {
@@ -55,8 +55,10 @@ public class Sistema implements Serializable, I_Sistema {
         }
 	private Sistema() {
 		super();
-		this.facturas=new ArregloFacturas();
-		this.personas=new ArregloPersonas();
+		this.facturas = new ArregloFacturas();
+		this.personas = new ArregloPersonas();
+		this.tecnicos = new ArrayList<Tecnico>();
+	    this.clientesHilo = new ArrayList<ClienteThread>();
 		this.mes = 0;
 	}
 	

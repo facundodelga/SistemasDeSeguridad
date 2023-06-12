@@ -54,7 +54,8 @@ public class Controlador implements ActionListener, WindowListener {
 		//iniciaSimulacion();
 		this.listaPersonas = new DefaultListModel<Persona>();
 		this.listaFacturas = new DefaultListModel<Factura>();
-
+		this.st = st;
+		this.sistema.setServicioTecnico(st);
 		this.vistaPrincipal = new VistaSistemaDeSeguridad(this, st);
 		this.vistaPrincipal.setActionListener(this);
 
@@ -115,8 +116,8 @@ public class Controlador implements ActionListener, WindowListener {
 			agregaTecnico();
 			
 		} else if (comando.equalsIgnoreCase("Inicia simulacion")) {
-			// llama a la funcion Inicia simulacion;
-			
+			sistema.iniciaSimulacion();
+
 		} else if (comando.equalsIgnoreCase("Buscar Facturas")) {
 			buscarFacturas();
 		} else if (comando.equalsIgnoreCase("Pagar Factura")) {
@@ -282,7 +283,7 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	public void agregaTecnico() {
-
+		//sistema.setServicioTecnico(st);//error this thread is not owner
 		sistema.darAltaTecnico(vistaPrincipal.getNombreTecnico());
 
 	}
