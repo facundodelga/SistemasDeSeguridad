@@ -68,7 +68,7 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 		this.panel_13 = new JPanel();
 		this.panel_7.add(this.panel_13, BorderLayout.EAST);
 		
-		this.btnAgregarPersona = new JButton("Agregar persona");
+		this.btnAgregarPersona = new JButton("Confirmar persona");
 		this.panel_13.add(this.btnAgregarPersona);
 		
 		this.panel_1 = new JPanel();
@@ -109,6 +109,8 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 		this.textField_TipoFactura.setColumns(10);
 		
 		this.addWindowListener(controlador);
+		
+		this.addActionListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {

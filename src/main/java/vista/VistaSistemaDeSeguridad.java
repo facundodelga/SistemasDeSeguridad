@@ -190,7 +190,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.scrollPane_PersonasAbonados = new JScrollPane();
 		this.panel_4.add(this.scrollPane_PersonasAbonados, BorderLayout.CENTER);
 		
-		this.list_PersonasAbonados = new JList<Persona>();
+		this.list_PersonasAbonados = new JList<Persona>(this.controlador.getListaPersonas());
 		this.scrollPane_PersonasAbonados.setViewportView(this.list_PersonasAbonados);
 		
 		this.panel_1 = new JPanel();

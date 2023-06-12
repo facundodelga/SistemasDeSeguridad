@@ -43,6 +43,8 @@ public class Controlador implements ActionListener,WindowListener{
 	
 	public Controlador(ServicioTecnico st) {
 		super();
+		this.listaPersonas = new DefaultListModel<Persona>();
+		
 		this.vistaPrincipal =new VistaSistemaDeSeguridad(this,st);
 		this.vistaPrincipal.setActionListener(this);
 		this.sistema = Sistema.getInstancia();
@@ -69,7 +71,7 @@ public class Controlador implements ActionListener,WindowListener{
 		
 		cargarDatos();
 		
-		this.listaPersonas = new DefaultListModel<Persona>();
+		
 		
 		refreshPersonas();
 		
@@ -81,6 +83,8 @@ public class Controlador implements ActionListener,WindowListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String comando=e.getActionCommand();
+		
+		System.out.println(comando);
 		
 		if(comando.equalsIgnoreCase("Siguiente Mes")){
 			//Llama a la funcion siguiente mes del sistema
@@ -101,6 +105,9 @@ public class Controlador implements ActionListener,WindowListener{
 			
 			//ingresa la peersona al sistema con el metodo correspondiente
 		}
+		else if(comando.equalsIgnoreCase("Confirmar Persona")){
+			agregarPersona();
+		}
 		else if(comando.equalsIgnoreCase("Agrega tecnico")){
 			//llama a la funcion agrega tecnico
 			agregaTecnico();
@@ -114,9 +121,13 @@ public class Controlador implements ActionListener,WindowListener{
 	
 	public void refreshPersonas() {
 	    ArrayList<Persona> personas = sistema.getPersonas();
+//	    System.out.println(personas);
+	    System.out.println("refrescando, listaModel");
 	    for (Persona persona : personas) {
-		this.listaPersonas.addElement(persona);
+//	    	System.out.println(persona);
+	    	this.listaPersonas.addElement(persona);
 	    }
+	    System.out.println(listaPersonas);
 	    //this.vistaPrincipal.setListaPersonas(this.listaPersonas);
 	   // this.vistaPrincipal.setListaPersonas(personas);
 	}
@@ -125,6 +136,8 @@ public class Controlador implements ActionListener,WindowListener{
 	public DefaultListModel<Persona> getListaPersonas() {
 	    return listaPersonas;
 	}
+	
+	
 
 
 	//Metodos habilitadores de ventanas
@@ -151,14 +164,14 @@ public class Controlador implements ActionListener,WindowListener{
 	
 	public void agregarPersona() {
 	    try {
-		sistema.crearPersona(this.vistaAgregarPersonas.getNombreApellido(),this.vistaAgregarPersonas.getDNI(),this.vistaAgregarPersonas.getTipoFactura());
+	    	sistema.crearPersona(this.vistaAgregarPersonas.getNombreApellido(),this.vistaAgregarPersonas.getDNI(),this.vistaAgregarPersonas.getTipoFactura());
+	    	refreshPersonas();
 	    } catch (TipoDePersonaIncorrectoException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	    }
 	}
-	
-	
+
 	
 	public void windowClosing(WindowEvent e){
             int i=JOptionPane.showConfirmDialog(null, "¿Desea volver al menú principal?");
@@ -180,20 +193,7 @@ public class Controlador implements ActionListener,WindowListener{
 	    
 	}
 	
-	public void agregaPersona() {
-	    try {
-		//cerrar ventana despues de agregar persona
-		sistema.crearPersona(
-			vistaAgregarPersonas.getNombreApellido(), 
-			vistaAgregarPersonas.getDNI(),
-			vistaAgregarPersonas.getTipoFactura()
-			);
-	    } catch (TipoDePersonaIncorrectoException e) {
-		//mostrar problema por pantalla
-		
-	    }
-	}
-
+	
 
 	@Override
 	public void windowOpened(WindowEvent e) {
