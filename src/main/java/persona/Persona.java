@@ -183,8 +183,6 @@ public abstract class Persona implements Serializable,Cloneable{
 
 	public abstract Factura crearFactura();
 
-	public abstract Factura crearFactura(ArrayList<Contratacion> c);
-	
 	public abstract void pagarFactura(Factura f, MedioPago mp);
 		
 	public abstract void contratarServicio(Domicilio dom, iServicio serv, iPromocion promo,Factura f) throws AccionNoAutorizadaException, DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException;

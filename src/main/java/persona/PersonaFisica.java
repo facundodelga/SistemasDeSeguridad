@@ -24,11 +24,6 @@ public class PersonaFisica extends Persona{
 	public Factura crearFactura() {
 		return new FacturaFisica(this, Sistema.getInstancia().getMes());
 	}
-
-	@Override
-	public Factura crearFactura(ArrayList<Contratacion> c) {
-		return new FacturaFisica(this,c, Sistema.getInstancia().getMes());
-	}
 	
 	public void pagarFactura(Factura f, MedioPago mp) {
 		this.estado.pagarFactura(f,mp);

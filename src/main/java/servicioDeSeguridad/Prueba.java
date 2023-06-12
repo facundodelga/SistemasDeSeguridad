@@ -17,7 +17,7 @@ public class Prueba {
 
 //		PruebaAislada.main(args);
 //		PruebaSistema.main(args);
-
+/*
 		Sistema s = Sistema.getInstancia();
 		
 		iPromocion pD= s.obtenerPromocion("Dorada");
@@ -34,7 +34,7 @@ public class Prueba {
 
 		s.asignarNuevoDomicilio("40256578", d1);
 		s.asignarNuevoDomicilio("40256578", d2);		
-		/*
+		
 		Contratacion c1 = s.crearContratacion("10256578", d1, aV, pD);
 		
 		s.contratarAdicional(c1, a1);
@@ -45,25 +45,25 @@ public class Prueba {
 		s.contratarAdicional(c2, a2);
 		s.contratarAdicional(c2, a3);
 		 */
-		ArrayList<Factura> facturas = s.buscarFacturaPorPersona("40256578");
-
-		for (Factura f : facturas) {
-
-			System.out.println("DOS CONTRATACIONES: \n");	
-			System.out.println(f.detalle("cheque")+"\n");
-			
-			System.out.println("Antes de eliminar: \n");
-		
-			s.eliminarContratacion("40256578", d2);
-			
-			System.out.println("UNA CONTRATACION: \n");
-			System.out.println(f.detalle("cheque")+"\n");
-			
-			System.out.println("UNA CONTRATACION, PAGA FACTURA: \n");
-			s.pagarFactura("40256578", f.getNumFactura(), "cheque");
-			System.out.println(f.detalle("cheque")+"\n");
-	
-		}		
+//		ArrayList<Factura> facturas = s.buscarFacturaPorPersona("40256578");
+//
+//		for (Factura f : facturas) {
+//
+//			System.out.println("DOS CONTRATACIONES: \n");	
+//			System.out.println(f.detalle("cheque")+"\n");
+//			
+//			System.out.println("Antes de eliminar: \n");
+//		
+//			s.eliminarContratacion("40256578", d2);
+//			
+//			System.out.println("UNA CONTRATACION: \n");
+//			System.out.println(f.detalle("cheque")+"\n");
+//			
+//			System.out.println("UNA CONTRATACION, PAGA FACTURA: \n");
+//			s.pagarFactura("40256578", f.getNumFactura(), "cheque");
+//			System.out.println(f.detalle("cheque")+"\n");
+//	
+//		}		
 			
 		
 	}

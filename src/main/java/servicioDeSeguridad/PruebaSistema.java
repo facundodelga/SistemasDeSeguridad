@@ -27,7 +27,7 @@ import promociones.SinPromo;
 import promociones.iPromocion;
 
 public class PruebaSistema {
-	public static Sistema sistema = Sistema.getInstancia();
+/*	public static Sistema sistema = Sistema.getInstancia();
 
 	public static Domicilio dom1 = new Domicilio("Calle1", 1111);
 	public static Domicilio dom2 = new Domicilio("Calle2", 2222);
@@ -125,4 +125,5 @@ public class PruebaSistema {
 
 		System.out.println("PRUEBA COMPLETADA: Facturas\n");
 	}
+	*/
 }

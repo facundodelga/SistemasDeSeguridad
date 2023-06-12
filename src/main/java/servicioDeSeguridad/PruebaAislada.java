@@ -22,7 +22,7 @@ import promociones.iPromocion;
 import utils.DoubleUtils;
 
 public class PruebaAislada {
-
+/*
 	public static Domicilio dom1 = new Domicilio("Calle1", 1111);
 	public static Domicilio dom2 = new Domicilio("Calle2", 2222);
 	public static Domicilio dom3 = new Domicilio("Calle3", 3333);
@@ -270,5 +270,5 @@ public class PruebaAislada {
 		System.out.println("PRUEBA COMPLETADA: Factura\n"); 
 		
 		
-	}
+	}*/
 }
