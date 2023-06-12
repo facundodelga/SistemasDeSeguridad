@@ -1,10 +1,11 @@
 package simulacion;
 
-import java.util.Random;
+import java.io.Serializable;
 
-public class ClienteThread implements Runnable{
+public class ClienteThread extends Thread implements Serializable{
 
     private String nombre;
+    private boolean activo;
     private ServicioTecnico servicioTecnico;
 
     public ClienteThread(String nombre,ServicioTecnico st){
@@ -18,11 +19,18 @@ public class ClienteThread implements Runnable{
 
     @Override
     public void run() {
-        Random r = new Random();
-        int condicion = 1;
-        while(condicion != 0) {
-            condicion = r.nextInt()/10;
+	this.activo = true;
+        while(activo) {
+            servicioTecnico.pedirTecnico(this);
+            if(!activo)
+        	break;
         }
-        servicioTecnico.pedirTecnico(this);
+        
     }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
+    
 }
