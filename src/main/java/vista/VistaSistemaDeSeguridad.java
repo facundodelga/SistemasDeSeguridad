@@ -130,7 +130,8 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	 */
 	public VistaSistemaDeSeguridad(Controlador controlador,Observable o) {
 		setTitle("Sistema de Seguridad");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.controlador = controlador;
 		
 		setActionListener(controlador);
 		this.setVisible(true);
@@ -190,9 +191,12 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.scrollPane_PersonasAbonados = new JScrollPane();
 		this.panel_4.add(this.scrollPane_PersonasAbonados, BorderLayout.CENTER);
 		
+		System.out.println("vista");
+		System.out.println(this.controlador.getListaPersonas());
+		
 		this.list_PersonasAbonados = new JList<Persona>(this.controlador.getListaPersonas());
 		this.scrollPane_PersonasAbonados.setViewportView(this.list_PersonasAbonados);
-		
+	
 		this.panel_1 = new JPanel();
 		this.splitPane_1.setLeftComponent(this.panel_1);
 		this.panel_1.setLayout(new BorderLayout(0, 0));
@@ -308,7 +312,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.lblAbonantesHistoricas = new JLabel("Abonantes:");
 		this.scrollPane_Izquierda.setColumnHeaderView(this.lblAbonantesHistoricas);
 		
-		this.list_AbonantesHistoricas = new JList<Persona>();
+		this.list_AbonantesHistoricas = new JList<Persona>(this.controlador.getListaPersonas());
 		this.scrollPane_Izquierda.setViewportView(this.list_AbonantesHistoricas);
 		
 		
@@ -325,9 +329,9 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.btnSiguienteMes = new JButton("Siguiente Mes");
 		this.panel.add(this.btnSiguienteMes, BorderLayout.EAST);
 		
-		this.modeloLista = new DefaultListModel<Persona>();
-		this.list_PersonasAbonados.setModel(modeloLista);
-		this.list_AbonantesHistoricas.setModel(modeloLista);
+//		this.modeloLista = new DefaultListModel<Persona>();
+//		this.list_PersonasAbonados.setModel(modeloLista);
+//		this.list_AbonantesHistoricas.setModel(modeloLista);
 		addActionListener(this.controlador);
 	}
 	//Eventos

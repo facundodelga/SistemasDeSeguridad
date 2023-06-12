@@ -15,6 +15,7 @@ import excepciones.DomicilioNoPerteneceAPersona;
 import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
+import excepciones.PersonaYaExisteException;
 import excepciones.TipoDeContratableIncorrectoException;
 import excepciones.TipoDePersonaIncorrectoException;
 import excepciones.TipoDePromocionIncorrectoException;
@@ -195,8 +196,14 @@ public class Sistema implements Serializable, I_Sistema {
 	//PERSONA
 	
 	//creación de persona
-	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException {
+	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException, PersonaYaExisteException {
 		assert tipo != null && !tipo.isBlank() : "El campo tipo no debe estar vacio";
+		
+		if (personas.existePersona(dni)) {
+			throw new PersonaYaExisteException("La persona ya existe, con DNI: " + dni);
+		} 
+
+		
 		Persona p=PersonaFactory.crearPersona(nombre,dni,tipo);
 		this.personas.add(p);
 		return p;

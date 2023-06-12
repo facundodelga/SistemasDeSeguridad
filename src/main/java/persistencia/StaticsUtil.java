@@ -5,7 +5,7 @@ import modelo.Sistema;
 
 public class StaticsUtil {
     public static SistemaDTO SistemaASistemaDTO(Sistema s){
-        SistemaDTO sistemaDTO = null;
+        SistemaDTO sistemaDTO = new SistemaDTO();
 
         sistemaDTO.setUltimaFactura(Factura.getUltFactura());
         sistemaDTO.setFacturas(s.getFacturas());
