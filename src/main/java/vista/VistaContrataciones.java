@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.SwingConstants;
 import javax.swing.JSplitPane;
 import javax.swing.BoxLayout;
@@ -23,6 +25,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JList;
 import java.awt.FlowLayout;
 import javax.swing.AbstractListModel;
+import javax.swing.border.BevelBorder;
 
 public class VistaContrataciones extends JFrame {
 
@@ -70,7 +73,7 @@ public class VistaContrataciones extends JFrame {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		contratacionesPanel = new JPanel();
-		panel.add(contratacionesPanel);
+		contratacionesPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 64, 128), new Color(0, 64, 128)));		panel.add(contratacionesPanel);
 		contratacionesPanel.setLayout(new BorderLayout(0, 0));
 		
 		contratacionesJList = new JList();
@@ -87,12 +90,13 @@ public class VistaContrataciones extends JFrame {
 		contratacionesPanel.add(contratacionesJList);
 		
 		tituloContratacionesPanel = new JPanel();
-		panel.add(tituloContratacionesPanel, BorderLayout.NORTH);
+		tituloContratacionesPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 64, 128), new Color(0, 64, 128)));		panel.add(tituloContratacionesPanel, BorderLayout.NORTH);
 		
 		lblNewLabel = new JLabel("Arias, Iñaki Gabriel");
 		tituloContratacionesPanel.add(lblNewLabel);
 		
 		botonesPanel = new JPanel();
+		botonesPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 64, 128), new Color(0, 64, 128)));
 		panel.add(botonesPanel, BorderLayout.SOUTH);
 		
 		botonAgregar = new JButton("Nueva Contratación");
