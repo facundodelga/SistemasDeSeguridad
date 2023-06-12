@@ -23,9 +23,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 
-public class VistaAgregaPersona extends JFrame {
+public class VistaAgregaPersona extends JFrame implements IVista {
 
-	//Contrlador
+
 	private ActionListener controlador;
 	
 	
@@ -45,22 +45,6 @@ public class VistaAgregaPersona extends JFrame {
 	private JPanel panel_13;
 	private JButton btnAgregarPersona;
 	private JTextField textField_NombreApellido;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VistaAgregaPersona frame = new VistaAgregaPersona();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -132,9 +116,29 @@ public class VistaAgregaPersona extends JFrame {
 		this.textField_TipoFactura = new JTextField();
 		this.panel_10.add(this.textField_TipoFactura);
 		this.textField_TipoFactura.setColumns(10);
+		
+		addActionListener(this.controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
 		this.controlador=controlador;
+	}
+	
+	
+	public String getDNI() {
+	    return textField_DNI.getText();
+	}
+
+	public String getTipoFactura() {
+	    return textField_TipoFactura.getText();
+	}
+
+	public String getNombreApellido() {
+	    return textField_NombreApellido.getText();
+	}
+	@Override
+	public void addActionListener(ActionListener controlador) {
+	   this.btnAgregarPersona.addActionListener(controlador);
+	    
 	}
 }

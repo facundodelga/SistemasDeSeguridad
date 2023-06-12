@@ -17,7 +17,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-public class AgregaDireccion extends JFrame {
+public class AgregaDireccion extends JFrame implements IVista{
 	
 	//Controlador
 	ActionListener controlador;
@@ -119,9 +119,25 @@ public class AgregaDireccion extends JFrame {
 		this.textField_Altura = new JTextField();
 		this.panel_8.add(this.textField_Altura);
 		this.textField_Altura.setColumns(10);
+		
+		addActionListener(this.controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
 		this.controlador=controlador;
+	}
+	
+	public String getCalle() {
+	    return textField_Calle.getText();
+	}
+
+	public String getAltura() {
+	    return textField_Altura.getText();
+	}
+
+	@Override
+	public void addActionListener(ActionListener controlador) {
+	    this.btnAgregarDireccion.addActionListener(controlador);
+	    this.btnSiguiente.addActionListener(controlador);
 	}
 }

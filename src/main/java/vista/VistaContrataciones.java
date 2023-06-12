@@ -26,7 +26,7 @@ import javax.swing.JList;
 import java.awt.FlowLayout;
 import javax.swing.AbstractListModel;
 
-public class VistaContrataciones extends JFrame {
+public class VistaContrataciones extends JFrame implements IVista{
 	
 	//Controlador
 	private ActionListener controlador;
@@ -95,5 +95,12 @@ public class VistaContrataciones extends JFrame {
 	
 	public void setActionListener(ActionListener controlador) {
 		this.controlador=controlador;
+	}
+
+	@Override
+	public void addActionListener(ActionListener controlador) {
+	    this.botonAgregar.addActionListener(controlador);
+	    this.botonAgregar_1.addActionListener(controlador);
+	    
 	}
 }

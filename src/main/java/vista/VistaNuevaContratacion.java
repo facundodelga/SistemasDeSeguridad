@@ -32,7 +32,7 @@ import java.awt.CardLayout;
 import javax.swing.border.BevelBorder;
 import java.awt.Color;
 
-public class VistaNuevaContratacion extends JFrame {
+public class VistaNuevaContratacion extends JFrame implements IVista{
 	
 	//controlador
 	private ActionListener controlador;
@@ -226,9 +226,21 @@ public class VistaNuevaContratacion extends JFrame {
 		
 		lblNewLabel = new JLabel("Arias, Iñaki Gabriel");
 		tituloContratacionesPanel.add(lblNewLabel);
+		
+		addActionListener(this.controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
 		this.controlador=controlador;
 	}
+
+	@Override
+	public void addActionListener(ActionListener controlador) {
+	    // TODO Auto-generated method stub
+	    this.botonAgregarAdicional.addActionListener(controlador);
+	    this.botonConfirmar.addActionListener(controlador);
+	    this.botonResetAdicionales.addActionListener(controlador);
+	}
+	
+	
 }

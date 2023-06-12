@@ -26,6 +26,8 @@ import java.awt.event.ActionListener;
 
 import net.miginfocom.swing.MigLayout;
 import persona.Persona;
+import simulacion.Observable;
+import simulacion.Observer;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -39,11 +41,12 @@ import javax.swing.SwingConstants;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
-public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVista   {
+public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListener, IVista   {
 
 	/**
 	 * 
@@ -116,19 +119,21 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	//Listas
 	private DefaultListModel<Persona> modeloLista;
 	
-	
+	private Observable observado;
 
 	/**
 	 * Create the frame.
 	 * @param controlador2 
 	 */
-	public VistaSistemaDeSeguridad(ActionListener controlador) {
+	public VistaSistemaDeSeguridad(ActionListener controlador,Observable o) {
 		setTitle("Sistema de Seguridad");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setActionListener(controlador);
 		this.setVisible(true);
 		setBounds(100, 100, 675, 495);
 		setLocationRelativeTo(null);
+		o.agregarObservador(this);
+		this.observado = o;
 		this.iniciaVentana(controlador);
 	}
 	
@@ -143,10 +148,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		//Inicia el panel de las ventanas
 		this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		this.contentPane.add(this.tabbedPane, BorderLayout.CENTER);
-		
-		
-		
-		
+
 		//Componentes del panel de Abonados
 		
 		//Inicia panel de Abonados
@@ -200,11 +202,11 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		this.panel_1.add(this.panel_3, BorderLayout.EAST);
 		
 		this.btnEjecuta = new JButton("Ejecutar");
-		this.btnEjecuta.setActionCommand("Ejecuta");
+		this.btnEjecuta.setActionCommand("Ejecutar");
 		this.panel_3.add(this.btnEjecuta);
 		
 		this.comboBox = new JComboBox<String>();
-		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Agrega un nuevo servicio", "Elimina contratacion", "Contratar adicional", "Eliminar adicional", "Mostrar factura", "Pagar factura", "Agregar un adicional", "Eliminar contratacion"}));
+		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Gestionar contratacion", "Contratar adicional", "Eliminar adicional", "Mostrar factura", "Pagar factura", "Agregar un adicional", "Eliminar contratacion"}));
 		this.panel_1.add(this.comboBox, BorderLayout.CENTER);
 		
 		this.scrollPane_AbonadosSistema = new JScrollPane();
@@ -321,6 +323,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		this.modeloLista = new DefaultListModel<Persona>();
 		this.list_PersonasAbonados.setModel(modeloLista);
 		this.list_AbonantesHistoricas.setModel(modeloLista);
+		addActionListener(this.controlador);
 	}
 	//Eventos
 	
@@ -344,44 +347,31 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	}
 	
 	@Override
-	public String getNombre() {
-		// TODO Auto-generated method stub
-		return null;
+	    public void addActionListener(ActionListener controlador) {
+	        this.btnEjecuta.addActionListener(controlador);
+	        this.btnAgregarPersona.addActionListener(controlador);
+	        this.btnAgregaTecnico.addActionListener(controlador);
+	        this.btnBuscarFacturas.addActionListener(controlador);
+	        this.btnIniciaSimulacion.addActionListener(controlador);
+	        this.btnSiguienteMes.addActionListener(controlador);
+	    }
+	
+
+	public String getNombreTecnico() {
+	    return textField_NombreTecnico.getText();
+	}
+
+	public String getAccion() {
+	    return (String) this.comboBox.getSelectedItem();
 	}
 
 	@Override
-	public String getCalle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getAltura() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getDNI() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String tipoPersona() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String tipoServicio() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String tipoPromo() {
-		// TODO Auto-generated method stub
-		return null;
+	public void update(Observable o, Object mensaje) throws IllegalAccessException {
+	    // TODO Auto-generated method stub
+	    if(o != this.observado){
+	            throw new IllegalAccessException();
+	        }else {
+	            this.textArea_1.append(mensaje + "\n");
+	        }
 	}
 }
