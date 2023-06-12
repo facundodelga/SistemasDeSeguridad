@@ -11,6 +11,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import contrataciones.Contratacion;
 import controlador.Controlador;
 
 public class VistaContrataciones extends JFrame implements IVista{
@@ -51,16 +52,9 @@ public class VistaContrataciones extends JFrame implements IVista{
 		panel.add(contratacionesPanel);
 		contratacionesPanel.setLayout(new BorderLayout(0, 0));
 		
-		contratacionesJList = new JList();
-		contratacionesJList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Detalle Contratacion 1", "Detalle Contratacion 2", "Detalle Contratacion 3"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		contratacionesJList = new JList(this.controlador.getListaContrataciones());
+
+
 		contratacionesJList.setVisibleRowCount(20);
 		contratacionesPanel.add(contratacionesJList);
 		
@@ -89,7 +83,10 @@ public class VistaContrataciones extends JFrame implements IVista{
 	@Override
 	public void addActionListener(ActionListener controlador) {
 	    this.botonAgregar.addActionListener(controlador);
-	    this.botonAgregar_1.addActionListener(controlador);
-	    
+	    this.botonAgregar_1.addActionListener(controlador);   
+	}
+	
+	public Contratacion getContratacion() {
+		return (Contratacion) this.contratacionesJList.getSelectedValue();
 	}
 }

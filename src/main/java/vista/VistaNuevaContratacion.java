@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BoxLayout;
@@ -22,8 +23,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
+import contrataciones.Contratacion;
+import contrataciones.iServicio;
 import controlador.Controlador;
 import persona.Domicilio;
+import promociones.iPromocion;
 
 public class VistaNuevaContratacion extends JFrame implements IVista{
 	
@@ -235,5 +239,20 @@ public class VistaNuevaContratacion extends JFrame implements IVista{
 	    this.botonResetAdicionales.addActionListener(controlador);
 	}
 	
+
+	public String getPromo() {
+		return (String) this.comboBox_4.getSelectedItem();
+	}
+	public String getServicio() {
+		return (String) this.comboBox_1.getSelectedItem();
+	}
+	public Domicilio getDireccion() {
+		return (Domicilio) this.comboDomicilio.getSelectedItem();
+	}
+	public String getAdicional() {
+		return (String) this.comboBox_2.getSelectedItem();
+	}
 	
+
+
 }

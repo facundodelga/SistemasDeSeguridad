@@ -10,14 +10,23 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import contrataciones.Contratacion;
+import contrataciones.iContratable;
+import contrataciones.iServicio;
+import excepciones.ContratacionYaRegistradaException;
+import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
 import excepciones.PersonaYaExisteException;
+import excepciones.TipoDeContratableIncorrectoException;
 import excepciones.TipoDePersonaIncorrectoException;
+import excepciones.TipoDePromocionIncorrectoException;
+import excepciones.TipoDeServicioIncorrectoException;
 import modelo.Factura;
 import modelo.Sistema;
 import persistencia.PersistenciaBin;
@@ -32,6 +41,10 @@ import vista.VistaContrataciones;
 import vista.VistaFacturasPersona;
 import vista.VistaNuevaContratacion;
 import vista.VistaSistemaDeSeguridad;
+import persistencia.*;
+import persona.Domicilio;
+import persona.Persona;
+import promociones.iPromocion;
 
 public class Controlador implements ActionListener, WindowListener {
 
@@ -45,6 +58,7 @@ public class Controlador implements ActionListener, WindowListener {
 	private DefaultListModel<Persona> listaPersonas;
 	private DefaultListModel<Factura> listaFacturas;
 	private DefaultComboBoxModel<Domicilio> listaDomicilios;
+	private DefaultListModel<Contratacion> listaContrataciones;
 	private Persona persona;
 	private ServicioTecnico st;
 
@@ -81,9 +95,7 @@ public class Controlador implements ActionListener, WindowListener {
 		});
 
 		cargarDatos();
-
 		refreshPersonas();
-
 		vistaPrincipal.addWindowListener(this);
 //		vistaPrincipal.addActionListener(this); //Estaba de mas, los eventos se ejecutaban dos veces
 	}
@@ -129,7 +141,18 @@ public class Controlador implements ActionListener, WindowListener {
 
 		} else if (comando.equalsIgnoreCase("Confirmar Domicilio")) {
 			agregarDomicilio();
+		
+		}else if(comando.equalsIgnoreCase("Confirmar Contratación")) {
+			agregarContratacion();
+		
+		}else if(comando.equalsIgnoreCase("Nueva Contratación")) {
+			this.habilitaVentanaContrataciones();
+			this.inhabilitaVentanaPrincipal();
+		
+		}else if(comando.equalsIgnoreCase("Eliminar Contratación")) {
+			eliminarContratacion();
 		}
+	
 
 	}
 
@@ -139,6 +162,12 @@ public class Controlador implements ActionListener, WindowListener {
 		if (persona != null) {
 			if (s.equalsIgnoreCase("Crear Contratación"))
 				this.habilitaVentanaNuevaContratacion();
+
+		if(persona!=null) {
+			if (s.equalsIgnoreCase("Gestionar Contratacion"))
+				//this.habilitaVentanaNuevaContratacion();
+				this.habilitaVentanaContrataciones();
+
 			else if (s.equalsIgnoreCase("Agregar Domicilio"))
 				this.habilitaVentanaAgregaDireccion();
 			else if (s.equalsIgnoreCase("Mostrar Factura")) {
@@ -149,6 +178,7 @@ public class Controlador implements ActionListener, WindowListener {
 			this.inhabilitaVentanaPrincipal();
 		} else
 			this.informarVistaPrincipal("Debe seleccionar una persona de la lista");
+		}
 	}
 
 	// VISTAPRINCIPAL
@@ -240,6 +270,10 @@ public class Controlador implements ActionListener, WindowListener {
 	public DefaultComboBoxModel<Domicilio> getListaDomicilios() {
 		return listaDomicilios;
 	}
+	
+	public DefaultListModel<Contratacion> getListaContrataciones() {
+		return listaContrataciones;
+	}
 
 	// apartado facturas historicas
 	private void buscarFacturas() {
@@ -261,7 +295,8 @@ public class Controlador implements ActionListener, WindowListener {
 		return listaFacturas;
 	}
 
-	// VENTANA AGREGARDOMICILIO
+	//VENTANA AGREGARDOMICILIO
+
 	public void agregarDomicilio() {
 		// Necesitamos saber cual es la persona primero
 		try {
@@ -286,7 +321,6 @@ public class Controlador implements ActionListener, WindowListener {
 			System.out.println("Factura abonada\n" + this.vistaFacturasPersona.getFactura());
 		} catch (FacturaNoEncontradaException | PersonaNoEncontradaException e) {
 			this.informarVistaPrincipal(e.getMessage());
-		} finally {
 			this.inhabilitaVentanaFacturasPersona();
 			this.habilitaVentanaPrincipal();
 		}
@@ -306,8 +340,43 @@ public class Controlador implements ActionListener, WindowListener {
 			this.informarVistaPrincipal(e.getMessage());
 		}
 	}
+	
+	//VENTANA NUEVACONTRATACION
+	private void agregarContratacion() {
+		
+		//puede que tenga que hacer conversiones
+		Domicilio d = this.vistaNuevaContratacion.getDireccion();
+		iPromocion p;
+			try {
+				p = sistema.obtenerPromocion(this.vistaNuevaContratacion.getPromo());
+				iServicio s = sistema.obtenerServicio(this.vistaNuevaContratacion.getServicio());
+				Contratacion c = sistema.crearContratacion(persona, d, s, p);
+				iContratable a = sistema.obtenerContratable(this.vistaNuevaContratacion.getAdicional());
+				sistema.contratarAdicional(c, a);
+				/*	ArrayList<iContratable> adicionales = this.vistaNuevaContratacion.getAdicionales();
+				for (iContratable a : adicionales) {
+					sistema.contratarAdicional(c, a);
+				}
+			*/
+			
+			} catch (DomicilioYaRegistradoException | DomicilioNoEncontradoException | ContratacionYaRegistradaException
+					| PersonaNoEncontradaException | TipoDePromocionIncorrectoException | TipoDeServicioIncorrectoException | TipoDeContratableIncorrectoException e) {
+				this.informarVistaPrincipal(e.getMessage());
+			}
+	}
+	
+	//VENTANA CONTRATACIONES
+	private void eliminarContratacion() {
+		try {
+			sistema.eliminarContratacion(persona, this.vistaContrataciones.getContratacion().getDomicilio());
+		} catch (PersonaNoEncontradaException | DomicilioNoEncontradoException | FacturaNoEncontradaException e) {
+			this.informarVistaPrincipal(e.getMessage());
+		}
+		
+	}	
+	
+	//EVENTOS VENTANA
 
-	// EVENTOS VENTANA
 	public void windowClosing(WindowEvent e) {
 		if (e.getWindow() == this.vistaPrincipal) {
 			int i = JOptionPane.showConfirmDialog(null, "¿Desea finalizar la aplicación?");
@@ -324,6 +393,7 @@ public class Controlador implements ActionListener, WindowListener {
 		}
 	}
 
+
 	public void agregaTecnico() {
 		// sistema.setServicioTecnico(st);//error this thread is not owner
 		sistema.darAltaTecnico(vistaPrincipal.getNombreTecnico());
@@ -335,6 +405,7 @@ public class Controlador implements ActionListener, WindowListener {
 		sistema.setServicioTecnico(st);
 		// st iniciado en el constructor del controlador, no funciona
 	}
+
 
 	@Override
 	public void windowOpened(WindowEvent e) {
@@ -416,42 +487,39 @@ public class Controlador implements ActionListener, WindowListener {
 	public void habilitaVentanaPrincipal() {
 		this.vistaPrincipal.setVisible(true);
 	}
-
 	public void habilitaVentanaAgregaPersonas() {
 		this.vistaAgregarPersonas.setVisible(true);
 	}
-
 	public void habilitaVentanaAgregaDireccion() {
 		this.vistaAgregaDireccion.setVisible(true);
 	}
-
+	public void habilitaVentanaContrataciones() {
+		this.vistaContrataciones.setVisible(true);
+	}
 	public void habilitaVentanaNuevaContratacion() {
-		this.refreshDomicilios();
 		this.vistaNuevaContratacion.setVisible(true);
 	}
-
 	public void habilitaVentanaFacturasPersona() {
 		this.vistaFacturasPersona.setVisible(true);
 	}
-
-	// Metodos inhabilitadores de ventanas
+	//Metodos inhabilitadores de ventanas
 	public void inhabilitaVentanaPrincipal() {
 		this.vistaPrincipal.setVisible(false);
 	}
-
 	public void inhabilitaVentanaAgregaPersonas() {
 		this.vistaAgregarPersonas.setVisible(false);
 	}
-
 	public void inhabilitaVentanaAgregaDireccion() {
 		this.vistaAgregaDireccion.setVisible(false);
 	}
-
+	public void inhabilitaVentanaContrataciones() {
+		this.vistaContrataciones.setVisible(false);
+	}
 	public void inhabilitaVentanaNuevaContratacion() {
 		this.vistaNuevaContratacion.setVisible(false);
 	}
-
 	public void inhabilitaVentanaFacturasPersona() {
 		this.vistaFacturasPersona.setVisible(false);
 	}
+
 }

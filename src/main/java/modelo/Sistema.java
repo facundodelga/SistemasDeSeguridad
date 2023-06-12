@@ -212,7 +212,7 @@ public class Sistema implements Serializable, I_Sistema {
 		Persona p=PersonaFactory.crearPersona(nombre,dni,tipo);
 		this.personas.add(p);
 		
-		this.darAltaClienteThread(nombre);
+		//this.darAltaClienteThread(nombre);
 		
 		return p;
 	}
@@ -336,10 +336,11 @@ public class Sistema implements Serializable, I_Sistema {
 		p.agregarContratacion(contr);
 	}
 */
-	public void crearContratacion(Persona p, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+	public Contratacion crearContratacion(Persona p, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
 		Contratacion contr=null;
 		contr=new Contratacion(p.getDni(),dom,serv,promo);			
 		p.agregarContratacion(contr);
+		return contr;
 	}
 	
 	public void eliminarContratacion(Persona p, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
