@@ -81,7 +81,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	private JPanel panel_6;
 	private JButton btnAgregarPersona;
 	private JScrollPane scrollPane_PersonasAbonados;
-	private JList<Persona> list_PersonasAbonados;
+	protected JList<Persona> list_PersonasAbonados;
 	private JScrollPane scrollPane_AbonadosSistema;
 	private JLabel lblSistema;
 	private JTextArea textArea_OutputAbonados;
@@ -211,11 +211,11 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.panel_1.add(this.panel_3, BorderLayout.EAST);
 		
 		this.btnEjecuta = new JButton("Ejecutar");
-		this.btnEjecuta.setActionCommand("Ejecutar");
+		this.btnEjecuta.setActionCommand("Ejecucion");
 		this.panel_3.add(this.btnEjecuta);
 		
 		this.comboBox = new JComboBox<String>();
-		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Gestionar contratacion", "Mostrar factura","Agregar domicilio"}));
+		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Crear Contratación", "Mostrar factura","Agregar domicilio"}));
 		this.panel_1.add(this.comboBox, BorderLayout.CENTER);
 		
 		this.scrollPane_AbonadosSistema = new JScrollPane();
@@ -388,6 +388,15 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	    // TODO Auto-generated method stub
 	    
 	}
+	
+	public Persona getSelectedListAbonados() {
+		return list_PersonasAbonados.getSelectedValue();
+	}
+	
+	public Persona getSelectedListHistoricos() {
+		return list_AbonantesHistoricas.getSelectedValue();
+	}
+	
 
 
 	

@@ -1,7 +1,6 @@
 package controlador;
 
 import java.awt.event.ActionEvent;
-import vista.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -9,26 +8,26 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 
-import excepciones.FacturaNoEncontradaException;
-import excepciones.PersonaNoEncontradaException;
 import excepciones.PersonaYaExisteException;
 import excepciones.TipoDePersonaIncorrectoException;
-import modelo.Factura;
-import modelo.I_Sistema;
 import modelo.Sistema;
+import persistencia.PersistenciaBin;
+import persistencia.SistemaDTO;
+import persistencia.StaticsUtil;
+import persona.Domicilio;
+import persona.Persona;
 import simulacion.ServicioTecnico;
-import vista.IVista;
-import vista.VistaNuevaContratacion;
-import vista.VistaSistemaDeSeguridad;
-import vista.VistaContrataciones;
 import vista.AgregaDireccion;
 import vista.VistaAgregaPersona;
-import persistencia.*;
-import persona.Persona;
+import vista.VistaContrataciones;
+import vista.VistaFacturasPersona;
+import vista.VistaNuevaContratacion;
+import vista.VistaSistemaDeSeguridad;
 
 public class Controlador implements ActionListener, WindowListener {
 
@@ -73,7 +72,7 @@ public class Controlador implements ActionListener, WindowListener {
 		refreshPersonas();
 
 		vistaPrincipal.addWindowListener(this);
-		vistaPrincipal.addActionListener(this);
+//		vistaPrincipal.addActionListener(this); //Estaba de mas, los eventos se ejecutaban dos veces
 	}
 
 	@Override
@@ -87,7 +86,7 @@ public class Controlador implements ActionListener, WindowListener {
 			this.sistema.adelantarMes();
 			// setea todos los textField en vacio menos el de simulacion de tecnicos
 //			this.vista.
-		} else if (comando.equalsIgnoreCase("Ejecutar")) {
+		} else if (comando.equalsIgnoreCase("Ejecucion")) {
 			// Debe tomar lo que se ingreso por el textField_Accion y ejecutar la accion que
 			// se requiera
 			abrirVentanaAccion();
@@ -112,19 +111,31 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	public void refreshPersonas() {
-		ArrayList<Persona> personas = sistema.getPersonas();
-//	    System.out.println(personas);
-		System.out.println("refrescando, listaModel");
+		
+		/* Teniamos un bug, que a veces al abrir la ventana el JList no se pintaba, solo despues de 
+		 * agregar una persona nueva. Googleando, parece que hay que updatear el model con un runnable
+		 * y usando SwingUtilities.invokeLater para que no haya problemas
+		 */
+		Runnable updateGUIAsincrono = new Runnable() {
+			public void run() {
+				ArrayList<Persona> personas = sistema.getPersonas();
+//		 	    System.out.println(personas);
+				System.out.println("refrescando, listaModel");
 
-		this.listaPersonas.clear();
+				listaPersonas.clear();
 
-		for (Persona persona : personas) {
-//	    	System.out.println(persona);
-			this.listaPersonas.addElement(persona);
-		}
-		System.out.println(listaPersonas);
-		// this.vistaPrincipal.setListaPersonas(this.listaPersonas);
-		// this.vistaPrincipal.setListaPersonas(personas);
+				for (Persona persona : personas) {
+//		 	    	System.out.println(persona);
+					listaPersonas.addElement(persona);
+				}
+				System.out.println(listaPersonas);
+				// this.vistaPrincipal.setListaPersonas(this.listaPersonas);
+				// this.vistaPrincipal.setListaPersonas(personas);
+			}
+		};
+
+		SwingUtilities.invokeLater(updateGUIAsincrono);
+
 	}
 
 	public DefaultListModel<Persona> getListaPersonas() {
@@ -140,10 +151,18 @@ public class Controlador implements ActionListener, WindowListener {
 		// TODO Auto-generated method stub
 		String s = vistaPrincipal.getAccion();
 
-		if (s.equalsIgnoreCase("Gestionar Contratacion"))
+		if (s.equalsIgnoreCase("Crear Contratación")) {
+			Persona p = vistaPrincipal.getSelectedListAbonados();
+
+			if (p == null) {
+				JOptionPane.showMessageDialog(null, "Debe seleccionar una persona primero", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
 			this.vistaNuevaContratacion.setVisible(true);
 
-		else if (s.equalsIgnoreCase("Agregar Domicilio"))
+		} else if (s.equalsIgnoreCase("Agregar Domicilio"))
 			this.vistaAgregaDireccion.setVisible(true);
 
 		else if (s.equalsIgnoreCase("Mostrar Factura")) {
