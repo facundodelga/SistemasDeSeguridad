@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -25,7 +27,10 @@ import java.awt.FlowLayout;
 import javax.swing.AbstractListModel;
 
 public class VistaContrataciones extends JFrame {
-
+	
+	//Controlador
+	private ActionListener controlador;
+	
 	private JPanel contentPane;
 	private JPanel panel;
 	private JPanel contratacionesPanel;
@@ -36,28 +41,14 @@ public class VistaContrataciones extends JFrame {
 	private JButton botonAgregar;
 	private JButton botonAgregar_1;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VistaContrataciones frame = new VistaContrataciones();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public VistaContrataciones() {
+	public VistaContrataciones(ActionListener controlador) {
 		setTitle("Contrataciones");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setActionListener(controlador);
 		setBounds(100, 100, 609, 351);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -100,5 +91,9 @@ public class VistaContrataciones extends JFrame {
 		
 		botonAgregar_1 = new JButton("Eliminar Contratación");
 		botonesPanel.add(botonAgregar_1);
+	}
+	
+	public void setActionListener(ActionListener controlador) {
+		this.controlador=controlador;
 	}
 }

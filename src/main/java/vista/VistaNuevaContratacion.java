@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -31,7 +33,10 @@ import javax.swing.border.BevelBorder;
 import java.awt.Color;
 
 public class VistaNuevaContratacion extends JFrame {
-
+	
+	//controlador
+	private ActionListener controlador;
+	
 	private JPanel contentPane;
 	private JPanel panel;
 	private JPanel contratacionesPanel;
@@ -63,33 +68,22 @@ public class VistaNuevaContratacion extends JFrame {
 	private JButton botonResetAdicionales;
 	private JList listAdicionales;
 	private JButton botonConfirmar;
+	
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VistaNuevaContratacion frame = new VistaNuevaContratacion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public VistaNuevaContratacion() {
+	public VistaNuevaContratacion(ActionListener controlador) {
 		setTitle("Nueva Contratación");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setActionListener(controlador);
 		setBounds(100, 100, 609, 400);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
+		
 		setContentPane(this.contentPane);
 		this.contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -232,5 +226,9 @@ public class VistaNuevaContratacion extends JFrame {
 		
 		lblNewLabel = new JLabel("Arias, Iñaki Gabriel");
 		tituloContratacionesPanel.add(lblNewLabel);
+	}
+	
+	public void setActionListener(ActionListener controlador) {
+		this.controlador=controlador;
 	}
 }

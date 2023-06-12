@@ -10,19 +10,37 @@ import modelo.Factura;
 import modelo.I_Sistema;
 import modelo.Sistema;
 import vista.IVista;
+import vista.VistaNuevaContratacion;
 import vista.VistaSistemaDeSeguridad;
-
+import vista.VistaContrataciones;
+import vista.AgregaDireccion;
+import vista.VistaAgregaPersona;
 
 public class Controlador implements ActionListener{
 
 	private Sistema sistema;
-	private IVista vista;
+	private VistaSistemaDeSeguridad vistaPrincipal;
+	private VistaNuevaContratacion vistaNuevaContratacion;
+	private VistaContrataciones vistaContrataciones;
+	private VistaAgregaPersona vistaAgregarPersonas;
+	private AgregaDireccion vistaAgregaDireccion;
+	
 	public Controlador() {
-		this.vista = new VistaSistemaDeSeguridad();
-		this.vista.setActionListener(this);
+		super();
+		this.vistaPrincipal =new VistaSistemaDeSeguridad(this);
+		this.vistaPrincipal.setActionListener(this);
 		this.sistema = Sistema.getInstancia();
+		this.sistema.setControlador(this);
+		
+		//Ventanas secundarias
+		this.vistaNuevaContratacion=new VistaNuevaContratacion(this);
+		this.vistaAgregaDireccion=new AgregaDireccion(this);
+		this.vistaAgregarPersonas=new VistaAgregaPersona(this);
+		this.vistaContrataciones=new VistaContrataciones(this);
+		this.vistaNuevaContratacion= new VistaNuevaContratacion(this);
 	}
 	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String comando=e.getActionCommand();
@@ -58,4 +76,14 @@ public class Controlador implements ActionListener{
 		
 		//llama a la funcion en sistema agregaTecnico
 	}
+	
+	
+	
+	
+	
+	//Metodos habilitadores de ventanas
+	public void habilitaVentanaPrincipal() {
+		this.vistaPrincipal.setVisible(true);
+	}
+	
 }

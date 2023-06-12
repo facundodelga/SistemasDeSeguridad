@@ -25,7 +25,10 @@ import java.awt.FlowLayout;
 
 public class VistaAgregaPersona extends JFrame {
 
-	private ActionListener actionListener;
+	//Contrlador
+	private ActionListener controlador;
+	
+	
 	private JPanel contentPane;
 	private JPanel panel;
 	private JLabel lblDatosPersona;
@@ -62,15 +65,16 @@ public class VistaAgregaPersona extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VistaAgregaPersona() {
+	public VistaAgregaPersona(ActionListener controlador) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setActionListener(controlador);
 		setBounds(100, 100, 500, 300);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		iniciaComponentes();
+		iniciaComponentes(controlador);
 		
 	}
-	public void iniciaComponentes() {
+	public void iniciaComponentes(ActionListener controlador) {
 		setContentPane(this.contentPane);
 		this.contentPane.setLayout(new BorderLayout(0, 0));
 		
@@ -128,5 +132,9 @@ public class VistaAgregaPersona extends JFrame {
 		this.textField_TipoFactura = new JTextField();
 		this.panel_10.add(this.textField_TipoFactura);
 		this.textField_TipoFactura.setColumns(10);
+	}
+	
+	public void setActionListener(ActionListener controlador) {
+		this.controlador=controlador;
 	}
 }

@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+
 import java.awt.Choice;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
@@ -23,6 +25,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import net.miginfocom.swing.MigLayout;
+import persona.Persona;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -47,7 +51,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	private static final long serialVersionUID = 1L;
 	
 	//ActionListener
-	private ActionListener actionListener;
+	private ActionListener controlador;
 	
 	//Componentes
 	//Panel principal
@@ -71,7 +75,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	private JPanel panel_6;
 	private JButton btnAgregarPersona;
 	private JScrollPane scrollPane_PersonasAbonados;
-	private JList list_PersonasAbonados;
+	private JList<Persona> list_PersonasAbonados;
 	private JScrollPane scrollPane_AbonadosSistema;
 	private JLabel lblSistema;
 	private JTextArea textArea_OutputAbonados;
@@ -102,45 +106,35 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	private JButton btnBuscarFacturas;
 	private JScrollPane scrollPane_Izquierda;
 	private JLabel lblAbonantesHistoricas;
-	private JList list_AbonantesHistoricas;
+	private JList<Persona> list_AbonantesHistoricas;
 	//panel de siguiente mes
 	private JPanel panelSiguienteMes;
 	private JButton btnSiguienteMes;
 	private JPanel panel;
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	
-	
-	
-	
-	public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    VistaSistemaDeSeguridad frame = new VistaSistemaDeSeguridad();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+	//Listas
+	private DefaultListModel<Persona> modeloLista;
 	
 	
 
 	/**
 	 * Create the frame.
+	 * @param controlador2 
 	 */
-	public VistaSistemaDeSeguridad() {
+	public VistaSistemaDeSeguridad(ActionListener controlador) {
 		setTitle("Sistema de Seguridad");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setActionListener(controlador);
+		this.setVisible(true);
 		setBounds(100, 100, 675, 495);
 		setLocationRelativeTo(null);
-		this.iniciaVentana();
+		this.iniciaVentana(controlador);
 	}
 	
 	/* Inicia los componentes de la vista */
 	
-	private void iniciaVentana() {
+	private void iniciaVentana(ActionListener controlador) {
 		//Inicia Panel contenedor de todo
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -189,7 +183,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		this.scrollPane_PersonasAbonados = new JScrollPane();
 		this.panel_4.add(this.scrollPane_PersonasAbonados, BorderLayout.CENTER);
 		
-		this.list_PersonasAbonados = new JList();
+		this.list_PersonasAbonados = new JList<Persona>();
 		this.scrollPane_PersonasAbonados.setViewportView(this.list_PersonasAbonados);
 		
 		this.panel_1 = new JPanel();
@@ -209,7 +203,8 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		this.btnEjecuta.setActionCommand("Ejecuta");
 		this.panel_3.add(this.btnEjecuta);
 		
-		this.comboBox = new JComboBox();
+		this.comboBox = new JComboBox<String>();
+		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Agrega un nuevo servicio", "Elimina contratacion", "Contratar adicional", "Eliminar adicional", "Mostrar factura", "Pagar factura", "Agregar un adicional", "Eliminar contratacion"}));
 		this.panel_1.add(this.comboBox, BorderLayout.CENTER);
 		
 		this.scrollPane_AbonadosSistema = new JScrollPane();
@@ -306,7 +301,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		this.lblAbonantesHistoricas = new JLabel("Abonantes:");
 		this.scrollPane_Izquierda.setColumnHeaderView(this.lblAbonantesHistoricas);
 		
-		this.list_AbonantesHistoricas = new JList();
+		this.list_AbonantesHistoricas = new JList<Persona>();
 		this.scrollPane_Izquierda.setViewportView(this.list_AbonantesHistoricas);
 		
 		
@@ -322,6 +317,10 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 		
 		this.btnSiguienteMes = new JButton("Siguiente Mes");
 		this.panel.add(this.btnSiguienteMes, BorderLayout.EAST);
+		
+		this.modeloLista = new DefaultListModel<Persona>();
+		this.list_PersonasAbonados.setModel(modeloLista);
+		this.list_AbonantesHistoricas.setModel(modeloLista);
 	}
 	//Eventos
 	
@@ -340,13 +339,10 @@ public class VistaSistemaDeSeguridad extends JFrame implements KeyListener, IVis
 	}
 	//Setea controlador
 	@Override
-	public void setActionListener(Controlador controlador) {
-		this.actionListener=controlador;
-		
+	public void setActionListener(ActionListener controlador) {
+		this.controlador=controlador;
 	}
-	public void actionPerformed(ActionEvent e) {
-	}
-
+	
 	@Override
 	public String getNombre() {
 		// TODO Auto-generated method stub

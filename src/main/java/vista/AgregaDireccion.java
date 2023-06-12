@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
@@ -16,7 +18,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 public class AgregaDireccion extends JFrame {
-
+	
+	//Controlador
+	ActionListener controlador;
+	
 	private JPanel contentPane;
 	private JPanel panel;
 	private JButton btnSiguiente;
@@ -37,28 +42,15 @@ public class AgregaDireccion extends JFrame {
 	private JLabel lblAltura;
 	private JTextField textField_Altura;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AgregaDireccion frame = new AgregaDireccion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public AgregaDireccion() {
+	public AgregaDireccion(ActionListener controlador) {
 		setTitle("Sistema de Seguridad-Direcciones");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setActionListener(controlador);
 		setBounds(100, 100, 650, 477);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -128,5 +120,8 @@ public class AgregaDireccion extends JFrame {
 		this.panel_8.add(this.textField_Altura);
 		this.textField_Altura.setColumns(10);
 	}
-
+	
+	public void setActionListener(ActionListener controlador) {
+		this.controlador=controlador;
+	}
 }

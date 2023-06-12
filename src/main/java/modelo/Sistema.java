@@ -1,11 +1,13 @@
 package modelo;
 
+import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import contrataciones.Contratacion;
 import contrataciones.iContratable;
 import contrataciones.iServicio;
+import controlador.Controlador;
 import excepciones.ContratacionNoEncontradaException;
 import excepciones.ContratacionYaRegistradaException;
 import excepciones.DomicilioNoEncontradoException;
@@ -29,6 +31,10 @@ import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
 public class Sistema implements Serializable, I_Sistema {
+	
+	//Controlador
+	private Controlador controlador;
+	//Del sistema
 	private static Sistema instancia  = null;
 	private ArregloFacturas facturas;
 	private ArregloPersonas personas;
@@ -56,6 +62,11 @@ public class Sistema implements Serializable, I_Sistema {
 			instancia = new Sistema();
 		}
 		return instancia;
+	}
+	
+	//Setea controlador
+	public void setControlador(Controlador controlador) {
+		this.controlador=controlador;
 	}
 
 	//MES ACTUAL
