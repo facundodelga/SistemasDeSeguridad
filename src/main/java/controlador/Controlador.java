@@ -68,6 +68,8 @@ public class Controlador implements ActionListener, WindowListener {
 		//iniciaSimulacion();
 		this.listaPersonas = new DefaultListModel<Persona>();
 		this.listaFacturas = new DefaultListModel<Factura>();
+		this.listaDomicilios = new DefaultComboBoxModel<Domicilio>();
+		this.listaContrataciones = new DefaultListModel<Contratacion>();
 
 		this.vistaPrincipal = new VistaSistemaDeSeguridad(this,sistema.getServicioTecnico());
 

@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 import contrataciones.Contratacion;
 import controlador.Controlador;
+import persona.Persona;
 
 public class VistaContrataciones extends JFrame implements IVista{
 	
@@ -34,6 +35,7 @@ public class VistaContrataciones extends JFrame implements IVista{
 	 * Create the frame.
 	 */
 	public VistaContrataciones(Controlador controlador) {
+		this.controlador = controlador;
 		setTitle("Contrataciones");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
@@ -51,9 +53,11 @@ public class VistaContrataciones extends JFrame implements IVista{
 		contratacionesPanel = new JPanel();
 		panel.add(contratacionesPanel);
 		contratacionesPanel.setLayout(new BorderLayout(0, 0));
-		
-		contratacionesJList = new JList(this.controlador.getListaContrataciones());
 
+
+		this.contratacionesJList = new JList<Contratacion>(this.controlador.getListaContrataciones());
+		//this.contratacionesPanel.setViewportView(this.contratacionesJList);
+	
 
 		contratacionesJList.setVisibleRowCount(20);
 		contratacionesPanel.add(contratacionesJList);

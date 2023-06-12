@@ -107,7 +107,8 @@ public class VistaNuevaContratacion extends JFrame implements IVista{
 		panel_1 = new JPanel();
 		domicilioPanel.add(panel_1);
 		
-		comboDomicilio = new JComboBox<>(this.controlador.getListaDomicilios());
+		comboDomicilio = new JComboBox<>();
+		comboDomicilio.setModel(this.controlador.getListaDomicilios());
 		panel_1.add(comboDomicilio);
 		
 		servicioPanel = new JPanel();

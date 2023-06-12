@@ -47,6 +47,7 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 	 * Create the frame.
 	 */
 	public VistaFacturasPersona(Controlador controlador) {
+		this.controlador = controlador;
 		setTitle("Sistema de seguridad-Pagar factura");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 550, 400);

@@ -146,6 +146,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	/* Inicia los componentes de la vista */
 	
 	private void iniciaVentana(Controlador controlador) {
+		this.controlador = controlador;
 		//Inicia Panel contenedor de todo
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

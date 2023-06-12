@@ -41,6 +41,7 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 	 * Create the frame.
 	 */
 	public VistaAgregaPersona(Controlador controlador) {
+		this.controlador = controlador;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
 		setBounds(100, 100, 500, 300);
