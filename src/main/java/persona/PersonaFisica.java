@@ -22,7 +22,10 @@ public class PersonaFisica extends Persona{
 
 	@Override
 	public Factura crearFactura() {
-		return new FacturaFisica(this, Sistema.getInstancia().getMes());
+		Factura f = null;
+		if(this.getContrataciones()!=null)
+			f = new FacturaFisica(this, Sistema.getInstancia().getMes());
+		return f;
 	}
 	
 	public void pagarFactura(Factura f, MedioPago mp) {

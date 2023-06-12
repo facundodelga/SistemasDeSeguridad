@@ -10,6 +10,7 @@ import excepciones.DomicilioNoEncontradoException;
 import excepciones.DomicilioYaRegistradoException;
 import excepciones.PersonaNoEncontradaException;
 import modelo.Factura;
+import modelo.FacturaFisica;
 import modelo.FacturaJuridica;
 import modelo.MedioPago;
 import modelo.Sistema;
@@ -27,7 +28,10 @@ public class PersonaJuridica extends Persona{
 
 	@Override
 	public Factura crearFactura() {
-		return new FacturaJuridica(this, Sistema.getInstancia().getMes());
+		Factura f = null;
+		if(this.getContrataciones()!=null)
+			f = new FacturaJuridica(this, Sistema.getInstancia().getMes());
+		return f;
 	}
 
 	@Override

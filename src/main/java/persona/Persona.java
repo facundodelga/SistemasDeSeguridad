@@ -34,12 +34,14 @@ public abstract class Persona implements Serializable,Cloneable{
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = new ArrayList<Domicilio>();
+		this.contrataciones = new ArrayList<Contratacion>();
 	}
 	
 	public Persona(String nombre, String dni, ArrayList<Domicilio> domicilios) {
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = domicilios;
+		this.contrataciones = new ArrayList<Contratacion>();
 	}
 
 	

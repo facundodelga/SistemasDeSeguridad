@@ -103,8 +103,7 @@ public class Controlador implements ActionListener, WindowListener {
 	public void actionPerformed(ActionEvent e) {
 		String comando = e.getActionCommand();
 
-		System.out.println(comando);
-		System.out.println("hola");
+		//System.out.println(comando);
 		if (comando.equalsIgnoreCase("Siguiente Mes")) {
 			this.sistema.adelantarMes();
 			refreshFacturas();
@@ -113,7 +112,7 @@ public class Controlador implements ActionListener, WindowListener {
 
 		} else if (comando.equalsIgnoreCase("Ejecucion")) {
 			persona = vistaPrincipal.getPersona();
-			System.out.println(persona);
+			//System.out.println(persona);
 			abrirVentanaAccion();
 
 		} else if (comando.equalsIgnoreCase("Agregar Persona")) {
@@ -135,8 +134,11 @@ public class Controlador implements ActionListener, WindowListener {
 		} else if (comando.equalsIgnoreCase("Buscar Facturas")) {
 			buscarFacturas();
 		
-		} else if (comando.equalsIgnoreCase("Pagar Factura")) {
+		} else if (comando.equalsIgnoreCase("Pagar factura")) {
 			pagarFacturas();
+		
+		} else if (comando.equalsIgnoreCase("Mostrar detalle")) {
+			detalleFactura();
 
 		}else if(comando.equalsIgnoreCase("Confirmar Contratacion")) {
 			agregarContratacion();
@@ -207,7 +209,7 @@ public class Controlador implements ActionListener, WindowListener {
 		Runnable updateGUIAsincrono = new Runnable() {
 			public void run() {
 				ArrayList<Persona> personas = sistema.getPersonas();
-				System.out.println("refrescando, listaModel");
+				//System.out.println("refrescando, listaModel");
 				listaPersonas.clear();
 
 				for (Persona persona : personas) {
@@ -229,7 +231,7 @@ public class Controlador implements ActionListener, WindowListener {
 		Runnable updateGUIAsincrono = new Runnable() {
 			public void run() {
 				ArrayList<Domicilio> domicilios = persona.getDomicilios();
-				System.out.println("refrescando Domicilios, ComboBoxModel");
+				//System.out.println("refrescando Domicilios, ComboBoxModel");
 				listaDomicilios.removeAllElements();
 
 				for (Domicilio domicilio : domicilios) {
@@ -250,7 +252,7 @@ public class Controlador implements ActionListener, WindowListener {
 		Runnable updateGUIAsincrono = new Runnable() {
 			public void run() {
 				ArrayList<Factura> facturas = sistema.getFacturas();
-				System.out.println("refrescando facturas, listaModel");
+				//System.out.println("refrescando facturas, listaModel");
 				listaFacturas.clear();
 
 				for (Factura factura : facturas) {
@@ -278,7 +280,7 @@ public class Controlador implements ActionListener, WindowListener {
 			public void run() {
 				if(persona!=null) {
 					ArrayList<Contratacion> contrataciones = persona.getContrataciones();
-					System.out.println("refrescando contrataciones, listaModel");
+					//System.out.println("refrescando contrataciones, listaModel");
 					listaContrataciones.clear();
 	
 					for (Contratacion contratacion : contrataciones) {
@@ -296,18 +298,15 @@ public class Controlador implements ActionListener, WindowListener {
 
 	// apartado facturas historicas
 	private void buscarFacturas() {
-		try {
 			persona = this.vistaPrincipal.getPersona();
-			ArrayList<Factura> facturas = sistema.buscarFacturaPorPersonaDNI(persona.getDni());
-			this.listaFacturas.clear();
+			ArrayList<Factura> facturas = sistema.getFacturas();
+			String fHistoricas="";
 			for (Factura f : facturas) {
-				this.listaFacturas.addElement(f);
-				// cuando se creen las primeras facturas, probarlo
-				//refreshFacturas();
-			}
-		} catch (PersonaNoEncontradaException | FacturaNoEncontradaException e) {
-			this.informarVistaPrincipal(e.getMessage());
+				if(f!=null && f.getPersona()==persona)
+					//fHistoricas += f.detalle()+"\n";
+					fHistoricas += f.toString()+"\n";
 		}
+		this.vistaPrincipal.setFacturasHistoricas(fHistoricas);
 	}
 
 	//VENTANA AGREGARDOMICILIO
@@ -318,14 +317,13 @@ public class Controlador implements ActionListener, WindowListener {
 			Domicilio d = sistema.crearDomicilio(vistaAgregaDireccion.getCalle(),
 					Integer.parseInt(vistaAgregaDireccion.getAltura()));
 			sistema.asignarNuevoDomicilio(this.persona, d);
-			this.vistaAgregaDireccion.actualizarDirecciones(d.toString());
-			refreshDomicilios();
 		} catch (NumberFormatException | DomicilioYaRegistradoException | PersonaNoEncontradaException e) {
 			informarVistaPrincipal(e.getMessage());
 		} finally {
 			inhabilitaVentanaAgregaDireccion();
 			habilitaVentanaPrincipal();
 		}
+		refreshDomicilios();
 		
 	}
 	
@@ -336,38 +334,62 @@ public class Controlador implements ActionListener, WindowListener {
 		for (Domicilio d : domicilios) {
 			if(d!=null) {
 				this.listaDomicilios.addElement(d);
-				this.vistaAgregaDireccion.actualizarDirecciones(d.toString());
+				System.out.println(d.toString());
 			}
 		}
+		this.vistaAgregaDireccion.actualizarTextArea(getDomiciliosText());
+	}
+	
+	public String getDomiciliosText() {
+		String res="";
+		persona = this.vistaPrincipal.getPersona();
+		if(persona!=null) {
+			ArrayList<Domicilio> domicilios = persona.getDomicilios();
+			for (Domicilio domicilio : domicilios) {
+				if(domicilio!=null)
+					res += domicilio.toString()+"\n";
+			}
+		}
+		return res;
 	}
 
 	// VENTANA FACTURASPERSONA
 	// deberia mostrar solo las facturas sin pagar
 	private void pagarFacturas() {
-		System.out.println("Intento pagar\n");
 		try {
-			sistema.pagarFactura(persona.getDni(), this.vistaFacturasPersona.getFactura().getNumFactura(),
-					this.vistaFacturasPersona.getMetodoPago());
-			System.out.println("Factura abonada\n" + this.vistaFacturasPersona.getFactura());
+			String mp = this.vistaFacturasPersona.getMetodoPago();
+			Factura f = this.vistaFacturasPersona.getFactura();
+				sistema.pagarFactura(persona.getDni(), 
+						f.getNumFactura(),
+						mp);
+				/*System.out.println(persona.getDni()+"\n"+ 
+						f.getNumFactura()+"\n"+
+						mp+"\n"+
+						f.isPagoRealizado());*/
+				//System.out.println("Factura abonada\n" + this.vistaFacturasPersona.getFactura());
+				this.vistaFacturasPersona.mostrarDetalle(this.vistaFacturasPersona.getFactura().toString());
 		} catch (FacturaNoEncontradaException | PersonaNoEncontradaException e) {
 			this.informarVistaPrincipal(e.getMessage());
 			this.inhabilitaVentanaFacturasPersona();
 			this.habilitaVentanaPrincipal();
 		}
 	}
+	private void detalleFactura() {
+		this.vistaFacturasPersona.mostrarDetalle(this.vistaFacturasPersona.getFactura().detalle());
+	}
 
 	public void getFacturasImpagas() {
-		try {
+		//try {
 			persona = this.vistaPrincipal.getPersona();
-			ArrayList<Factura> facturas = sistema.buscarFacturaPorPersonaDNI(persona.getDni());
+			ArrayList<Factura> facturas = sistema.getFacturas();//sistema.buscarFacturaPorPersonaDNI(persona.getDni());
 			this.listaFacturas.clear();
 			for (Factura f : facturas) {
-				if (f != null && !f.isPagoRealizado() && !listaFacturas.contains(f))
+				if (f != null && f.getPersona()==persona && !f.isPagoRealizado() && !listaFacturas.contains(f))
 					this.listaFacturas.addElement(f);
 			}
-		} catch (PersonaNoEncontradaException | FacturaNoEncontradaException e) {
+		/*} catch (PersonaNoEncontradaException | FacturaNoEncontradaException e) {
 			this.informarVistaPrincipal(e.getMessage());
-		}
+		}*/
 	}
 	
 	//VENTANA NUEVACONTRATACION
@@ -522,11 +544,10 @@ public class Controlador implements ActionListener, WindowListener {
 		this.vistaAgregarPersonas.setVisible(false);
 	}
 	public void inhabilitaVentanaAgregaDireccion() {
+		this.vistaAgregaDireccion.vaciarTextArea();
 		this.vistaAgregaDireccion.setVisible(false);
 	}
 	public void inhabilitaVentanaContrataciones() {
-		this.vistaContrataciones.getContentPane().revalidate();
-		this.vistaContrataciones.getContentPane().repaint();
 		this.vistaContrataciones.setVisible(false);
 	}
 	public void inhabilitaVentanaNuevaContratacion() {

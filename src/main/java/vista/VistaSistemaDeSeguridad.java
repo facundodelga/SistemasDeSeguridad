@@ -337,7 +337,12 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	}
 	//Eventos
 	
-		//teclado
+
+	public void setFacturasHistoricas(String fHistoricas) {
+		this.textArea_FacturasHistoricas.setText(fHistoricas+"\n");
+	}
+
+	//teclado
 	public void keyReleased(KeyEvent e) {
 		
 		try {
