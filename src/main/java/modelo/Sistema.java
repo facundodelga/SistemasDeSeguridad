@@ -55,10 +55,18 @@ public class Sistema implements Serializable, I_Sistema {
         }
 	private Sistema() {
 		super();
+<<<<<<< Updated upstream
 		this.facturas = new ArregloFacturas();
 		this.personas = new ArregloPersonas();
 		this.tecnicos = new ArrayList<Tecnico>();
 	    this.clientesHilo = new ArrayList<ClienteThread>();
+=======
+		this.facturas=new ArregloFacturas();
+		this.personas=new ArregloPersonas();
+		this.servicioTecnico = new ServicioTecnico();
+		this.tecnicos = new ArrayList<>();
+		this.clientesHilo = new ArrayList<>();
+>>>>>>> Stashed changes
 		this.mes = 0;
 	}
 	
@@ -261,7 +269,7 @@ public class Sistema implements Serializable, I_Sistema {
 	//SERVICIO TECNICO
 	public void darAltaTecnico(String nombre) {
         assert nombre != null : "El campo nombre no debe estar vacio";
-        Tecnico t = new Tecnico(nombre, servicioTecnico);
+        Tecnico t = new Tecnico(nombre, this.servicioTecnico);
         this.tecnicos.add(t);
     }
 	
@@ -271,40 +279,56 @@ public class Sistema implements Serializable, I_Sistema {
 	}
 	
 	public void reiniciarSimulacion() {
-            for (Tecnico t : this.tecnicos) {
-            	t.rompe();
+	    this.servicioTecnico.setPedidos(new ArrayList<String>());
+	    this.servicioTecnico.setTecnicosDisponibles(0);
+	    
+	    ArrayList<ClienteThread> auxClientes = new ArrayList(); 
+            
+	    for (ClienteThread clienteThread : this.clientesHilo) {
+		clienteThread = new ClienteThread(clienteThread.getNombre(),this.servicioTecnico);
+		auxClientes.add(clienteThread);
+	    }
+	    
+	    this.clientesHilo.clear();
+	    
+	    ArrayList<Tecnico> auxTecnicos = new ArrayList(); 
+	    
+	    for (Tecnico tecnico : auxTecnicos) {
+		tecnico = new Tecnico(tecnico.getNombre(),this.servicioTecnico);
+		auxTecnicos.add(tecnico);
+	    }
+	    
+	    this.tecnicos.clear();
+            
+            this.clientesHilo = auxClientes;
+            this.tecnicos = auxTecnicos;
+            
+            iniciaSimulacion();
+	   
+	}
+	
+	public void iniciaSimulacion() {
+		for (Tecnico t : this.tecnicos) {
+		    	if(!t.isAlive())
+		    	    t.start();
+	           }
+		    
+		    for (ClienteThread clienteThread : clientesHilo) {
+			if(!clienteThread.isAlive())
+			    clienteThread.start();
+		    }
+	    
+	}
+	
+	public void pararSimulacion() {
+	    for (Tecnico t : this.tecnicos) {
+            	t.setActivo(false);
             }
 	    
 	    for (ClienteThread clienteThread : clientesHilo) {
 		clienteThread.setActivo(false);
 	    }
-	    
-	   this.servicioTecnico.setTecnicosDisponibles(0);
-	   this.servicioTecnico.setTecnicosDisponibles(this.tecnicos.size());
-	   
-	   for (Tecnico t : this.tecnicos) {
-           	t.start();
-           }
-	    
-	    for (ClienteThread clienteThread : clientesHilo) {
-		clienteThread.start();
-	    }
-	   
 	}
-	
-	public void iniciaSimulacion() {
-	    if(!this.tecnicos.isEmpty() && !this.clientesHilo.isEmpty()) {
-		for (Tecnico t : this.tecnicos) {
-	           	t.start();
-	           }
-		    
-		    for (ClienteThread clienteThread : clientesHilo) {
-			clienteThread.start();
-		    }
-	    }
-	    
-	}
-	
 	
 	
 	//PROMOCIONES

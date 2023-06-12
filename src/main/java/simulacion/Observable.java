@@ -1,8 +1,9 @@
 package simulacion;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Observable {
+public abstract class Observable{
     protected ArrayList<Observer> ojos = new ArrayList<>();
 
     public void avisarObservador(Object arg) throws IllegalAccessException {

@@ -62,10 +62,11 @@ public class Controlador implements ActionListener, WindowListener {
 	private Persona persona;
 	private ServicioTecnico st;
 
-	public Controlador(ServicioTecnico st) {
+	public Controlador() {
 		super();
 		this.sistema = Sistema.getInstancia();
 		this.cargarDatos();
+<<<<<<< Updated upstream
 		this.st = st;
 		// iniciaSimulacion();
 		this.listaPersonas = new DefaultListModel<>();
@@ -74,6 +75,14 @@ public class Controlador implements ActionListener, WindowListener {
 		this.st = st;
 		this.sistema.setServicioTecnico(st);
 		this.vistaPrincipal = new VistaSistemaDeSeguridad(this, st);
+=======
+		
+		//iniciaSimulacion();
+		this.listaPersonas = new DefaultListModel<Persona>();
+		this.listaFacturas = new DefaultListModel<Factura>();
+
+		this.vistaPrincipal = new VistaSistemaDeSeguridad(this, sistema.getServicioTecnico());
+>>>>>>> Stashed changes
 		this.vistaPrincipal.setActionListener(this);
 
 		this.sistema.setControlador(this);
@@ -94,7 +103,12 @@ public class Controlador implements ActionListener, WindowListener {
 			}
 		});
 
+<<<<<<< Updated upstream
 		cargarDatos();
+=======
+		//cargarDatos();
+
+>>>>>>> Stashed changes
 		refreshPersonas();
 		vistaPrincipal.addWindowListener(this);
 //		vistaPrincipal.addActionListener(this); //Estaba de mas, los eventos se ejecutaban dos veces
@@ -110,6 +124,7 @@ public class Controlador implements ActionListener, WindowListener {
 			// Llama a la funcion siguiente mes del sistema
 			this.sistema.adelantarMes();
 			this.vistaPrincipal.vaciarTextFields();
+			this.sistema.reiniciarSimulacion();
 			// setea todos los textField en vacio menos el de simulacion de tecnicos
 //			this.vista.
 		} else if (comando.equalsIgnoreCase("Ejecucion")) {
@@ -132,8 +147,14 @@ public class Controlador implements ActionListener, WindowListener {
 			agregaTecnico();
 
 		} else if (comando.equalsIgnoreCase("Inicia simulacion")) {
+<<<<<<< Updated upstream
 			sistema.iniciaSimulacion();
 
+=======
+		    	sistema.iniciaSimulacion();
+			// llama a la funcion Inicia simulacion;
+			
+>>>>>>> Stashed changes
 		} else if (comando.equalsIgnoreCase("Buscar Facturas")) {
 			buscarFacturas();
 		} else if (comando.equalsIgnoreCase("Pagar Factura")) {
@@ -402,8 +423,12 @@ public class Controlador implements ActionListener, WindowListener {
 
 	// falta
 	public void iniciaSimulacion() {
+<<<<<<< Updated upstream
 		sistema.setServicioTecnico(st);
 		// st iniciado en el constructor del controlador, no funciona
+=======
+		//st iniciado en el constructor del controlador, no funciona
+>>>>>>> Stashed changes
 	}
 
 
@@ -447,6 +472,7 @@ public class Controlador implements ActionListener, WindowListener {
 		PersistenciaBin p = new PersistenciaBin();
 
 		try {
+		    	//sistema.pararSimulacion();
 			p.abrirOutput("SistemasDeSeguridadDatos.bin");
 			p.escribir(StaticsUtil.SistemaASistemaDTO(sistema));
 		} catch (IOException e) {

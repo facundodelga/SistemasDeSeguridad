@@ -3,9 +3,17 @@ package simulacion;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+<<<<<<< Updated upstream
 public class ServicioTecnico extends Observable implements Serializable {
+=======
+public class ServicioTecnico extends Observable implements Serializable  {
+>>>>>>> Stashed changes
     //ServicioTecnico es el recurso compartido se podria hacer Singleton xq solo se va a instanciar 1 vez
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private int tecnicosDisponibles = 0;
     private ArrayList<String> pedidos = new ArrayList<>();
 
@@ -21,7 +29,8 @@ public class ServicioTecnico extends Observable implements Serializable {
 
         while(this.tecnicosDisponibles == 0){
             try {
-                c.wait();
+        	System.out.println("thread cliente esperando");
+                wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -43,9 +52,9 @@ public class ServicioTecnico extends Observable implements Serializable {
 
     public synchronized void brindarServicioTecnico(Tecnico t){
 
-        while(this.pedidos.isEmpty()){
+        while(this.pedidos.size() == 0){
             try {
-                t.wait();
+                wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -66,7 +75,6 @@ public class ServicioTecnico extends Observable implements Serializable {
 
     public void sumarTecnicoDisponible(){
         this.tecnicosDisponibles++;
-        notifyAll();
     }
 
     public int getTecnicosDisponibles() {
@@ -77,5 +85,13 @@ public class ServicioTecnico extends Observable implements Serializable {
         this.tecnicosDisponibles = tecnicosDisponibles;
     }
 
+    public ArrayList<String> getPedidos() {
+        return pedidos;
+    }
 
-}
+    public void setPedidos(ArrayList<String> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+
+} 

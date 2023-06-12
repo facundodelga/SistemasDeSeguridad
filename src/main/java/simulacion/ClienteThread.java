@@ -22,6 +22,12 @@ public class ClienteThread extends Thread implements Serializable{
 	this.activo = true;
         while(activo) {
             servicioTecnico.pedirTecnico(this);
+            try {
+		Thread.sleep(10000);
+	    } catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
             if(!activo)
         	break;
         }
