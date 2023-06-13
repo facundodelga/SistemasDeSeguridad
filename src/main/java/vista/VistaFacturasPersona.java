@@ -82,7 +82,6 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		this.lblFacturas = new JLabel("Facturas");
 		this.scrollPane.setColumnHeaderView(this.lblFacturas);
 		
-		//cual es cual? list o list_Factura contiene a los elementos
 		this.list = new JList<Factura>();
 		this.scrollPane.setViewportView(this.list);
 		

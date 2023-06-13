@@ -20,21 +20,4 @@ public class PromoDorada implements iPromocion{
 	public String descripcion() {
 		return "Dorada";
 	}
-
-
-
-    /**
-     * @return
-     */
- /*   public double getdesc(iServicio servicio) {
-        return servicio.getDescDorada(this);
-    }
-*/
-    /**
-     * @param servicio
-     * @return
-     */
-   /* public double getValor(iServicio servicio) {
-        return 0;
-    }*/
 }

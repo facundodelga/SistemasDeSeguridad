@@ -13,13 +13,24 @@ public class PersistenciaXML implements iPersistencia{
     private FileOutputStream fileOutput;
     private FileInputStream fileInput;
 
-
+    /**
+     * Abre un archivo de entrada con el nombre especificado y configura un decodificador XML para leer datos del archivo.
+     * 
+     * @param nombre el nombre del archivo de entrada
+     * @throws IOException si ocurre un error al abrir el archivo
+     */
     @Override
     public void abrirInput(String nombre) throws IOException {
         fileInput = new FileInputStream(nombre);
         xmlDecoder = new XMLDecoder(fileInput);
     }
 
+    /**
+     * Abre un archivo de salida con el nombre especificado y configura un codificador XML para escribir datos en el archivo.
+     * 
+     * @param nombre el nombre del archivo de salida
+     * @throws IOException si ocurre un error al abrir el archivo
+     */
     @Override
     public void abrirOutput(String nombre) throws IOException {
         fileOutput = new FileOutputStream(nombre);

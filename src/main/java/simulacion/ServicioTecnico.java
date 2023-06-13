@@ -20,7 +20,13 @@ public class ServicioTecnico extends Observable implements Serializable {
         this.tecnicosDisponibles = tecnicosDisponibles;
         this.pedidos = pedidos;
     }
-
+    
+    /**
+     * Solicita un técnico para recibir servicio técnico.
+     *
+     * @param c el hilo del cliente que realiza la solicitud.
+     * @throws IllegalAccessException si se produce un error al notificar al observador.
+     */
     public synchronized void pedirTecnico(ClienteThread c) throws IllegalAccessException{
 
         while(this.tecnicosDisponibles == 0){
@@ -46,6 +52,12 @@ public class ServicioTecnico extends Observable implements Serializable {
         notifyAll();
     }
 
+    /**
+     * Brinda servicio técnico a un técnico.
+     *
+     * @param t el técnico al que se le brinda el servicio técnico.
+     * @throws IllegalAccessException si se produce un error al notificar al observador.
+     */
     public synchronized void brindarServicioTecnico(Tecnico t){
 
         while(this.pedidos.size() == 0){

@@ -19,7 +19,12 @@ public class PersonaFisica extends Persona{
 		super(nombre, dni);
 		this.estado = new SinContratacionEstado(this);
 	}
-
+	
+	/**
+	 * Crea una nueva factura asociada a la persona.
+	 *
+	 * @return la factura creada, o null si la persona no tiene contrataciones
+	 */
 	@Override
 	public Factura crearFactura() {
 		Factura f = null;
@@ -42,6 +47,12 @@ public class PersonaFisica extends Persona{
 		this.estado.darDeBajaServicio(c);
 	}
 
+	/**
+	 * Actualiza el estado de la persona según sus facturas anteriores.
+	 *
+	 * @param f1 factura del mes anterior
+	 * @param f2 factura de dos meses atrás
+	 */
 	@Override
 	public void actualizar(Factura f1, Factura f2) {
 		//f1= factura del mes anterior

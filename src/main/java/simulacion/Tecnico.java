@@ -14,14 +14,17 @@ public class Tecnico extends Thread implements Serializable {
         st.sumarTecnicoDisponible();
     }
 
+
     /**
-     *
+     * Ejecuta el hilo del cliente.
+     * El hilo se ejecuta en un bucle mientras esté activo.
+     * En cada iteración, el cliente solicita un servicio técnico al servicio técnico y espera durante un tiempo determinado.
+     * Si el hilo se desactiva, se interrumpe el bucle y se finaliza la ejecución del hilo.
      */
-    @Override
     public void run() {
         while(activo){ //basicamente chequear si se necesita un servicio tecnico
             servicioTecnico.brindarServicioTecnico(this);
-            System.out.println("tecnico esperando");
+            //System.out.println("tecnico esperando");
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {

@@ -77,7 +77,6 @@ public class AgregaDireccion extends JFrame implements IVista{
 		
 		this.textArea_DireccionesAgregadas = new JTextArea();
 		this.scrollPane.setViewportView(this.textArea_DireccionesAgregadas);
-		//this.textArea_DireccionesAgregadas.setText(this.controlador.getDomiciliosText());
 		
 		this.panel_2 = new JPanel();
 		this.contentPane.add(this.panel_2, BorderLayout.WEST);

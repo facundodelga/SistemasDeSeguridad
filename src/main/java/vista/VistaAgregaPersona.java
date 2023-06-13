@@ -117,7 +117,7 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-//		this.controlador=controlador;
+
 	}
 	
 	

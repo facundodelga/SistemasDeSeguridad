@@ -13,12 +13,24 @@ public class PersistenciaBin implements iPersistencia {
     private ObjectOutputStream objectoutput;
     private ObjectInputStream objectinput;
 
+    /**
+     * Abre un archivo de entrada para lectura de objetos.
+     * 
+     * @param nombre el nombre del archivo de entrada
+     * @throws IOException si ocurre un error de entrada/salida al abrir el archivo
+     */
     public void abrirInput(String nombre) throws IOException {
         fileinput = new FileInputStream(nombre);
         objectinput = new ObjectInputStream(fileinput);
 
     }
 
+    /**
+     * Abre un archivo de salida para escritura de objetos.
+     * 
+     * @param nombre el nombre del archivo de salida
+     * @throws IOException si ocurre un error de entrada/salida al abrir el archivo
+     */
     public void abrirOutput(String nombre) throws IOException {
         fileoutput = new FileOutputStream(nombre);
         objectoutput = new ObjectOutputStream(fileoutput);

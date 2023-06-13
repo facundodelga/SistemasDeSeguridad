@@ -160,7 +160,6 @@ public abstract class Persona implements Serializable,Cloneable{
 		assert dom != null : "El campo domicilio debe estar instanciado";
 		Contratacion con = this.buscarContratacion(dom);
 		if(this.existeContratacion(con)) {
-//			this.domicilios.remove(con.getDomicilio()); //No borraria el domicilio al eliminar la contratacion
 			this.contrataciones.remove(con);
 		}
 	}	

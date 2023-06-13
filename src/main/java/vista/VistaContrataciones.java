@@ -79,7 +79,7 @@ public class VistaContrataciones extends JFrame implements IVista{
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-	//	this.controlador=(Controlador) controlador;
+
 	}
 
 	@Override

@@ -191,8 +191,8 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.scrollPane_PersonasAbonados = new JScrollPane();
 		this.panel_4.add(this.scrollPane_PersonasAbonados, BorderLayout.CENTER);
 		
-		System.out.println("vista");
-		System.out.println(this.controlador.getListaPersonas());
+		//System.out.println("vista");
+		//System.out.println(this.controlador.getListaPersonas());
 		
 		this.list_PersonasAbonados = new JList<Persona>(this.controlador.getListaPersonas());
 		this.scrollPane_PersonasAbonados.setViewportView(this.list_PersonasAbonados);
@@ -381,7 +381,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 
 	@Override
 	public void update(Observable o, Object mensaje) throws IllegalAccessException {
-	    // TODO Auto-generated method stub
+
 	    if(o != this.observado){
 	            throw new IllegalAccessException();
 	        }else {
@@ -390,7 +390,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	}
 
 	public void setListaPersonas(DefaultListModel<Persona> listaPersonas) {
-	    // TODO Auto-generated method stub
+
 	    
 	}
 	
@@ -405,7 +405,6 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	public Persona getPersona() {
 
 		 Persona   p=list_PersonasAbonados.getSelectedValue();
-		System.out.println(p);
 		return p;
 	}
 	
@@ -414,7 +413,6 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		
 		if(p==null)
 		    p=list_PersonasAbonados.getSelectedValue();
-		System.out.println(p);
 		return p;
 	}
 

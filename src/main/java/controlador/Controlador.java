@@ -244,7 +244,7 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	public DefaultListModel<Persona> getListaPersonas() {
-		System.out.println(listaPersonas);
+		//System.out.println(listaPersonas);
 		return listaPersonas;
 	}
 	/**
@@ -294,7 +294,7 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 	
 	public DefaultListModel<Factura> getListaFacturas() {
-		System.out.println(listaFacturas);
+		//System.out.println(listaFacturas);
 		return listaFacturas;
 	}
 	/**
@@ -389,7 +389,7 @@ public class Controlador implements ActionListener, WindowListener {
 		for (Domicilio d : domicilios) {
 			if(d!=null) {
 				this.listaDomicilios.addElement(d);
-				System.out.println(d.toString());
+				//System.out.println(d.toString());
 			}
 		}
 		this.vistaAgregaDireccion.actualizarTextArea(getDomiciliosText());

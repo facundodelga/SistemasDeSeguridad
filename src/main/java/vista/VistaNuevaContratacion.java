@@ -237,12 +237,11 @@ public class VistaNuevaContratacion extends JFrame implements IVista {
 	}
 
 	public void setActionListener(ActionListener controlador) {
-//		this.controlador=controlador;
+
 	}
 
 	@Override
 	public void addActionListener(ActionListener controlador) {
-		// TODO Auto-generated method stub
 		this.botonAgregarAdicional.addActionListener(controlador);
 		this.botonConfirmar.addActionListener(controlador);
 		this.botonResetAdicionales.addActionListener(controlador);

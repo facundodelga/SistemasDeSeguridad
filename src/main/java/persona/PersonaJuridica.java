@@ -25,7 +25,12 @@ public class PersonaJuridica extends Persona{
 	public PersonaJuridica(String nombre, String dni, ArrayList<Domicilio> domicilios) {
 		super(nombre, dni, domicilios);
 	}
-
+	
+	/**
+	 * Crea una nueva factura para la persona jurídica.
+	 *
+	 * @return la nueva factura creada
+	 */
 	@Override
 	public Factura crearFactura() {
 		Factura f = null;
@@ -33,7 +38,13 @@ public class PersonaJuridica extends Persona{
 			f = new FacturaJuridica(this, Sistema.getInstancia().getMes());
 		return f;
 	}
-
+	
+	/**
+	 * Realiza el pago de una factura utilizando un medio de pago.
+	 *
+	 * @param f  la factura a pagar
+	 * @param mp el medio de pago a utilizar
+	 */
 	@Override
 	public void pagarFactura(Factura f, MedioPago mp) {
 		f.calcularBonificacion(mp);	

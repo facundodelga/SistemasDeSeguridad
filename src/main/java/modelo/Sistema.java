@@ -394,8 +394,8 @@ public class Sistema implements Serializable, I_Sistema {
             this.clientesHilo = auxClientes;
             this.tecnicos = auxTecnicos;
             
-            System.out.println("CANTIDAD DE TECNICOS DISPONIBLES " + this.tecnicos.size());
-            System.out.println("CANTIDAD DE CLIENTES " + this.clientesHilo.size());
+           // System.out.println("CANTIDAD DE TECNICOS DISPONIBLES " + this.tecnicos.size());
+           // System.out.println("CANTIDAD DE CLIENTES " + this.clientesHilo.size());
             this.servicioTecnico.setTecnicosDisponibles(this.tecnicos.size());
             iniciaSimulacion();
 	   
