@@ -144,9 +144,13 @@ public class Sistema implements Serializable, I_Sistema {
 	 */	
 	public boolean pagarFactura(String dni, int id, String mp) throws FacturaNoEncontradaException, PersonaNoEncontradaException {
 		assert id >= 0 : "El parámetro id debe ser positivo";
-		Factura f;
+		Factura f=null;
 		Persona p;
-		f = this.facturas.buscaPorId(id);
+		//f = this.facturas.buscaPorId(id);
+		for (Factura fac : facturas) {
+			if(fac!=null && fac.getNumFactura()==id)
+				f=fac;
+		}
 		p = this.personas.buscaPorDni(dni); 
 		MedioPago medio = MedioPagoFactory.getMedioPago(mp, f);		
 		p.pagarFactura(f, medio);
@@ -228,14 +232,15 @@ public class Sistema implements Serializable, I_Sistema {
 		Factura f1=null,f2=null;
 		
 		for (Persona p : personas) {
-			try {
+			/*try {
 				facs = this.facturas.buscaPorPersona(p);
 			} catch (FacturaNoEncontradaException e) {
 				facs = null;
-			}
+			}*/
+			facs =this.facturas;
 			if(facs!=null) {
 				for (Factura factura : facs) {
-					if(factura!=null)
+					if(factura!=null && factura.getPersona() == p)
 						if(factura.getMes()==(this.mes-1))
 							f1 = factura;
 						else
