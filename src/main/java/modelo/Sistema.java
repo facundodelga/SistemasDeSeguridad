@@ -292,11 +292,6 @@ public class Sistema implements Serializable, I_Sistema {
 		Factura f1=null,f2=null;
 		
 		for (Persona p : personas) {
-			/*try {
-				facs = this.facturas.buscaPorPersona(p);
-			} catch (FacturaNoEncontradaException e) {
-				facs = null;
-			}*/
 			facs =this.facturas;
 			if(facs!=null) {
 				for (Factura factura : facs) {
@@ -339,11 +334,6 @@ public class Sistema implements Serializable, I_Sistema {
 		this.personas.buscaPorDni(p.getDni()).agregarDomicilio(d);
 	}
 	
-	/*
-	public void asignarNuevoDomicilio(String dni, Domicilio dom) throws DomicilioYaRegistradoException, PersonaNoEncontradaException {
-		this.personas.buscaPorDni(dni).agregarDomicilio(dom);
-	}
-	*/
 	//SERVICIO TECNICO
 	/**
 	 * Da de alta a un nuevo técnico con el nombre especificado.
@@ -393,9 +383,6 @@ public class Sistema implements Serializable, I_Sistema {
             
             this.clientesHilo = auxClientes;
             this.tecnicos = auxTecnicos;
-            
-           // System.out.println("CANTIDAD DE TECNICOS DISPONIBLES " + this.tecnicos.size());
-           // System.out.println("CANTIDAD DE CLIENTES " + this.clientesHilo.size());
             this.servicioTecnico.setTecnicosDisponibles(this.tecnicos.size());
             iniciaSimulacion();
 	   

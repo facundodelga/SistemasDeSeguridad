@@ -191,9 +191,6 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.scrollPane_PersonasAbonados = new JScrollPane();
 		this.panel_4.add(this.scrollPane_PersonasAbonados, BorderLayout.CENTER);
 		
-		//System.out.println("vista");
-		//System.out.println(this.controlador.getListaPersonas());
-		
 		this.list_PersonasAbonados = new JList<Persona>(this.controlador.getListaPersonas());
 		this.scrollPane_PersonasAbonados.setViewportView(this.list_PersonasAbonados);
 	
@@ -329,9 +326,6 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.btnSiguienteMes = new JButton("Siguiente Mes");
 		this.panel.add(this.btnSiguienteMes, BorderLayout.EAST);
 		
-//		this.modeloLista = new DefaultListModel<Persona>();
-//		this.list_PersonasAbonados.setModel(modeloLista);
-//		this.list_AbonantesHistoricas.setModel(modeloLista);
 		addActionListener(this.controlador);
 	}
 	//Eventos
@@ -343,9 +337,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 
 	//teclado
 	public void keyReleased(KeyEvent e) {
-		
 		try {
-			
 		}
 		catch(NumberFormatException e1) {
 		}

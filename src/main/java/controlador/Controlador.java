@@ -96,7 +96,6 @@ public class Controlador implements ActionListener, WindowListener {
 
 		refreshPersonas();
 		vistaPrincipal.addWindowListener(this);
-//		vistaPrincipal.addActionListener(this); //Estaba de mas, los eventos se ejecutaban dos veces
 	}
 	/**
 	 * Ejecuta las acciones correspondientes cuando se produce un evento de acción en las vistas del programa.
@@ -107,7 +106,6 @@ public class Controlador implements ActionListener, WindowListener {
 	public void actionPerformed(ActionEvent e) {
 		String comando = e.getActionCommand();
 
-		//System.out.println(comando);
 		if (comando.equalsIgnoreCase("Siguiente Mes")) {
 			this.sistema.adelantarMes();
 			refreshFacturas();
@@ -116,7 +114,6 @@ public class Controlador implements ActionListener, WindowListener {
 
 		} else if (comando.equalsIgnoreCase("Ejecucion")) {
 			persona = vistaPrincipal.getPersona();
-			//System.out.println(persona);
 			abrirVentanaAccion();
 
 		} else if (comando.equalsIgnoreCase("Agregar Persona")) {
@@ -165,7 +162,6 @@ public class Controlador implements ActionListener, WindowListener {
 	 * Realiza diferentes comprobaciones y habilita/inhabilita ventanas según las condiciones.
 	 */
 	private void abrirVentanaAccion() {
-		// TODO Auto-generated method stub
 		String s = vistaPrincipal.getAccion();
 		if(persona!=null) {
 			if (s.equalsIgnoreCase("Ver Contrataciones"))
@@ -175,7 +171,6 @@ public class Controlador implements ActionListener, WindowListener {
 				this.getDomiciliosActuales();
 				this.habilitaVentanaAgregaDireccion();
 			}else if (s.equalsIgnoreCase("Mostrar Factura")) {
-				// prep para la ventana
 				this.getFacturasImpagas();
 				this.habilitaVentanaFacturasPersona();
 			}
@@ -186,7 +181,6 @@ public class Controlador implements ActionListener, WindowListener {
 	
 
 	// VISTAPRINCIPAL
-	// mensajes
 	void informarVistaPrincipal(String msg) {
 		this.vistaPrincipal.informar(msg);
 	}
@@ -244,7 +238,6 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	public DefaultListModel<Persona> getListaPersonas() {
-		//System.out.println(listaPersonas);
 		return listaPersonas;
 	}
 	/**
@@ -389,7 +382,6 @@ public class Controlador implements ActionListener, WindowListener {
 		for (Domicilio d : domicilios) {
 			if(d!=null) {
 				this.listaDomicilios.addElement(d);
-				//System.out.println(d.toString());
 			}
 		}
 		this.vistaAgregaDireccion.actualizarTextArea(getDomiciliosText());
@@ -424,11 +416,6 @@ public class Controlador implements ActionListener, WindowListener {
 				sistema.pagarFactura(persona.getDni(), 
 						f.getNumFactura(),
 						mp);
-				/*System.out.println(persona.getDni()+"\n"+ 
-						f.getNumFactura()+"\n"+
-						mp+"\n"+
-						f.isPagoRealizado());*/
-				//System.out.println("Factura abonada\n" + this.vistaFacturasPersona.getFactura());
 				this.vistaFacturasPersona.mostrarDetalle(this.vistaFacturasPersona.getFactura().detalle(mp));
 		} catch (FacturaNoEncontradaException | PersonaNoEncontradaException e) {
 			this.informarVistaPrincipal(e.getMessage());
@@ -467,7 +454,6 @@ public class Controlador implements ActionListener, WindowListener {
 	 */
 	private void agregarContratacion() {
 		
-		//puede que tenga que hacer conversiones
 		Domicilio d = this.vistaNuevaContratacion.getDireccion();
 		iPromocion p;
 			try {
@@ -574,11 +560,9 @@ public class Controlador implements ActionListener, WindowListener {
 		PersistenciaBin p = new PersistenciaBin();
 
 		try {
-		    	//sistema.pararSimulacion();
 			p.abrirOutput("SistemasDeSeguridadDatos.bin");
 			p.escribir(StaticsUtil.SistemaASistemaDTO(sistema));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -586,7 +570,6 @@ public class Controlador implements ActionListener, WindowListener {
 			p.cerrarOutput();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -600,14 +583,12 @@ public class Controlador implements ActionListener, WindowListener {
 			p.abrirInput("SistemasDeSeguridadDatos.bin");
 			StaticsUtil.setEstaticosDelSistema((SistemaDTO) p.leer());
 		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		try {
 			p.cerrarInput();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
