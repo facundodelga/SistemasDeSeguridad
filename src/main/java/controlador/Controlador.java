@@ -304,10 +304,13 @@ public class Controlador implements ActionListener, WindowListener {
 			persona = this.vistaPrincipal.getPersona();
 			ArrayList<Factura> facturas = sistema.getFacturas();
 			String fHistoricas="";
+			int idAnt=-1;
 			for (Factura f : facturas) {
-				if(f!=null && f.getPersona()==persona)
-					//fHistoricas += f.detalle()+"\n";
-					fHistoricas += f.toString()+"\n";
+				if(f!=null && f.getPersona()==persona && f.getNumFactura()!=idAnt) {
+					fHistoricas += f.detalle()+"\n";
+					idAnt=f.getNumFactura();
+					//fHistoricas += f.toString()+"\n";
+				}
 		}
 		this.vistaPrincipal.setFacturasHistoricas(fHistoricas);
 	}
@@ -370,7 +373,7 @@ public class Controlador implements ActionListener, WindowListener {
 						mp+"\n"+
 						f.isPagoRealizado());*/
 				//System.out.println("Factura abonada\n" + this.vistaFacturasPersona.getFactura());
-				this.vistaFacturasPersona.mostrarDetalle(this.vistaFacturasPersona.getFactura().toString());
+				this.vistaFacturasPersona.mostrarDetalle(this.vistaFacturasPersona.getFactura().detalle(mp));
 		} catch (FacturaNoEncontradaException | PersonaNoEncontradaException e) {
 			this.informarVistaPrincipal(e.getMessage());
 			this.inhabilitaVentanaFacturasPersona();
