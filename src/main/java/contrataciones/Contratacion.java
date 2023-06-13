@@ -194,6 +194,12 @@ public class Contratacion implements Serializable,Cloneable {
 		Contratacion other = (Contratacion) obj;
 		return id == other.id;
 	}
+
+	@Override
+	public String toString() {
+		return detalle();
+	}
+	
 	
 
 	

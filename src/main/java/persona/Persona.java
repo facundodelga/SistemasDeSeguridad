@@ -33,7 +33,8 @@ public abstract class Persona implements Serializable,Cloneable{
 		assert dni != null && !dni.isBlank() : "El campo DNI no puede estar vacio";
 		this.nombre = nombre;
 		this.dni = dni;
-		this.domicilios = new ArrayList<Domicilio>();
+		this.domicilios = new ArrayList<>();
+		this.contrataciones = new ArrayList<>();
 	}
 	
 	public Persona(String nombre, String dni, ArrayList<Domicilio> domicilios) {
@@ -62,6 +63,15 @@ public abstract class Persona implements Serializable,Cloneable{
 	
 	public boolean existeDomicilio(Domicilio dom) {
 		return this.domicilios.contains(dom);
+	}
+	
+	public boolean domicilioYaRegistrado(Domicilio dom) {
+		for (Contratacion contratacion : contrataciones) {
+			if (dom.equals(contratacion.getDomicilio())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -116,7 +126,7 @@ public abstract class Persona implements Serializable,Cloneable{
 	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
 		assert con != null : "El campo Contratacion debe estar instanciado";
 		if (!this.existeContratacion(con)) {
-			if (this.existeDomicilio(con.getDomicilio())) {
+			if (this.domicilioYaRegistrado(con.getDomicilio())) {
 				throw new DomicilioYaRegistradoException(con.getDni(), con.getDomicilio());
 			}
 			this.contrataciones.add(con);

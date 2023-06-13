@@ -128,7 +128,10 @@ public class Controlador implements ActionListener, WindowListener {
 		
 		} else if (comando.equalsIgnoreCase("Agrega tecnico")) {
 			agregaTecnico();
-
+		} else if (comando.equalsIgnoreCase("Agrega adicional")) {
+			vistaNuevaContratacion.agregarAdicional();
+		} else if (comando.equalsIgnoreCase("Reset adicionales")) {
+			vistaNuevaContratacion.resetAdicionales();
 		} else if (comando.equalsIgnoreCase("Inicia simulacion")) {
 			sistema.iniciaSimulacion();
 		
@@ -377,16 +380,25 @@ public class Controlador implements ActionListener, WindowListener {
 		Domicilio d = this.vistaNuevaContratacion.getDireccion();
 		iPromocion p;
 			try {
+				//getPromo
 				p = sistema.obtenerPromocion(this.vistaNuevaContratacion.getPromo());
+				//getServicio
 				iServicio s = sistema.obtenerServicio(this.vistaNuevaContratacion.getServicio());
+				//Crear contratacion
 				Contratacion c = sistema.crearContratacion(persona, d, s, p);
-				iContratable a = sistema.obtenerContratable(this.vistaNuevaContratacion.getAdicional());
-				sistema.contratarAdicional(c, a);
-				/*	ArrayList<iContratable> adicionales = this.vistaNuevaContratacion.getAdicionales();
-				for (iContratable a : adicionales) {
+				//Agregar adicionales
+				for (int i = 0; i < vistaNuevaContratacion.getCantBotones(); i++) {
+					iContratable a = sistema.obtenerContratable("BOTON");
 					sistema.contratarAdicional(c, a);
 				}
-			*/
+				for (int i = 0; i < vistaNuevaContratacion.getCantCamaras(); i++) {
+					iContratable a = sistema.obtenerContratable("CAMARA");
+					sistema.contratarAdicional(c, a);
+				}
+				for (int i = 0; i < vistaNuevaContratacion.getCantMoviles(); i++) {
+					iContratable a = sistema.obtenerContratable("MOVIL");
+					sistema.contratarAdicional(c, a);
+				}
 				refreshContrataciones();
 			} catch (DomicilioYaRegistradoException | DomicilioNoEncontradoException | ContratacionYaRegistradaException
 					| PersonaNoEncontradaException | TipoDePromocionIncorrectoException | TipoDeServicioIncorrectoException | TipoDeContratableIncorrectoException e) {
@@ -506,9 +518,12 @@ public class Controlador implements ActionListener, WindowListener {
 		this.vistaAgregaDireccion.setVisible(true);
 	}
 	public void habilitaVentanaContrataciones() {
+		refreshContrataciones();
 		this.vistaContrataciones.setVisible(true);
 	}
 	public void habilitaVentanaNuevaContratacion() {
+		refreshDomicilios();
+		this.vistaNuevaContratacion.setTituloLabel(persona.getNombre());
 		this.vistaNuevaContratacion.setVisible(true);
 	}
 	public void habilitaVentanaFacturasPersona() {
