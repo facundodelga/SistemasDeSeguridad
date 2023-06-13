@@ -28,7 +28,6 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 	private JPanel panel;
 	private JSplitPane splitPane;
 	private JPanel panel_1;
-	private JButton btnPagarFactura;
 	private JPanel panel_2;
 	private JScrollPane scrollPane;
 	private JLabel lblFacturas;
@@ -41,6 +40,9 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 	private JPanel panel_4;
 	private JLabel lblMetodoPago;
 	private JComboBox comboBox_MetodoPago;
+	private JPanel panel_5;
+	private JButton btnMostrarDetalle;
+	private JButton btnPagarFactura;
 
 
 	/**
@@ -49,16 +51,17 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 	public VistaFacturasPersona(Controlador controlador) {
 		setTitle("Sistema de seguridad-Pagar factura");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 550, 400);
+		setBounds(100, 100, 650, 400);
 		this.setActionListener(controlador);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
+		this.controlador = controlador;
 		iniciarComponentes(controlador);
 		
 		
 	}
 	public void iniciarComponentes(Controlador controlador) {
+		this.controlador=controlador;
 		setContentPane(this.contentPane);
 		
 		this.contentPane.setLayout(new BorderLayout(0, 0));
@@ -79,10 +82,11 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		this.lblFacturas = new JLabel("Facturas");
 		this.scrollPane.setColumnHeaderView(this.lblFacturas);
 		
+		//cual es cual? list o list_Factura contiene a los elementos
 		this.list = new JList<Factura>();
 		this.scrollPane.setViewportView(this.list);
 		
-		this.list_Factura = new JList();
+		this.list_Factura = new JList<Factura>(this.controlador.getListaFacturas());
 		this.scrollPane.setViewportView(this.list_Factura);
 		
 		this.panel_3 = new JPanel();
@@ -102,9 +106,6 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		this.contentPane.add(this.panel_1, BorderLayout.SOUTH);
 		this.panel_1.setLayout(new BorderLayout(0, 0));
 		
-		this.btnPagarFactura = new JButton("Pagar factura");
-		this.panel_1.add(this.btnPagarFactura, BorderLayout.EAST);
-		
 		this.panel_4 = new JPanel();
 		this.panel_1.add(this.panel_4, BorderLayout.WEST);
 		this.panel_4.setLayout(new GridLayout(0, 2, 0, 0));
@@ -113,10 +114,20 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 		this.panel_4.add(this.lblMetodoPago);
 		
 		this.comboBox_MetodoPago = new JComboBox();
-		this.comboBox_MetodoPago.setModel(new DefaultComboBoxModel(new String[] {"Seleccione una opcion", "Efectivo", "Cheque", "Tarjeta"}));
+		this.comboBox_MetodoPago.setModel(new DefaultComboBoxModel(new String[] {"Efectivo", "Cheque", "Tarjeta"}));
 		this.panel_4.add(this.comboBox_MetodoPago);
 		
+		panel_5 = new JPanel();
+		panel_1.add(panel_5, BorderLayout.EAST);
+		
+		btnMostrarDetalle = new JButton("Mostrar detalle");
+		panel_5.add(btnMostrarDetalle);
+		
+		btnPagarFactura = new JButton("Pagar factura");
+		panel_5.add(btnPagarFactura);
+		
 		this.addWindowListener(controlador);
+		this.addActionListener(controlador);
 	     
 	
 	}
@@ -126,9 +137,21 @@ public class VistaFacturasPersona extends JFrame implements IVista{
 	}
 	@Override
 	public void addActionListener(ActionListener controlador) {
+	    this.btnMostrarDetalle.addActionListener(controlador);
 	    this.btnPagarFactura.addActionListener(controlador);
 	}
 	
+	public Factura getFactura() {
+		return (Factura) this.list_Factura.getSelectedValue();
+	}
+	
+	public String getMetodoPago() {
+		return (String) this.comboBox_MetodoPago.getSelectedItem();
+	}
+	
+	public void mostrarDetalle(String detalle) {
+		this.textArea_Detalle.setText(detalle+"\n");
+	}
 	
 	
 	

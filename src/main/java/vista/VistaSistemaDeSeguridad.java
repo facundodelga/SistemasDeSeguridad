@@ -81,7 +81,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	private JPanel panel_6;
 	private JButton btnAgregarPersona;
 	private JScrollPane scrollPane_PersonasAbonados;
-	private JList<Persona> list_PersonasAbonados;
+	protected JList<Persona> list_PersonasAbonados;
 	private JScrollPane scrollPane_AbonadosSistema;
 	private JLabel lblSistema;
 	private JTextArea textArea_OutputAbonados;
@@ -130,7 +130,8 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	 */
 	public VistaSistemaDeSeguridad(Controlador controlador,Observable o) {
 		setTitle("Sistema de Seguridad");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.controlador = controlador;
 		
 		setActionListener(controlador);
 		this.setVisible(true);
@@ -145,6 +146,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	/* Inicia los componentes de la vista */
 	
 	private void iniciaVentana(Controlador controlador) {
+		this.controlador = controlador;
 		//Inicia Panel contenedor de todo
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -190,9 +192,12 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.scrollPane_PersonasAbonados = new JScrollPane();
 		this.panel_4.add(this.scrollPane_PersonasAbonados, BorderLayout.CENTER);
 		
+		System.out.println("vista");
+		System.out.println(this.controlador.getListaPersonas());
+		
 		this.list_PersonasAbonados = new JList<Persona>(this.controlador.getListaPersonas());
 		this.scrollPane_PersonasAbonados.setViewportView(this.list_PersonasAbonados);
-		
+	
 		this.panel_1 = new JPanel();
 		this.splitPane_1.setLeftComponent(this.panel_1);
 		this.panel_1.setLayout(new BorderLayout(0, 0));
@@ -207,11 +212,11 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.panel_1.add(this.panel_3, BorderLayout.EAST);
 		
 		this.btnEjecuta = new JButton("Ejecutar");
-		this.btnEjecuta.setActionCommand("Ejecutar");
+		this.btnEjecuta.setActionCommand("Ejecucion");
 		this.panel_3.add(this.btnEjecuta);
 		
 		this.comboBox = new JComboBox<String>();
-		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Gestionar contratacion", "Mostrar factura","Agregar domicilio"}));
+		this.comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ver Contrataciones", "Mostrar factura", "Agregar domicilio"}));
 		this.panel_1.add(this.comboBox, BorderLayout.CENTER);
 		
 		this.scrollPane_AbonadosSistema = new JScrollPane();
@@ -308,7 +313,7 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.lblAbonantesHistoricas = new JLabel("Abonantes:");
 		this.scrollPane_Izquierda.setColumnHeaderView(this.lblAbonantesHistoricas);
 		
-		this.list_AbonantesHistoricas = new JList<Persona>();
+		this.list_AbonantesHistoricas = new JList<Persona>(this.controlador.getListaPersonas());
 		this.scrollPane_Izquierda.setViewportView(this.list_AbonantesHistoricas);
 		
 		
@@ -325,14 +330,19 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		this.btnSiguienteMes = new JButton("Siguiente Mes");
 		this.panel.add(this.btnSiguienteMes, BorderLayout.EAST);
 		
-		this.modeloLista = new DefaultListModel<Persona>();
-		this.list_PersonasAbonados.setModel(modeloLista);
-		this.list_AbonantesHistoricas.setModel(modeloLista);
+//		this.modeloLista = new DefaultListModel<Persona>();
+//		this.list_PersonasAbonados.setModel(modeloLista);
+//		this.list_AbonantesHistoricas.setModel(modeloLista);
 		addActionListener(this.controlador);
 	}
 	//Eventos
 	
-		//teclado
+
+	public void setFacturasHistoricas(String fHistoricas) {
+		this.textArea_FacturasHistoricas.setText(fHistoricas+"\n");
+	}
+
+	//teclado
 	public void keyReleased(KeyEvent e) {
 		
 		try {
@@ -383,6 +393,42 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 	public void setListaPersonas(DefaultListModel<Persona> listaPersonas) {
 	    // TODO Auto-generated method stub
 	    
+	}
+	
+	public Persona getSelectedListAbonados() {
+		return list_PersonasAbonados.getSelectedValue();
+	}
+	
+	public Persona getSelectedListHistoricos() {
+		return list_AbonantesHistoricas.getSelectedValue();
+	}
+	
+	public Persona getPersona() {
+
+		 Persona   p=list_PersonasAbonados.getSelectedValue();
+		System.out.println(p);
+		return p;
+	}
+	
+	public Persona getPersonaHistorica() {
+	    	Persona p=list_AbonantesHistoricas.getSelectedValue();
+		
+		if(p==null)
+		    p=list_PersonasAbonados.getSelectedValue();
+		System.out.println(p);
+		return p;
+	}
+
+	public void informar(String msg) {
+		this.textArea_OutputAbonados.append(msg+"\n");		
+	}
+
+	public void vaciarTextFields() {
+		this.textArea_OutputAbonados.setText("");
+		this.textArea_1.setText("");
+		this.textField_NombreTecnico.setText("");
+		this.textArea_FacturasHistoricas.setText("");
+		
 	}
 
 

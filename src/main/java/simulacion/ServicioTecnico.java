@@ -1,9 +1,14 @@
 package simulacion;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ServicioTecnico extends Observable {
+public class ServicioTecnico extends Observable implements Serializable {
     //ServicioTecnico es el recurso compartido se podria hacer Singleton xq solo se va a instanciar 1 vez
+
+    /**
+     * 
+     */
 
     private int tecnicosDisponibles = 0;
     private ArrayList<String> pedidos = new ArrayList<>();
@@ -16,11 +21,12 @@ public class ServicioTecnico extends Observable {
         this.pedidos = pedidos;
     }
 
-    public synchronized void pedirTecnico(ClienteThread c){
+    public synchronized void pedirTecnico(ClienteThread c) throws IllegalAccessException{
 
         while(this.tecnicosDisponibles == 0){
             try {
-                c.wait();
+        	this.avisarObservador( " **  " + c.getNombre() + " Está esperando para recibir Servicio Tecnico **");
+                wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -30,6 +36,7 @@ public class ServicioTecnico extends Observable {
 
         try {
             this.avisarObservador(c.getNombre() + " ha pedido un Tecnico");
+            c.setActivo(false);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -41,9 +48,9 @@ public class ServicioTecnico extends Observable {
 
     public synchronized void brindarServicioTecnico(Tecnico t){
 
-        while(this.pedidos.isEmpty()){
+        while(this.pedidos.size() == 0){
             try {
-                t.wait();
+                wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -64,7 +71,6 @@ public class ServicioTecnico extends Observable {
 
     public void sumarTecnicoDisponible(){
         this.tecnicosDisponibles++;
-        notifyAll();
     }
 
     public int getTecnicosDisponibles() {
@@ -75,5 +81,13 @@ public class ServicioTecnico extends Observable {
         this.tecnicosDisponibles = tecnicosDisponibles;
     }
 
+    public ArrayList<String> getPedidos() {
+        return pedidos;
+    }
 
-}
+    public void setPedidos(ArrayList<String> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+
+} 

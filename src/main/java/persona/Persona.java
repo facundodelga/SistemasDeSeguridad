@@ -34,12 +34,14 @@ public abstract class Persona implements Serializable,Cloneable{
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = new ArrayList<Domicilio>();
+		this.contrataciones = new ArrayList<Contratacion>();
 	}
 	
 	public Persona(String nombre, String dni, ArrayList<Domicilio> domicilios) {
 		this.nombre = nombre;
 		this.dni = dni;
 		this.domicilios = domicilios;
+		this.contrataciones = new ArrayList<Contratacion>();
 	}
 
 	
@@ -62,6 +64,15 @@ public abstract class Persona implements Serializable,Cloneable{
 	
 	public boolean existeDomicilio(Domicilio dom) {
 		return this.domicilios.contains(dom);
+	}
+	
+	public boolean domicilioYaRegistrado(Domicilio dom) {
+		for (Contratacion contratacion : contrataciones) {
+			if (dom.equals(contratacion.getDomicilio())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -116,7 +127,7 @@ public abstract class Persona implements Serializable,Cloneable{
 	public void agregarContratacion(Contratacion con) throws ContratacionYaRegistradaException,ContratacionYaRegistradaException, DomicilioYaRegistradoException {
 		assert con != null : "El campo Contratacion debe estar instanciado";
 		if (!this.existeContratacion(con)) {
-			if (this.existeDomicilio(con.getDomicilio())) {
+			if (this.domicilioYaRegistrado(con.getDomicilio())) {
 				throw new DomicilioYaRegistradoException(con.getDni(), con.getDomicilio());
 			}
 			this.contrataciones.add(con);
@@ -149,7 +160,7 @@ public abstract class Persona implements Serializable,Cloneable{
 		assert dom != null : "El campo domicilio debe estar instanciado";
 		Contratacion con = this.buscarContratacion(dom);
 		if(this.existeContratacion(con)) {
-			this.domicilios.remove(con.getDomicilio());
+//			this.domicilios.remove(con.getDomicilio()); //No borraria el domicilio al eliminar la contratacion
 			this.contrataciones.remove(con);
 		}
 	}	

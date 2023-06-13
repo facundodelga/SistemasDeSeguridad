@@ -11,7 +11,7 @@ import promociones.iPromocion;
 import utils.DoubleUtils;
 
 public class Contratacion implements Serializable,Cloneable {
-	private static int generadorId = 0;
+	public static int generadorId = 0;
 	private int id;
 	private String dni;
 	private Domicilio domicilio;
@@ -53,6 +53,20 @@ public class Contratacion implements Serializable,Cloneable {
 		this.servicio = servicio;
 		this.contratados = contratados;
 		this.promo = promo;
+	}
+
+	/**
+	 * @return the generadorId
+	 */
+	public static int getGeneradorId() {
+		return generadorId;
+	}
+
+	/**
+	 * @param generadorId the generadorId to set
+	 */
+	public static void setGeneradorId(int generadorId) {
+		Contratacion.generadorId = generadorId;
 	}
 
 	public double getTarifa() {
@@ -194,6 +208,12 @@ public class Contratacion implements Serializable,Cloneable {
 		Contratacion other = (Contratacion) obj;
 		return id == other.id;
 	}
+
+	@Override
+	public String toString() {
+		return detalle();
+	}
+	
 	
 
 	

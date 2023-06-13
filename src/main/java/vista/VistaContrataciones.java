@@ -11,7 +11,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import contrataciones.Contratacion;
 import controlador.Controlador;
+import persona.Persona;
 
 public class VistaContrataciones extends JFrame implements IVista{
 	
@@ -33,6 +35,7 @@ public class VistaContrataciones extends JFrame implements IVista{
 	 * Create the frame.
 	 */
 	public VistaContrataciones(Controlador controlador) {
+		this.controlador = controlador;
 		setTitle("Contrataciones");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
@@ -50,46 +53,42 @@ public class VistaContrataciones extends JFrame implements IVista{
 		contratacionesPanel = new JPanel();
 		panel.add(contratacionesPanel);
 		contratacionesPanel.setLayout(new BorderLayout(0, 0));
-		
-		contratacionesJList = new JList();
-		contratacionesJList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Detalle Contratacion 1", "Detalle Contratacion 2", "Detalle Contratacion 3"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+
+
+		this.contratacionesJList = new JList<Contratacion>(this.controlador.getListaContrataciones());
 		contratacionesJList.setVisibleRowCount(20);
 		contratacionesPanel.add(contratacionesJList);
 		
 		tituloContratacionesPanel = new JPanel();
 		panel.add(tituloContratacionesPanel, BorderLayout.NORTH);
 		
-		lblNewLabel = new JLabel("Arias, Iñaki Gabriel");
+		lblNewLabel = new JLabel(this.controlador.getNombre());
 		tituloContratacionesPanel.add(lblNewLabel);
 		
 		botonesPanel = new JPanel();
 		panel.add(botonesPanel, BorderLayout.SOUTH);
 		
-		botonAgregar = new JButton("Nueva Contratación");
+		botonAgregar = new JButton("Nueva Contratacion");
 		botonesPanel.add(botonAgregar);
 		
-		botonAgregar_1 = new JButton("Eliminar Contratación");
+		botonAgregar_1 = new JButton("Eliminar Contratacion");
 		botonesPanel.add(botonAgregar_1);
 		
 		this.addWindowListener(controlador);
+		this.addActionListener(controlador);
 	}
 	
 	public void setActionListener(ActionListener controlador) {
-//		this.controlador=controlador;
+	//	this.controlador=(Controlador) controlador;
 	}
 
 	@Override
 	public void addActionListener(ActionListener controlador) {
 	    this.botonAgregar.addActionListener(controlador);
-	    this.botonAgregar_1.addActionListener(controlador);
-	    
+	    this.botonAgregar_1.addActionListener(controlador);   
+	}
+	
+	public Contratacion getContratacion() {
+		return (Contratacion) this.contratacionesJList.getSelectedValue();
 	}
 }

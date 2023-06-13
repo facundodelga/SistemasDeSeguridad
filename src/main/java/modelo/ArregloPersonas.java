@@ -28,13 +28,23 @@ public class ArregloPersonas extends ArrayList<Persona> implements Serializable 
     public Persona buscaPorDni(String dni)  throws PersonaNoEncontradaException{
 		Persona p = null;
 		for(int i = 0; i<this.size();i++) {
-			if(dni == this.get(i).getDni());
-			p = this.get(i);
+			if(dni == this.get(i).getDni())
+				p = this.get(i);
 		}
 		if(p == null)
 			throw new PersonaNoEncontradaException(dni);
 		
 		return p;
+    }
+    
+    public boolean existePersona(String dni) {
+    	for (Persona persona : this) {
+			if (persona.getDni().equalsIgnoreCase(dni)) {
+				return true;
+			}
+		}
+    	
+    	return false;
     }
     
 

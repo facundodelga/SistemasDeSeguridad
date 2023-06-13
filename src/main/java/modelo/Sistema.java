@@ -15,6 +15,7 @@ import excepciones.DomicilioNoPerteneceAPersona;
 import excepciones.DomicilioYaRegistradoException;
 import excepciones.FacturaNoEncontradaException;
 import excepciones.PersonaNoEncontradaException;
+import excepciones.PersonaYaExisteException;
 import excepciones.TipoDeContratableIncorrectoException;
 import excepciones.TipoDePersonaIncorrectoException;
 import excepciones.TipoDePromocionIncorrectoException;
@@ -27,11 +28,16 @@ import factory.ServicioFactory;
 import persona.Domicilio;
 import persona.Persona;
 import promociones.iPromocion;
+import simulacion.ClienteThread;
 import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
 public class Sistema implements Serializable, I_Sistema {
 	
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7533724918767447614L;
 	//Controlador
 	private Controlador controlador;
 	//Del sistema
@@ -40,19 +46,25 @@ public class Sistema implements Serializable, I_Sistema {
 	private ArregloPersonas personas;
 	private int mes;
 	private ArrayList<Tecnico> tecnicos;
-    private ServicioTecnico servicioTecnico;
+        private ServicioTecnico servicioTecnico;
+        private ArrayList<ClienteThread> clientesHilo;
 	
 	
-	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos, ServicioTecnico servicioTecnico) {
-        this.facturas = facturas;
-        this.personas = personas;
-        this.tecnicos = tecnicos;
-        this.servicioTecnico = servicioTecnico;
-    }
+	public Sistema(ArregloFacturas facturas, ArregloPersonas personas, ArrayList<Tecnico> tecnicos,ArrayList<ClienteThread> clientesHilo, ServicioTecnico servicioTecnico) {
+            this.facturas = facturas;
+            this.personas = personas;
+            this.tecnicos = tecnicos;
+            this.servicioTecnico = servicioTecnico;
+            this.clientesHilo = clientesHilo;
+        }
+	
 	private Sistema() {
 		super();
 		this.facturas=new ArregloFacturas();
 		this.personas=new ArregloPersonas();
+		this.servicioTecnico = new ServicioTecnico();
+		this.tecnicos = new ArrayList<>();
+		this.clientesHilo = new ArrayList<>();
 		this.mes = 0;
 	}
 	
@@ -64,7 +76,7 @@ public class Sistema implements Serializable, I_Sistema {
 		return instancia;
 	}
 	
-	//Setea controlador
+//	Setea controlador
 	public void setControlador(Controlador controlador) {
 		this.controlador=controlador;
 	}
@@ -132,9 +144,13 @@ public class Sistema implements Serializable, I_Sistema {
 	 */	
 	public boolean pagarFactura(String dni, int id, String mp) throws FacturaNoEncontradaException, PersonaNoEncontradaException {
 		assert id >= 0 : "El parámetro id debe ser positivo";
-		Factura f;
+		Factura f=null;
 		Persona p;
-		f = this.facturas.buscaPorId(id);
+		//f = this.facturas.buscaPorId(id);
+		for (Factura fac : facturas) {
+			if(fac!=null && fac.getNumFactura()==id)
+				f=fac;
+		}
 		p = this.personas.buscaPorDni(dni); 
 		MedioPago medio = MedioPagoFactory.getMedioPago(mp, f);		
 		p.pagarFactura(f, medio);
@@ -195,10 +211,19 @@ public class Sistema implements Serializable, I_Sistema {
 	//PERSONA
 	
 	//creación de persona
-	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException {
+	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException, PersonaYaExisteException {
 		assert tipo != null && !tipo.isBlank() : "El campo tipo no debe estar vacio";
+		
+		if (personas.existePersona(dni)) {
+			throw new PersonaYaExisteException("La persona ya existe, con DNI: " + dni);
+		} 
+
+		
 		Persona p=PersonaFactory.crearPersona(nombre,dni,tipo);
 		this.personas.add(p);
+		
+		this.darAltaClienteThread(nombre);
+		
 		return p;
 	}
 	
@@ -207,18 +232,20 @@ public class Sistema implements Serializable, I_Sistema {
 		Factura f1=null,f2=null;
 		
 		for (Persona p : personas) {
-			try {
+			/*try {
 				facs = this.facturas.buscaPorPersona(p);
 			} catch (FacturaNoEncontradaException e) {
 				facs = null;
-			}
+			}*/
+			facs =this.facturas;
 			if(facs!=null) {
 				for (Factura factura : facs) {
-					if(factura.getMes()==(this.mes-1))
-						f1 = factura;
-					else
-						if(factura.getMes()==(this.mes-2))
-							f2 = factura;
+					if(factura!=null && factura.getPersona() == p)
+						if(factura.getMes()==(this.mes-1))
+							f1 = factura;
+						else
+							if(factura.getMes()==(this.mes-2))
+								f2 = factura;
 				}
 			}
 			p.actualizar(f1,f2);
@@ -245,9 +272,71 @@ public class Sistema implements Serializable, I_Sistema {
 	//SERVICIO TECNICO
 	public void darAltaTecnico(String nombre) {
         assert nombre != null : "El campo nombre no debe estar vacio";
-        Tecnico t = new Tecnico(nombre, servicioTecnico);
+        Tecnico t = new Tecnico(nombre, this.servicioTecnico);
         this.tecnicos.add(t);
     }
+	
+	private void darAltaClienteThread(String nombre) {
+	    ClienteThread cliente = new ClienteThread(nombre,this.servicioTecnico);
+	    this.clientesHilo.add(cliente);
+	}
+	
+	public void reiniciarSimulacion() {
+	    this.servicioTecnico.setPedidos(new ArrayList<String>());
+	    this.servicioTecnico.setTecnicosDisponibles(0);
+
+	    ArrayList<ClienteThread> auxClientes = new ArrayList<ClienteThread>(); 
+            
+	    for (ClienteThread clienteThread : this.clientesHilo) {
+		clienteThread = new ClienteThread(clienteThread.getNombre(),this.servicioTecnico);
+		auxClientes.add(clienteThread);
+	    }
+	    
+	    this.clientesHilo.clear();
+	    
+	    ArrayList<Tecnico> auxTecnicos = new ArrayList<Tecnico>(); 
+	    
+	    for (Tecnico tecnico : this.tecnicos) {
+		tecnico = new Tecnico(tecnico.getNombre(),this.servicioTecnico);
+		auxTecnicos.add(tecnico);
+
+	    }
+	    
+	    this.tecnicos.clear();
+            
+            this.clientesHilo = auxClientes;
+            this.tecnicos = auxTecnicos;
+            
+            System.out.println("CANTIDAD DE TECNICOS DISPONIBLES " + this.tecnicos.size());
+            System.out.println("CANTIDAD DE CLIENTES " + this.clientesHilo.size());
+            this.servicioTecnico.setTecnicosDisponibles(this.tecnicos.size());
+            iniciaSimulacion();
+	   
+	}
+	
+	public void iniciaSimulacion() {
+		for (Tecnico t : this.tecnicos) {
+		    
+		    	    t.start();
+	           }
+		    
+		    for (ClienteThread clienteThread : this.clientesHilo) {
+			
+			    clienteThread.start();
+		    }
+	    
+	}
+	
+	public void pararSimulacion() {
+	    for (Tecnico t : this.tecnicos) {
+            	t.setActivo(false);
+            }
+	    
+	    for (ClienteThread clienteThread : clientesHilo) {
+		clienteThread.setActivo(false);
+	    }
+	}
+	
 	
 	//PROMOCIONES
 	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
@@ -278,10 +367,11 @@ public class Sistema implements Serializable, I_Sistema {
 		p.agregarContratacion(contr);
 	}
 */
-	public void crearContratacion(Persona p, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
+	public Contratacion crearContratacion(Persona p, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
 		Contratacion contr=null;
 		contr=new Contratacion(p.getDni(),dom,serv,promo);			
 		p.agregarContratacion(contr);
+		return contr;
 	}
 	
 	public void eliminarContratacion(Persona p, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
@@ -417,4 +507,13 @@ public class Sistema implements Serializable, I_Sistema {
 	public void setPersonas(ArregloPersonas personas) {
 		this.personas = personas;
 	}
+	public ArrayList<ClienteThread> getClientesHilo() {
+	    return clientesHilo;
+	}
+	public void setClientesHilo(ArrayList<ClienteThread> clientesHilo) {
+	    this.clientesHilo = clientesHilo;
+	}
+	
+	
+	
 }

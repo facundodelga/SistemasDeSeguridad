@@ -3,6 +3,7 @@ package persistencia;
 import modelo.ArregloFacturas;
 import modelo.ArregloPersonas;
 import modelo.Sistema;
+import simulacion.ClienteThread;
 import simulacion.ServicioTecnico;
 import simulacion.Tecnico;
 
@@ -10,12 +11,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SistemaDTO implements Serializable {
+    /**
+     * 
+     */
+
     private int ultimaFactura;
+    private int ultimaContratacion;
     private ArregloFacturas facturas;
     private ArregloPersonas personas;
     private int mes;
     private ArrayList<Tecnico> tecnicos;
     private ServicioTecnico servicioTecnico;
+    private ArrayList<ClienteThread> clientesHilo;
 
     public int getUltimaFactura() {
         return ultimaFactura;
@@ -24,8 +31,23 @@ public class SistemaDTO implements Serializable {
     public void setUltimaFactura(int ultimaFactura) {
         this.ultimaFactura = ultimaFactura;
     }
+    
+    
+    /**
+	 * @return the ultimaContratacion
+	 */
+	public int getUltimaContratacion() {
+		return ultimaContratacion;
+	}
 
-    public ArregloFacturas getFacturas() {
+	/**
+	 * @param ultimaContratacion the ultimaContratacion to set
+	 */
+	public void setUltimaContratacion(int ultimaContratacion) {
+		this.ultimaContratacion = ultimaContratacion;
+	}
+
+	public ArregloFacturas getFacturas() {
         return facturas;
     }
 
@@ -63,5 +85,13 @@ public class SistemaDTO implements Serializable {
 
     public void setServicioTecnico(ServicioTecnico servicioTecnico) {
         this.servicioTecnico = servicioTecnico;
+    }
+
+    public ArrayList<ClienteThread> getClientesHilo() {
+	return clientesHilo;
+    }
+
+    public void setClientesHilo(ArrayList<ClienteThread> clientesHilo) {
+	this.clientesHilo = clientesHilo;
     }
 }

@@ -134,8 +134,8 @@ public abstract class Factura implements MedioPago,Cloneable, Serializable {
 		else {
 			this.totalBonificado = this.totalOriginal;
 		}
-		
-		res += "\n\nTotal Factura: $" + DoubleUtils.format(this.totalOriginal);
+		if(this.isPagoRealizado())
+			res += "\n\nTotal Factura: $" + DoubleUtils.format(this.totalOriginal);
 		
 		if (this.totalBonificado != this.totalOriginal) {
 			res += "\nTotal Factura Final (c/ metodo de pago " + mp.descripcion() + " ): $" + DoubleUtils.format(this.totalBonificado);

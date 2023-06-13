@@ -73,7 +73,7 @@ public class ArregloFacturas extends ArrayList<Factura> implements Serializable 
 			throw new FacturaNoEncontradaException();
 		return facs;
     }
-
+    
     /**
      * Crea una copia clonada de una factura basada en su identificador.
      *

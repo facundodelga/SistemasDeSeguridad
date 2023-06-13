@@ -13,6 +13,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Controlador;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class VistaAgregaPersona extends JFrame implements IVista {
 
@@ -30,17 +32,18 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 	private JPanel panel_7;
 	private JPanel panel_10;
 	private JTextField textField_DNI;
-	private JTextField textField_TipoFactura;
 	private JLabel lblDNI;
 	private JLabel lblTipoFactura;
 	private JPanel panel_13;
 	private JButton btnAgregarPersona;
 	private JTextField textField_NombreApellido;
+	private JComboBox tipoPersonaCombo;
 
 	/**
 	 * Create the frame.
 	 */
 	public VistaAgregaPersona(Controlador controlador) {
+		this.controlador = controlador;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setActionListener(controlador);
 		setBounds(100, 100, 500, 300);
@@ -101,12 +104,12 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 		this.panel_1.add(this.panel_10);
 		this.panel_10.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		this.lblTipoFactura = new JLabel("   Tipo de facura:");
+		this.lblTipoFactura = new JLabel("   Tipo de persona");
 		this.panel_10.add(this.lblTipoFactura);
 		
-		this.textField_TipoFactura = new JTextField();
-		this.panel_10.add(this.textField_TipoFactura);
-		this.textField_TipoFactura.setColumns(10);
+		tipoPersonaCombo = new JComboBox();
+		tipoPersonaCombo.setModel(new DefaultComboBoxModel(new String[] {"Física", "Jurídica"}));
+		panel_10.add(tipoPersonaCombo);
 		
 		this.addWindowListener(controlador);
 		
@@ -123,7 +126,13 @@ public class VistaAgregaPersona extends JFrame implements IVista {
 	}
 
 	public String getTipoFactura() {
-	    return textField_TipoFactura.getText();
+		if (((String) tipoPersonaCombo.getSelectedItem()).equalsIgnoreCase("Jurídica")) {
+			return "juridica";			
+		}
+		if (((String) tipoPersonaCombo.getSelectedItem()).equalsIgnoreCase("Física")) {
+			return "fisica";			
+		}
+		return "";
 	}
 
 	public String getNombreApellido() {
