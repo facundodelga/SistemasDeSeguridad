@@ -113,6 +113,13 @@ public abstract class Factura implements MedioPago,Cloneable, Serializable {
 	public String descripcion() {
 		return "Factura";
 	}
+	
+	/**
+	 * Devuelve un detalle completo de la factura, incluyendo información sobre el medio de pago utilizado.
+	 *
+	 * @param medio el método de pago utilizado
+	 * @return un String con el detalle de la factura
+	 */
 	public String detalle(String medio) {
 		MedioPago mp = Sistema.getInstancia().getMedioPago(medio, this);
 		

@@ -82,6 +82,12 @@ public class Sistema implements Serializable, I_Sistema {
 	}
 
 	//MES ACTUAL
+	/**
+	 * Adelanta el mes actual y realiza las acciones correspondientes.
+	 * Si el mes actual es menor a 12, se incrementa en 1.
+	 * Si el mes actual es igual a 12, se reinicia a 1.
+	 * Luego, se realiza la verificación de estados y se crean nuevas facturas.
+	 */
 	public void adelantarMes() {
 		if(this.mes<12)
 			this.mes++;
@@ -156,19 +162,37 @@ public class Sistema implements Serializable, I_Sistema {
 		p.pagarFactura(f, medio);
 		return f.isPagoRealizado();
 	}
-		
+	/**
+	 * Busca las facturas correspondientes a una persona mediante su número de DNI.
+	 *
+	 * @param dni El número de DNI de la persona.
+	 * @return Una lista de facturas asociadas a la persona.
+	 * @throws PersonaNoEncontradaException Si no se encuentra la persona con el DNI especificado.
+	 * @throws FacturaNoEncontradaException Si no se encuentran facturas asociadas a la persona.
+	 */
 	public ArrayList<Factura> buscarFacturaPorPersonaDNI(String dni) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
 		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
 		Persona p=personas.buscaPorDni(dni);
 		return facturas.buscaPorPersona(p);
 	}
 	
-	
+	/**
+	 * Busca una factura por su identificador.
+	 *
+	 * @param id El identificador de la factura.
+	 * @return La factura con el identificador especificado.
+	 * @throws FacturaNoEncontradaException Si no se encuentra la factura con el identificador especificado.
+	 */
 	public Factura buscarFacturaPorId(int id) throws FacturaNoEncontradaException {
 		assert id >= 0 : "El parámetro id debe ser positivo";
 		return facturas.buscaPorId(id);
 	}
 
+        /**
+         * Crea nuevas facturas para todas las personas registradas en el sistema.
+         * Cada persona tendrá una factura asociada.
+         * Las nuevas facturas se agregan a la lista de facturas del sistema.
+         */
 	private void crearNuevasFacturas() {
 		Factura f = null;
 		for (Persona p : personas) {
@@ -176,7 +200,14 @@ public class Sistema implements Serializable, I_Sistema {
 			this.facturas.add(f);
 		}
 	}
-	
+	/**
+	 * Genera el historial de facturas de una persona.
+	 *
+	 * @param p La persona para la cual se desea obtener el historial de facturas.
+	 * @return Una cadena que representa el historial de facturas de la persona.
+	 * @throws PersonaNoEncontradaException Si no se encuentra la persona en el sistema.
+	 * @throws FacturaNoEncontradaException Si no se encuentran facturas asociadas a la persona.
+	 */
 	public String historicoFactura(Persona p) throws PersonaNoEncontradaException, FacturaNoEncontradaException {
 		String res="";
 		ArrayList<Factura> facs = this.buscarFacturaPorPersonaDNI(p.getDni());
@@ -185,16 +216,32 @@ public class Sistema implements Serializable, I_Sistema {
 		}		
 		return res;
 	}
-	
+	/**
+	 * Obtiene el detalle de una factura específica.
+	 *
+	 * @param id    El identificador de la factura.
+	 * @param medio El método de pago utilizado en la factura.
+	 * @return Una cadena que representa el detalle de la factura.
+	 * @throws FacturaNoEncontradaException Si no se encuentra la factura con el identificador especificado.
+	 */
 	  public String detalleFactura(int id, String medio) throws FacturaNoEncontradaException {
 		  Factura f = facturas.buscaPorId(id);		  
 		  return f.detalle(medio);
 	    }
-
+	  /**
+	   * Obtiene el detalle de todas las facturas del sistema.
+	   *
+	   * @return Una cadena que representa el detalle de todas las facturas.
+	   */
 	    public String detalleFacturas() {
 	        return detalleFacturas("");
 	    }
-
+	    /**
+	     * Obtiene el detalle de todas las facturas del sistema con una opción de filtrado adicional.
+	     *
+	     * @param opcion La opción de filtrado adicional.
+	     * @return Una cadena que representa el detalle de las facturas según la opción de filtrado.
+	     */
 	    public String detalleFacturas(String opcion) {
 	        String res = "";
 
@@ -211,6 +258,16 @@ public class Sistema implements Serializable, I_Sistema {
 	//PERSONA
 	
 	//creación de persona
+	    /**
+	     * Crea una nueva persona y la agrega al sistema.
+	     *
+	     * @param nombre El nombre de la persona.
+	     * @param dni    El DNI de la persona.
+	     * @param tipo   El tipo de persona (FISICA o JURIDICA).
+	     * @return La persona creada.
+	     * @throws TipoDePersonaIncorrectoException Si el tipo de persona no es válido.
+	     * @throws PersonaYaExisteException        Si ya existe una persona con el mismo DNI en el sistema.
+	     */
 	public Persona crearPersona(String nombre, String dni, String tipo) throws TipoDePersonaIncorrectoException, PersonaYaExisteException {
 		assert tipo != null && !tipo.isBlank() : "El campo tipo no debe estar vacio";
 		
@@ -226,7 +283,10 @@ public class Sistema implements Serializable, I_Sistema {
 		
 		return p;
 	}
-	
+	/**
+	 * Realiza la verificación de los estados de las facturas de las personas en el sistema.
+	 * Actualiza el estado de cada persona en base a las facturas anteriores.
+	 */
 	private void chequearEstados() {
 		ArrayList<Factura> facs;
 		Factura f1=null,f2=null;
@@ -255,11 +315,26 @@ public class Sistema implements Serializable, I_Sistema {
 	//DOMICILIO
 
 	//creacion de domicilios
-	
+	/**
+	 * Crea un nuevo objeto Domicilio con la calle y número especificados.
+	 *
+	 * @param calle La calle del domicilio.
+	 * @param num   El número del domicilio.
+	 * @return El objeto Domicilio creado.
+	 */
 	public Domicilio crearDomicilio(String calle, int num){
 		Domicilio dom = new Domicilio(calle,num);
 		return dom;
 	}
+	
+	/**
+	 * Asigna un nuevo domicilio a una persona específica.
+	 *
+	 * @param p La persona a la que se le asignará el nuevo domicilio.
+	 * @param d El nuevo domicilio a asignar.
+	 * @throws DomicilioYaRegistradoException    Si el domicilio ya está registrado para la persona.
+	 * @throws PersonaNoEncontradaException      Si la persona no se encuentra en el sistema.
+	 */
 	public void asignarNuevoDomicilio(Persona p, Domicilio d) throws DomicilioYaRegistradoException, PersonaNoEncontradaException {
 		this.personas.buscaPorDni(p.getDni()).agregarDomicilio(d);
 	}
@@ -270,17 +345,29 @@ public class Sistema implements Serializable, I_Sistema {
 	}
 	*/
 	//SERVICIO TECNICO
+	/**
+	 * Da de alta a un nuevo técnico con el nombre especificado.
+	 *
+	 * @param nombre El nombre del técnico.
+	 */
 	public void darAltaTecnico(String nombre) {
         assert nombre != null : "El campo nombre no debe estar vacio";
         Tecnico t = new Tecnico(nombre, this.servicioTecnico);
         this.tecnicos.add(t);
     }
-	
+	/**
+	 * Da de alta a un nuevo cliente en un hilo de ejecución separado.
+	 *
+	 * @param nombre El nombre del cliente.
+	 */
 	private void darAltaClienteThread(String nombre) {
 	    ClienteThread cliente = new ClienteThread(nombre,this.servicioTecnico);
 	    this.clientesHilo.add(cliente);
 	}
-	
+	/**
+	 * Reinicia la simulación, restableciendo los datos del servicio técnico, los clientes y los técnicos.
+	 * Inicia la simulación nuevamente.
+	 */
 	public void reiniciarSimulacion() {
 	    this.servicioTecnico.setPedidos(new ArrayList<String>());
 	    this.servicioTecnico.setTecnicosDisponibles(0);
@@ -313,7 +400,10 @@ public class Sistema implements Serializable, I_Sistema {
             iniciaSimulacion();
 	   
 	}
-	
+	/**
+	 * Inicia la simulación, iniciando los hilos de ejecución para los técnicos y clientes.
+	 * Cada técnico y cliente se ejecuta en un hilo separado.
+	 */
 	public void iniciaSimulacion() {
 		for (Tecnico t : this.tecnicos) {
 		    
@@ -326,7 +416,10 @@ public class Sistema implements Serializable, I_Sistema {
 		    }
 	    
 	}
-	
+	/**
+	 * Detiene la simulación, estableciendo el estado activo de todos los técnicos y clientes en falso.
+	 * Los hilos de ejecución se detendrán cuando lleguen al siguiente punto de verificación.
+	 */
 	public void pararSimulacion() {
 	    for (Tecnico t : this.tecnicos) {
             	t.setActivo(false);
@@ -339,49 +432,56 @@ public class Sistema implements Serializable, I_Sistema {
 	
 	
 	//PROMOCIONES
+	/**
+	 * Obtiene una instancia de la interfaz `iPromocion` según el tipo de promoción especificado.
+	 *
+	 * @param promo el tipo de promoción
+	 * @return una instancia de la promoción correspondiente
+	 * @throws TipoDePromocionIncorrectoException si el tipo de promoción especificado es incorrecto
+	 */
 	public iPromocion obtenerPromocion(String promo) throws TipoDePromocionIncorrectoException {
 		assert promo != null && !promo.isBlank() : "El campo promo no debe estar vacio";
 		return PromocionFactory.crearPromo(promo);
 	}
 
 	//CONTRATACIONES - SERVICIOS
-
 	/**
-	 * 
-	 * @param dni
-	 * @param dom
-	 * @param serv
-	 * @param promo
-	 * @return
-	 * @throws DomicilioYaRegistradoException
-	 * @throws DomicilioNoEncontradoException
-	 * @throws ContratacionYaRegistradaException
-	 * @throws PersonaNoEncontradaException 
+	 * Crea una nueva contratación para una persona en un domicilio, con un servicio y una promoción especificados.
+	 *
+	 * @param p la persona que realiza la contratación
+	 * @param dom el domicilio donde se realizará la contratación
+	 * @param serv el tipo de servicio a contratar
+	 * @param promo la promoción a aplicar en la contratación
+	 * @return la nueva contratación creada
+	 * @throws DomicilioYaRegistradoException si el domicilio ya está registrado en la persona
+	 * @throws DomicilioNoEncontradoException si no se encuentra el domicilio especificado
+	 * @throws ContratacionYaRegistradaException si ya existe una contratación registrada para el domicilio y la persona
+	 * @throws PersonaNoEncontradaException si no se encuentra la persona especificada
 	 */
-/*
- 	public void crearContratacion(String dni, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
-		assert dni != null && !dni.isBlank() : "El campo DNI no debe estar vacio";
-		Contratacion contr=null;
-		Persona p = this.personas.buscaPorDni(dni);
-		contr=new Contratacion(dni,dom,serv,promo);			
-		p.agregarContratacion(contr);
-	}
-*/
 	public Contratacion crearContratacion(Persona p, Domicilio dom, iServicio serv, iPromocion promo) throws DomicilioYaRegistradoException, DomicilioNoEncontradoException, ContratacionYaRegistradaException, PersonaNoEncontradaException {
 		Contratacion contr=null;
 		contr=new Contratacion(p.getDni(),dom,serv,promo);			
 		p.agregarContratacion(contr);
 		return contr;
 	}
-	
+	/**
+	 * Elimina una contratación de una persona en un domicilio.
+	 *
+	 * @param p la persona que tiene la contratación
+	 * @param dom el domicilio de la contratación a eliminar
+	 * @throws PersonaNoEncontradaException si no se encuentra la persona especificada
+	 * @throws DomicilioNoEncontradoException si no se encuentra el domicilio especificado
+	 * @throws FacturaNoEncontradaException si no se encuentra la factura asociada a la contratación
+	 */
 	public void eliminarContratacion(Persona p, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
 		p.eliminarContratacion(dom);
 	}
-	/*
-	public void eliminarContratacion(String dni, Domicilio dom) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, FacturaNoEncontradaException {
-		Persona p = this.personas.buscaPorDni(dni);
-		p.eliminarContratacion(dom);
-	}
+	/**
+	 * Obtiene una instancia de la interfaz `iServicio` según el tipo de servicio especificado.
+	 *
+	 * @param serv el tipo de servicio
+	 * @return una instancia del servicio correspondiente
+	 * @throws TipoDeServicioIncorrectoException si el tipo de servicio especificado es incorrecto
 	 */
 	public iServicio obtenerServicio(String serv) throws TipoDeServicioIncorrectoException {
 		assert serv != null && !serv.isBlank() : "El campo serv no debe estar vacio";
@@ -390,9 +490,10 @@ public class Sistema implements Serializable, I_Sistema {
 
 	//ADICIONALES - CONTRATABLES
 	/**
-	 * 
-	 * @param c: refiere a la contratacion a la cual se le quiere agregar un Adicional
-	 * @param a: refiere a la variable adicional la cua lse quiere adicionar a la Contratacion
+	 * Agrega un servicio adicional a una contratación existente.
+	 *
+	 * @param c la contratación a la que se agregará el servicio adicional
+	 * @param a el servicio adicional a contratar
 	 */
 	public void contratarAdicional(Contratacion c,iContratable a) {
 		assert c != null : "El campo Contratacion debe estar instanciado";
@@ -400,6 +501,17 @@ public class Sistema implements Serializable, I_Sistema {
 		c.agregarContratable(a);
 	}
 
+/**
+ * Agrega un servicio adicional a una contratación existente de una persona en un domicilio específico.
+ *
+ * @param dni el DNI de la persona
+ * @param d el domicilio de la contratación
+ * @param a el servicio adicional a contratar
+ * @throws PersonaNoEncontradaException si no se encuentra la persona especificada
+ * @throws DomicilioNoEncontradoException si no se encuentra el domicilio especificado
+ * @throws ContratacionNoEncontradaException si no se encuentra la contratación correspondiente al domicilio y la persona
+ * @throws DomicilioNoPerteneceAPersona si el domicilio no pertenece a la persona especificada
+ */
 	public void contratarAdicional(String dni,Domicilio d,iContratable a) throws PersonaNoEncontradaException, DomicilioNoEncontradoException, ContratacionNoEncontradaException, DomicilioNoPerteneceAPersona {
 		assert dni != null && !dni.isBlank() : "El campo dni debe estar vacio";
 		assert d != null : "El campo Domicilio debe estar instanciado";
@@ -419,7 +531,13 @@ public class Sistema implements Serializable, I_Sistema {
 			throw new DomicilioNoPerteneceAPersona(p1,d);
 		}		
 	}
-
+	/**
+	 * Obtiene el objeto iContratable correspondiente al tipo de contratable especificado.
+	 *
+	 * @param cont el tipo de contratable
+	 * @return el objeto iContratable correspondiente al tipo de contratable especificado
+	 * @throws TipoDeContratableIncorrectoException si el tipo de contratable especificado es incorrecto
+	 */
 	public iContratable obtenerContratable(String cont) throws TipoDeContratableIncorrectoException {
 		assert cont != null && !cont.isBlank() : "El campo cont no debe estar vacio";
 		return ContratableFactory.crearContratable(cont);
@@ -458,7 +576,13 @@ public class Sistema implements Serializable, I_Sistema {
 			return personaClone;
 	  }	
 	  
-
+	  /**
+	   * Obtiene el objeto MedioPago correspondiente al método de pago especificado para una factura.
+	   *
+	   * @param metodoPago el método de pago a utilizar
+	   * @param f la factura para la cual se obtendrá el medio de pago
+	   * @return el objeto MedioPago correspondiente al método de pago y factura especificados
+	   */
 		public MedioPago getMedioPago(String metodoPago, Factura f) {
 			MedioPago mp= MedioPagoFactory.getMedioPago(metodoPago, f);
 			return mp;

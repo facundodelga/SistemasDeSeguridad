@@ -126,7 +126,6 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 
 	/**
 	 * Create the frame.
-	 * @param controlador2 
 	 */
 	public VistaSistemaDeSeguridad(Controlador controlador,Observable o) {
 		setTitle("Sistema de Seguridad");
