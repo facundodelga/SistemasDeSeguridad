@@ -1,5 +1,6 @@
 package persistencia;
 
+import contrataciones.Contratacion;
 import modelo.Factura;
 import modelo.Sistema;
 
@@ -8,6 +9,7 @@ public class StaticsUtil {
 	SistemaDTO sistemaDTO = new SistemaDTO();
 
 	sistemaDTO.setUltimaFactura(Factura.getUltFactura());
+	sistemaDTO.setUltimaContratacion(Contratacion.getGeneradorId());
 	sistemaDTO.setFacturas(s.getFacturas());
 	sistemaDTO.setPersonas(s.getPersonas());
 	sistemaDTO.setMes(s.getMes());
@@ -20,6 +22,7 @@ public class StaticsUtil {
 
     public static void setEstaticosDelSistema(SistemaDTO dto) {
 	Factura.setUltFactura(dto.getUltimaFactura());
+	Contratacion.setGeneradorId(dto.getUltimaContratacion());
 
 	Sistema.getInstancia().setFacturas(dto.getFacturas());
 	Sistema.getInstancia().setPersonas(dto.getPersonas());

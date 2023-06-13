@@ -16,6 +16,7 @@ public class SistemaDTO implements Serializable {
      */
 
     private int ultimaFactura;
+    private int ultimaContratacion;
     private ArregloFacturas facturas;
     private ArregloPersonas personas;
     private int mes;
@@ -30,8 +31,23 @@ public class SistemaDTO implements Serializable {
     public void setUltimaFactura(int ultimaFactura) {
         this.ultimaFactura = ultimaFactura;
     }
+    
+    
+    /**
+	 * @return the ultimaContratacion
+	 */
+	public int getUltimaContratacion() {
+		return ultimaContratacion;
+	}
 
-    public ArregloFacturas getFacturas() {
+	/**
+	 * @param ultimaContratacion the ultimaContratacion to set
+	 */
+	public void setUltimaContratacion(int ultimaContratacion) {
+		this.ultimaContratacion = ultimaContratacion;
+	}
+
+	public ArregloFacturas getFacturas() {
         return facturas;
     }
 
