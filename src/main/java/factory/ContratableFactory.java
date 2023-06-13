@@ -7,7 +7,13 @@ import contrataciones.iContratable;
 import excepciones.TipoDeContratableIncorrectoException;
 
 public class ContratableFactory {
-
+    /**
+     * Crea una instancia de un objeto contratable según el tipo especificado.
+     *
+     * @param cont el tipo de contratable a crear
+     * @return una instancia del contratable creado
+     * @throws TipoDeContratableIncorrectoException si se especifica un tipo de contratable incorrecto
+     */
 	public static iContratable crearContratable(String cont) throws TipoDeContratableIncorrectoException {
 		iContratable cr=null;
 		if(cont.equalsIgnoreCase("BOTON"))

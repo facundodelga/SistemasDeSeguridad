@@ -98,7 +98,13 @@ public class Controlador implements ActionListener, WindowListener {
 		vistaPrincipal.addWindowListener(this);
 //		vistaPrincipal.addActionListener(this); //Estaba de mas, los eventos se ejecutaban dos veces
 	}
-
+	
+	/**
+	 * Maneja los eventos de acción.
+	 *
+	 * @param e el evento de acción.
+	 */
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String comando = e.getActionCommand();
@@ -156,7 +162,9 @@ public class Controlador implements ActionListener, WindowListener {
 	
 
 	}
-
+	/**
+	 * Abre la ventana correspondiente según la acción seleccionada.
+	 */
 	private void abrirVentanaAccion() {
 		// TODO Auto-generated method stub
 		String s = vistaPrincipal.getAccion();
@@ -185,6 +193,10 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	// apartado abonados
+	
+	/**
+	 * Agrega una nueva persona al sistema.
+	 */
 	public void agregarPersona() {
 		try {
 			sistema.crearPersona(this.vistaAgregarPersonas.getNombreApellido(), this.vistaAgregarPersonas.getDNI(),
@@ -200,15 +212,13 @@ public class Controlador implements ActionListener, WindowListener {
 
 		}
 	}
-
-	//RECARGA DE LAS LISTAS
+	
+	
+	/**
+	 * Actualiza la lista de personas en la vista principal.
+	 */
 	public void refreshPersonas() {
-		/*
-		 * Teniamos un bug, que a veces al abrir la ventana el JList no se pintaba, solo
-		 * despues de agregar una persona nueva. Googleando, parece que hay que updatear
-		 * el model con un runnable y usando SwingUtilities.invokeLater para que no haya
-		 * problemas
-		 */
+
 		Runnable updateGUIAsincrono = new Runnable() {
 			public void run() {
 				ArrayList<Persona> personas = sistema.getPersonas();
@@ -224,12 +234,21 @@ public class Controlador implements ActionListener, WindowListener {
 
 		SwingUtilities.invokeLater(updateGUIAsincrono);
 	}
-
+	
+	
+	/**
+	 * Obtiene el modelo de lista de personas.
+	 *
+	 * @return el modelo de lista de personas.
+	 */
 	public DefaultListModel<Persona> getListaPersonas() {
 		System.out.println(listaPersonas);
 		return listaPersonas;
 	}
-
+	
+	/**
+	 * Actualiza la lista de domicilios en la vista correspondiente.
+	 */
 	public void refreshDomicilios() {
 		Runnable updateGUIAsincrono = new Runnable() {
 			public void run() {
@@ -244,6 +263,7 @@ public class Controlador implements ActionListener, WindowListener {
 		};
 		SwingUtilities.invokeLater(updateGUIAsincrono);
 	}
+	
 	/**
 	 * @return the listaDomicilios
 	 */
@@ -251,6 +271,9 @@ public class Controlador implements ActionListener, WindowListener {
 		return listaDomicilios;
 	}
 	
+	/**
+	 * Actualiza la lista de facturas en la vista correspondiente.
+	 */
 	public void refreshFacturas() {
 		Runnable updateGUIAsincrono = new Runnable() {
 			public void run() {
@@ -266,19 +289,20 @@ public class Controlador implements ActionListener, WindowListener {
 
 		SwingUtilities.invokeLater(updateGUIAsincrono);
 	}
-	
+	/**
+	 * Obtiene el modelo de lista de facturas.
+	 *
+	 * @return el modelo de lista de facturas.
+	 */
 	public DefaultListModel<Factura> getListaFacturas() {
 		System.out.println(listaFacturas);
 		return listaFacturas;
 	}
-	
+	/**
+	 * Actualiza la lista de contrataciones en la vista correspondiente.
+	 */
 	public void refreshContrataciones() {
-		/*
-		 * Teniamos un bug, que a veces al abrir la ventana el JList no se pintaba, solo
-		 * despues de agregar una persona nueva. Googleando, parece que hay que updatear
-		 * el model con un runnable y usando SwingUtilities.invokeLater para que no haya
-		 * problemas
-		 */
+
 		Runnable updateGUIAsincrono = new Runnable() {
 			public void run() {
 				if(persona!=null) {
@@ -295,11 +319,20 @@ public class Controlador implements ActionListener, WindowListener {
 		SwingUtilities.invokeLater(updateGUIAsincrono);
 	}
 	
+	/**
+	 * Obtiene el modelo de lista de contrataciones.
+	 *
+	 * @return el modelo de lista de contrataciones.
+	 */
 	public DefaultListModel<Contratacion> getListaContrataciones() {
 		return listaContrataciones;
 	}
 
 	// apartado facturas historicas
+	
+	/**
+	 * Realiza la búsqueda de facturas históricas para una persona y actualiza la vista correspondiente.
+	 */
 	private void buscarFacturas() {
 			persona = this.vistaPrincipal.getPersona();
 			ArrayList<Factura> facturas = sistema.getFacturas();
@@ -313,7 +346,11 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	//VENTANA AGREGARDOMICILIO
-
+	/**
+	 * Agrega un domicilio a la persona actualmente seleccionada.
+	 * Obtiene los datos de la vista correspondiente y realiza las validaciones necesarias.
+	 * Actualiza la lista de domicilios y habilita la ventana principal.
+	 */
 	public void agregarDomicilio() {
 		// Necesitamos saber cual es la persona primero
 		try {
@@ -329,7 +366,10 @@ public class Controlador implements ActionListener, WindowListener {
 		refreshDomicilios();
 		
 	}
-	
+	/**
+	 * Obtiene los domicilios actuales de la persona seleccionada y los muestra en la vista correspondiente.
+	 * Actualiza el modelo de lista de domicilios y el área de texto.
+	 */
 	private void getDomiciliosActuales() {
 		persona = this.vistaPrincipal.getPersona();
 		ArrayList<Domicilio> domicilios = persona.getDomicilios();
@@ -343,6 +383,13 @@ public class Controlador implements ActionListener, WindowListener {
 		this.vistaAgregaDireccion.actualizarTextArea(getDomiciliosText());
 	}
 	
+	/**
+	 * Obtiene una cadena de texto que representa los domicilios de la persona seleccionada.
+	 * Cada domicilio se formatea como una cadena separada por saltos de línea.
+	 * Si no se ha seleccionado una persona o no tiene domicilios, se devuelve una cadena vacía.
+	 *
+	 * @return Una cadena de texto con los domicilios de la persona seleccionada
+	 */
 	public String getDomiciliosText() {
 		String res="";
 		persona = this.vistaPrincipal.getPersona();
@@ -357,7 +404,12 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 
 	// VENTANA FACTURASPERSONA
-	// deberia mostrar solo las facturas sin pagar
+	/**
+	 * Realiza el pago de la factura seleccionada utilizando el método de pago especificado.
+	 * Obtiene el método de pago y la factura seleccionada desde la vista de facturas de la persona.
+	 * Luego, llama al método correspondiente en el sistema para realizar el pago.
+	 * Si se produce alguna excepción, se muestra un mensaje de error en la vista principal y se restauran las vistas.
+	 */
 	private void pagarFacturas() {
 		try {
 			String mp = this.vistaFacturasPersona.getMetodoPago();
@@ -377,10 +429,23 @@ public class Controlador implements ActionListener, WindowListener {
 			this.habilitaVentanaPrincipal();
 		}
 	}
+	
+	/**
+	 * Muestra el detalle de la factura seleccionada en la vista de facturas de la persona.
+	 * Obtiene la factura desde la vista y llama al método correspondiente en la vista para mostrar el detalle.
+	 */
 	private void detalleFactura() {
 		this.vistaFacturasPersona.mostrarDetalle(this.vistaFacturasPersona.getFactura().detalle());
 	}
-
+	
+	
+	/**
+	 * Obtiene las facturas impagas asociadas a la persona seleccionada.
+	 * Obtiene la persona desde la vista principal y las facturas del sistema.
+	 * Luego, filtra las facturas para encontrar aquellas que pertenecen a la persona seleccionada,
+	 * no están pagadas y aún no se han agregado a la lista de facturas.
+	 * Agrega las facturas impagas a la lista de facturas de la vista.
+	 */
 	public void getFacturasImpagas() {
 		//try {
 			persona = this.vistaPrincipal.getPersona();
@@ -396,6 +461,14 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 	
 	//VENTANA NUEVACONTRATACION
+	
+	/**
+	 * Agrega una nueva contratación para la persona seleccionada.
+	 * Obtiene los datos de la nueva contratación desde la vista de nueva contratación.
+	 * Realiza las conversiones necesarias y utiliza los métodos del sistema para crear la contratación,
+	 * agregar los adicionales correspondientes y actualizar la lista de contrataciones.
+	 * En caso de que ocurra alguna excepción, muestra un mensaje de error y habilita la ventana principal.
+	 */
 	private void agregarContratacion() {
 		
 		//puede que tenga que hacer conversiones
@@ -431,6 +504,11 @@ public class Controlador implements ActionListener, WindowListener {
 	}
 	
 	//VENTANA CONTRATACIONES
+	/**
+	 * Elimina la contratación seleccionada de la persona actual.
+	 * Utiliza los métodos del sistema para eliminar la contratación y actualiza la lista de contrataciones.
+	 * En caso de que ocurra alguna excepción, muestra un mensaje de error.
+	 */
 	private void eliminarContratacion() {
 		try {
 			if(this.vistaContrataciones.getContratacion()!=null) {
@@ -444,7 +522,11 @@ public class Controlador implements ActionListener, WindowListener {
 	}	
 	
 	//EVENTOS VENTANA
-
+	/**
+	 * Método que se ejecuta al cerrar una ventana.
+	 *
+	 * @param e El evento de ventana.
+	 */
 	public void windowClosing(WindowEvent e) {
 		if (e.getWindow() == this.vistaPrincipal) {
 			int i = JOptionPane.showConfirmDialog(null, "¿Desea finalizar la aplicación?");
@@ -462,7 +544,9 @@ public class Controlador implements ActionListener, WindowListener {
 		}
 	}
 
-
+	/**
+	 * Agrega un nuevo técnico al sistema.
+	 */
 	public void agregaTecnico() {
 		sistema.darAltaTecnico(vistaPrincipal.getNombreTecnico());
 	}
@@ -487,7 +571,9 @@ public class Controlador implements ActionListener, WindowListener {
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {	}
-
+	/**
+	 * Guarda los datos del sistema enun archivo binario.
+	 */
 	public void guardarDatos() {
 		PersistenciaBin p = new PersistenciaBin();
 
@@ -509,7 +595,9 @@ public class Controlador implements ActionListener, WindowListener {
 		}
 
 	}
-
+	/**
+	 * Carga los datos del sistema desde un archivo binario.
+	 */
 	public void cargarDatos() {
 		PersistenciaBin p = new PersistenciaBin();
 		try {

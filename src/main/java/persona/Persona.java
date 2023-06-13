@@ -65,7 +65,12 @@ public abstract class Persona implements Serializable,Cloneable{
 	public boolean existeDomicilio(Domicilio dom) {
 		return this.domicilios.contains(dom);
 	}
-	
+	/**
+	 * Verifica si un domicilio ya está registrado en las contrataciones.
+	 *
+	 * @param dom El domicilio a verificar.
+	 * @return {@code true} si el domicilio está registrado, {@code false} de lo contrario.
+	 */
 	public boolean domicilioYaRegistrado(Domicilio dom) {
 		for (Contratacion contratacion : contrataciones) {
 			if (dom.equals(contratacion.getDomicilio())) {
@@ -147,7 +152,12 @@ public abstract class Persona implements Serializable,Cloneable{
 			this.contrataciones.remove(con);
 		}
 	}	
-	
+	/**
+	 * Busca una contratación asociada a un domicilio.
+	 *
+	 * @param dom El domicilio asociado a la contratación a buscar.
+	 * @return La contratación encontrada, o {@code null} si no se encontró ninguna contratación.
+	 */
 	private Contratacion buscarContratacion(Domicilio dom) {
 		Contratacion con = null;
 		for (Contratacion contratacion : contrataciones) {
@@ -156,6 +166,12 @@ public abstract class Persona implements Serializable,Cloneable{
 		}
 		return con;
 	}
+	
+	/**
+	 * Elimina una contratación asociada a un domicilio.
+	 *
+	 * @param dom El domicilio asociado a la contratación a eliminar.
+	 */
 	public void eliminarContratacion(Domicilio dom) {
 		assert dom != null : "El campo domicilio debe estar instanciado";
 		Contratacion con = this.buscarContratacion(dom);
