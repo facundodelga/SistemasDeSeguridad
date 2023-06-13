@@ -301,7 +301,7 @@ public class Controlador implements ActionListener, WindowListener {
 
 	// apartado facturas historicas
 	private void buscarFacturas() {
-			persona = this.vistaPrincipal.getPersona();
+			persona = this.vistaPrincipal.getPersonaHistorica();
 			ArrayList<Factura> facturas = sistema.getFacturas();
 			String fHistoricas="";
 			int idAnt=-1;

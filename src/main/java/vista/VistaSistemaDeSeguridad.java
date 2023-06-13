@@ -403,8 +403,14 @@ public class VistaSistemaDeSeguridad extends JFrame implements Observer,KeyListe
 		return list_AbonantesHistoricas.getSelectedValue();
 	}
 	
-
 	public Persona getPersona() {
+
+		 Persona   p=list_PersonasAbonados.getSelectedValue();
+		System.out.println(p);
+		return p;
+	}
+	
+	public Persona getPersonaHistorica() {
 	    	Persona p=list_AbonantesHistoricas.getSelectedValue();
 		
 		if(p==null)
